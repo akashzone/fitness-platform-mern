@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/products', productRoutes);
+app.use('/api/programs', productRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
