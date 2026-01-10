@@ -22,10 +22,33 @@ app.use((req, res, next) => {
     next();
 });
 
+const path = require('path');
+
 app.use('/api/products', productRoutes);
 app.use('/api/programs', productRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Serve static files from the frontend
+// Check both root dist and client/dist for flexibility
+const distPath = path.join(__dirname, '../dist');
+const clientDistPath = path.join(__dirname, '../client/dist');
+
+if (require('fs').existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(distPath, 'index.html'));
+        }
+    });
+} else if (require('fs').existsSync(clientDistPath)) {
+    app.use(express.static(clientDistPath));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(clientDistPath, 'index.html'));
+        }
+    });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -48,10 +71,6 @@ const seedAdmin = async () => {
     }
 };
 seedAdmin();
-
-app.get('/', (req, res) => {
-    res.send('Fitness Platform API is running...');
-});
 
 const PORT = process.env.PORT || 5000;
 
