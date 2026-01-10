@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-brand: #0B0F14;
+  --color-accent: #22C55E;
+  --color-accent-hover: #16A34A;
+  --color-accent-glow: rgba(34, 197, 94, 0.4);
+  --color-bg-page: #0B0F14;
+  --color-bg-card: rgba(21, 25, 30, 0.7);
+  --color-text-primary: #EAEAEA;
+  --color-text-secondary: #A8B0BB;
+  --color-rating-stars: #FACC15;
+  --color-surface: #0F1116;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+:root {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background-color: var(--color-bg-page);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--color-text-primary);
+}
+
+/* Glassmorphism & Depth */
+.glass {
+  background: rgba(15, 17, 22, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.text-glow {
+  text-shadow: 0 0 15px var(--color-accent-glow);
+}
+
+.btn-glow {
+  box-shadow: 0 0 25px var(--color-accent-glow);
+}
+
+/* Custom transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Cinematic Overlays */
+.overlay-cinematic {
+  background: linear-gradient(to top, rgba(11, 15, 20, 0.9) 0%, rgba(11, 15, 20, 0.4) 50%, rgba(11, 15, 20, 0) 100%);
+}
