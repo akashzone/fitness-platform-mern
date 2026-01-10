@@ -2,7 +2,9 @@ services:
   - type: web
     name: fitness-frontend
     env: static
+    buildCommand: npm install && npm run build
     staticPublishPath: dist
+    baseDir: client
     routes:
       - type: rewrite
         source: /*
