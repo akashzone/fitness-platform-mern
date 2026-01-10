@@ -14,6 +14,7 @@ const CourseDetails = () => {
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [status, setStatus] = useState('idle'); // Added for button state
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -29,6 +30,15 @@ const CourseDetails = () => {
         };
         fetchCourse();
     }, [id]);
+
+    const handleSecureSpot = async () => {
+        if (course.type === 'course' && course.slotInfo?.isSoldOut) return;
+        setStatus('processing');
+        // Simulate an async operation, e.g., creating an order or pre-checkout validation
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        navigate(`/checkout/${course._id}`);
+        setStatus('idle'); // Reset status after navigation
+    };
 
     if (loading) {
         return (
@@ -91,6 +101,23 @@ const CourseDetails = () => {
                                     <div className="w-20 h-20 glass border border-white/20 rounded-full flex items-center justify-center text-white scale-100 group-hover:scale-125 transition-all shadow-[0_0_50px_rgba(34,197,94,0.3)]">
                                         <Play size={28} fill="white" className="ml-1" />
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Mobile Pricing Section - Visible only after video on mobile */}
+                        <div className="lg:hidden space-y-8">
+                            <div className="glass-card p-10 rounded-[2.5rem] border border-accent/20 shadow-[0_0_50px_rgba(34,197,94,0.1)] text-center">
+                                <div className="text-text-secondary text-xs font-black uppercase tracking-[0.2em] mb-4 opacity-60">Program Investment</div>
+                                <div className="text-6xl font-black text-text-primary tracking-tighter mb-8">₹{course.price.toLocaleString('en-IN')}</div>
+                                <div className="space-y-6">
+                                    <button
+                                        onClick={() => !course.slotInfo?.isSoldOut && navigate(`/checkout/${course._id}`)}
+                                        disabled={course.type === 'course' && course.slotInfo?.isSoldOut}
+                                        className={`w-full px-6 py-4 rounded-2xl font-black text-xl transition-all uppercase tracking-wider ${course.type === 'course' && course.slotInfo?.isSoldOut ? 'bg-white/10 text-white/40' : 'bg-accent text-white shadow-[0_0_30px_rgba(34,197,94,0.3)]'}`}
+                                    >
+                                        {course.type === 'course' && course.slotInfo?.isSoldOut ? 'Sold Out' : 'Secure My Spot'}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -167,8 +194,8 @@ const CourseDetails = () => {
                         )}
                     </div>
 
-                    {/* Right: Checkout Sidebar */}
-                    <div className="lg:sticky lg:top-32 glass-card p-6 md:p-12 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden">
+                    {/* Right: Checkout Sidebar - Hidden on Mobile */}
+                    <div className="hidden lg:block lg:sticky lg:top-32 glass-card p-6 md:p-12 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden">
                         {/* Sold Out Overlay for Sidebar */}
                         {course.type === 'course' && course.slotInfo?.isSoldOut && (
                             <div className="absolute inset-0 bg-bg-page/40 backdrop-blur-[2px] z-30 flex flex-col items-center justify-center p-8 text-center">

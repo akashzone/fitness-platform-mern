@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const CinematicTicker = ({ text, speed = 50 }) => {
+const CinematicTicker = ({ text, speed = 25 }) => {
     return (
         <div className="relative w-full overflow-hidden bg-white/5 border-y border-white/10 py-6 mb-12 select-none group">
             {/* Cinematic Blur Mask */}

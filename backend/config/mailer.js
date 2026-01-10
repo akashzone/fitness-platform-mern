@@ -2,12 +2,21 @@ const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    secure: true, // true for 465, false for other ports
+    port: parseInt(process.env.SMTP_PORT) || 465,
+    secure: process.env.SMTP_SECURE === 'true' || true,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
+});
+
+console.log(`Mailer initialized for user: ${process.env.SMTP_USER}`);
+transporter.verify((error, success) => {
+    if (error) {
+        console.error('SMTP Connection Verify Error:', error);
+    } else {
+        console.log('SMTP Server is ready to take messages');
+    }
 });
 
 const sendConfirmationEmail = async (userEmail, userName, productName) => {

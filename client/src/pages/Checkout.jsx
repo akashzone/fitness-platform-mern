@@ -218,12 +218,18 @@ const Checkout = () => {
                                         <button
                                             type="submit"
                                             disabled={status === 'processing'}
-                                            className="w-full bg-accent hover:bg-accent-hover text-white py-6 rounded-2xl font-black text-xl shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center space-x-4 transition-all transform hover:scale-[1.02] active:scale-95 btn-glow uppercase tracking-widest overflow-hidden relative group/btn disabled:opacity-50"
+                                            className="w-full bg-accent hover:bg-accent-hover text-white py-5 md:py-6 rounded-2xl font-black text-lg md:text-xl shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] active:scale-95 btn-glow uppercase tracking-widest overflow-hidden relative group/btn disabled:opacity-50"
                                         >
-                                            <span className="relative z-10 flex items-center space-x-4">
-                                                {status === 'processing' ? <Loader2 className="animate-spin" size={24} /> : <CreditCard size={24} />}
-                                                <span>{status === 'processing' ? 'Processing...' : 'Proceed to Payment'}</span>
-                                            </span>
+                                            <div className="relative z-10 flex items-center justify-center gap-3">
+                                                {status === 'processing' ? (
+                                                    <Loader2 className="animate-spin" size={24} />
+                                                ) : (
+                                                    <CreditCard size={24} />
+                                                )}
+                                                <span className="leading-tight">
+                                                    {status === 'processing' ? 'Processing...' : 'Proceed to Payment'}
+                                                </span>
+                                            </div>
                                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
                                         </button>
                                     </MagneticButton>
