@@ -27,8 +27,17 @@ const Header = () => {
                     {/* Left space for alignment */}
                     <div className="w-10 md:w-20 lg:block hidden" />
 
-                    <Link to="/" className="text-xl md:text-3xl font-black tracking-tighter text-text-primary uppercase group">
-                        FITWITH<span className="text-accent italic group-hover:text-glow transition-all">PRAVINN</span>
+                    <Link to="/" className="flex items-center space-x-3 group">
+                        <motion.img
+                            src="/logo.png"
+                            alt="Logo"
+                            className="w-10 h-10 object-contain group-hover:scale-110 transition-transform"
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                        />
+                        <span className="text-xl md:text-3xl font-black tracking-tighter text-text-primary uppercase">
+                            FITWITH<span className="text-accent italic group-hover:text-glow transition-all">PRAVINN</span>
+                        </span>
                     </Link>
 
                     {/* Cart Trigger - Hidden on Admin Pages */}
@@ -67,8 +76,11 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-20 items-start text-center md:text-left">
                     <div>
-                        <Link to="/" className="text-2xl font-black tracking-tighter text-text-primary uppercase">
-                            FITWITH<span className="text-accent italic">PRAVINN</span>
+                        <Link to="/" className="flex items-center space-x-4 justify-center md:justify-start">
+                            <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+                            <span className="text-2xl font-black tracking-tighter text-text-primary uppercase">
+                                FITWITH<span className="text-accent italic">PRAVINN</span>
+                            </span>
                         </Link>
                         <p className="mt-8 text-text-secondary text-base leading-relaxed max-w-sm font-medium">
                             Elite fitness educator, transformation coach, and lifestyle influencer based in Mumbai. Dedicated to making self-improvement simple and achievable.
