@@ -7,6 +7,7 @@ import CourseDetails from './pages/CourseDetails';
 import Checkout from './pages/Checkout';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import PaymentStatus from './pages/PaymentStatus';
 
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/ScrollToTop';
@@ -25,6 +26,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/payment-status" element={<PaymentStatus />} />
           </Routes>
         </Layout>
       </Router>

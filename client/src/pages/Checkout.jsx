@@ -64,25 +64,29 @@ const Checkout = () => {
 
         setStatus('processing');
         try {
-            // Using the robust checkout-test endpoint which handles slots, orders, and emails correctly
-            const response = await api.post('/payment/checkout-test', {
-                fullName: formData.name,
+            // Updated to Cashfree Integration
+            const response = await api.post('/cashfree/create-order', {
+                amount: total,
+                name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                items: checkoutItems.map(item => ({
-                    productId: item._id,
-                    title: item.title,
-                    price: item.price,
-                    type: item.type || 'course'
-                })),
-                totalAmount: total
+                productId: checkoutItems[0]?._id || id // Use the first item ID
             });
 
             if (response.data.success) {
-                setStatus('success');
+                const cashfree = new window.Cashfree({
+                    mode: "sandbox" // Change to "production" for live
+                });
+
+                cashfree.checkout({
+                    paymentSessionId: response.data.payment_session_id,
+                    redirectTarget: "_self", // Redirects to the return_url set in backend
+                });
+
+                // Clear cart locally as we are redirecting
                 clearCart();
             } else {
-                alert(response.data.message || "Failed to process order.");
+                alert(response.data.message || "Failed to initialize payment.");
                 setStatus('idle');
             }
         } catch (err) {

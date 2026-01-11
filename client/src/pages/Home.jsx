@@ -65,14 +65,14 @@ const Home = () => {
                             </div>
                         </Reveal>
 
-                        <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-text-primary mb-6 leading-[1.1] uppercase flex flex-col items-center gap-2">
+                        <h1 className="text-3xl md:text-6xl font-black tracking-tighter text-text-primary mb-6 leading-[1.1] uppercase flex flex-col items-center gap-2">
                             <span>DISCIPLINE</span>
                             <span className="text-accent italic text-glow">OVER</span>
                             <span className="text-accent italic text-glow">MOTIVATION</span>
                         </h1>
 
                         <Reveal delay={0.5} y={30} width="100%">
-                            <p className="text-xl md:text-2xl text-text-secondary mb-14 leading-relaxed max-w-2xl mx-auto font-medium text-center">
+                            <p className="text-base md:text-2xl text-text-secondary mb-14 leading-relaxed max-w-2xl mx-auto font-medium text-center">
                                 Science-based training, nutrition guidance, and elite lifestyle habits. Transform your body and mindset with Mumbai's leading fitness educator.
                             </p>
                         </Reveal>
@@ -102,7 +102,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                         <Reveal x={-50} duration={0.8} width="100%">
                             <div className="relative group">
-                                <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl shadow-accent/5 relative">
+                                <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl shadow-accent/5 relative w-3/4 max-w-xs mx-auto lg:w-full lg:max-w-none">
                                     <img
                                         src="/assets/pravin_about.png"
                                         className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-110"
@@ -171,7 +171,7 @@ const Home = () => {
                         </div>
                     </Reveal>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
                         {loading ? (
                             [1, 2, 3, 4].map(i => (
                                 <div key={i} className="aspect-[3/4] glass-card animate-pulse rounded-[2rem]" />

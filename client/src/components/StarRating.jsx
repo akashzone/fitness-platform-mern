@@ -19,7 +19,7 @@ const StarRating = ({ rating }) => {
                         } transition-all duration-300`}
                 />
             ))}
-            <span className="ml-3 text-sm text-text-secondary font-black tracking-widest uppercase opacity-60">{rating}</span>
+            <span className="ml-1.5 md:ml-3 text-[10px] md:text-sm text-text-secondary font-black tracking-widest uppercase opacity-60">{rating}</span>
         </div>
     );
 };

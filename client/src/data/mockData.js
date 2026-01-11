@@ -14,7 +14,7 @@ export const courses = [
             "Text Support (8hrs/Day)",
             "1 Fixed Coaching Call/Week"
         ],
-        paymentLink: "https://razorpay.com",
+        paymentLink: "https://cashfree.com",
         fullDescription: "Our 4-week intensive program is designed to kickstart your metabolic health and establish sustainable habits. You'll receive a detailed workout protocol and a nutrition plan tailored to your specific goals, with weekly check-ins to ensure you're on the right track."
     },
     {
@@ -32,7 +32,7 @@ export const courses = [
             "1 Flexible Coaching Call/Week",
             "Instalments Available"
         ],
-        paymentLink: "https://razorpay.com",
+        paymentLink: "https://cashfree.com",
         fullDescription: "The 8-week program focuses on cementing your progress. With more flexible coaching calls and extended daily support, we dive deeper into your performance metrics and lifestyle adjustments to ensure long-term results."
     },
     {
@@ -50,7 +50,7 @@ export const courses = [
             "Text Support (12hrs/Day)",
             "Flexible Coaching Calls"
         ],
-        paymentLink: "https://razorpay.com",
+        paymentLink: "https://cashfree.com",
         fullDescription: "This is our signature transformation block. Over 12 weeks, we master your biology. From supplement protocols to advanced recipe tips, this course leaves no stone unturned in your pursuit of excellence."
     },
     {
@@ -68,7 +68,7 @@ export const courses = [
             "Advanced Supplement Guide",
             "Instalments Available"
         ],
-        paymentLink: "https://razorpay.com",
+        paymentLink: "https://cashfree.com",
         fullDescription: "The 20-week Elite Lifestyle program is more than just fitness; it reflects a complete transformation of your discipline and mindset. With 24/7 priority support and regular review calls, this is the highest level of accountability available.",
         type: "training"
     }
@@ -83,7 +83,7 @@ export const ebooks = [
         rating: 4.8,
         image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
         type: "ebook",
-        paymentLink: "https://razorpay.com",
+        paymentLink: "https://cashfree.com",
         features: [
             "100+ Scientific References",
             "Detailed Macronutrient Guide",
@@ -101,7 +101,7 @@ export const ebooks = [
         rating: 4.9,
         image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop",
         type: "ebook",
-        paymentLink: "https://razorpay.com",
+        paymentLink: "https://cashfree.com",
         features: [
             "Daily Routine Checklists",
             "Habit Formation Framework",

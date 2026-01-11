@@ -1,11 +1,10 @@
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
-
-dotenv.config();
+const cashfreeRoutes = require('./routes/cashfreeRoutes');
 
 connectDB();
 
@@ -27,6 +26,7 @@ const path = require('path');
 app.use('/api/products', productRoutes);
 app.use('/api/programs', productRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/cashfree', cashfreeRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Serve static files from the frontend
@@ -76,4 +76,10 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    try {
+        const runCashfreeTest = require('./utils/cashfreeTest');
+        runCashfreeTest();
+    } catch (err) {
+        console.error('Failed to run Cashfree Test on startup:', err.message);
+    }
 });

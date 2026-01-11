@@ -13,6 +13,7 @@ const orderSchema = new Schema({
         type: { type: String, required: true }
     }],
     totalAmount: { type: Number, required: true },
+    gateway: { type: String, default: 'CASHFREE' },
     paymentId: { type: String, required: true },
     paymentStatus: { type: String, required: true },
     month: { type: String, required: true }, // YYYY-MM
