@@ -82,10 +82,10 @@ const Home = () => {
                                 <MagneticButton>
                                     <Link
                                         to="/programs"
-                                        className="inline-flex items-center justify-center space-x-4 bg-accent hover:bg-accent-hover text-white px-8 py-4 md:px-12 md:py-5 rounded-2xl font-black text-xl md:text-2xl transition-all btn-glow group overflow-hidden relative shadow-2xl shadow-accent/20"
+                                        className="inline-flex items-center justify-center space-x-3 md:space-x-4 bg-accent hover:bg-accent-hover text-white px-6 py-3 md:px-12 md:py-5 rounded-xl md:rounded-2xl font-black text-sm md:text-2xl transition-all btn-glow group overflow-hidden relative shadow-2xl shadow-accent/20"
                                     >
                                         <span className="relative z-10 uppercase tracking-widest">Get Started</span>
-                                        <ArrowRight size={24} className="relative z-10 group-hover:translate-x-2 transition-transform" />
+                                        <ArrowRight size={20} className="relative z-10 group-hover:translate-x-2 transition-transform md:w-6 md:h-6" />
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                     </Link>
                                 </MagneticButton>
@@ -99,8 +99,9 @@ const Home = () => {
             <section id="about" className="py-20 lg:py-40 bg-surface relative overflow-hidden">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                         <Reveal x={-50} duration={0.8} width="100%">
+                            <span className="lg:hidden text-accent font-black uppercase tracking-[0.4em] text-sm mb-6 block">The Coach</span>
                             <div className="relative group">
                                 <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl shadow-accent/5 relative w-3/4 max-w-xs mx-auto lg:w-full lg:max-w-none">
                                     <img
@@ -120,7 +121,7 @@ const Home = () => {
                         <div className="space-y-10">
                             <Reveal delay={0.2}>
                                 <div className="max-w-xl">
-                                    <span className="text-accent font-black uppercase tracking-[0.4em] text-sm">The Coach</span>
+                                    <span className="hidden lg:block text-accent font-black uppercase tracking-[0.4em] text-sm">The Coach</span>
                                     <h2 className="text-5xl md:text-6xl font-black mt-6 mb-10 text-text-primary tracking-tighter leading-tight">
                                         About <br /> <span className="text-accent italic whitespace-nowrap">Pravin Kumar</span>
                                     </h2>

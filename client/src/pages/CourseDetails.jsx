@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
-import { CheckCircle, ArrowLeft, Play, Zap, CreditCard, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
+import {
+    CheckCircle,
+    ArrowLeft,
+    Play,
+    Zap,
+    Loader2,
+    AlertCircle,
+    ShoppingBag
+} from 'lucide-react';
 import Reveal from '../components/motion/Reveal';
-import MagneticButton from '../components/motion/MagneticButton';
 import StarRating from '../components/StarRating';
 import { useCart } from '../context/CartContext';
 
@@ -11,34 +18,50 @@ const CourseDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addToCart } = useCart();
+
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [status, setStatus] = useState('idle'); // Added for button state
+    const [recommendedProduct, setRecommendedProduct] = useState(null);
 
     useEffect(() => {
-        const fetchCourse = async () => {
+        const fetchData = async () => {
             try {
-                const response = await api.get(`/products/${id}`);
-                setCourse(response.data);
+                const [productRes, allProductsRes] = await Promise.all([
+                    api.get(`/products/${id}`),
+                    api.get('/products')
+                ]);
+
+                const currentProduct = productRes.data;
+                const allProducts = allProductsRes.data.products.filter(
+                    p => p._id !== id
+                );
+
+                setCourse(currentProduct);
+
+                const targetType =
+                    currentProduct.type === 'course' ? 'ebook' : 'course';
+
+                const pool =
+                    allProducts.filter(p => p.type === targetType).length > 0
+                        ? allProducts.filter(p => p.type === targetType)
+                        : allProducts;
+
+                if (pool.length > 0) {
+                    setRecommendedProduct(
+                        pool[Math.floor(Math.random() * pool.length)]
+                    );
+                }
             } catch (err) {
-                setError('Product not found or connection error.');
                 console.error(err);
+                setError('Product not found or connection error.');
             } finally {
                 setLoading(false);
             }
         };
-        fetchCourse();
-    }, [id]);
 
-    const handleSecureSpot = async () => {
-        if (course.type === 'course' && course.slotInfo?.isSoldOut) return;
-        setStatus('processing');
-        // Simulate an async operation, e.g., creating an order or pre-checkout validation
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        navigate(`/checkout/${course._id}`);
-        setStatus('idle'); // Reset status after navigation
-    };
+        fetchData();
+    }, [id]);
 
     if (loading) {
         return (
@@ -52,8 +75,15 @@ const CourseDetails = () => {
         return (
             <div className="min-h-screen bg-bg-page flex flex-col items-center justify-center p-4">
                 <AlertCircle className="text-red-500 mb-4" size={48} />
-                <h2 className="text-2xl font-black text-white uppercase mb-4">Product Not Found</h2>
-                <button onClick={() => navigate('/programs')} className="text-accent underline font-bold uppercase tracking-widest">Back to Programs</button>
+                <h2 className="text-2xl font-black text-white uppercase mb-4">
+                    Product Not Found
+                </h2>
+                <button
+                    onClick={() => navigate('/programs')}
+                    className="text-accent underline font-bold uppercase tracking-widest"
+                >
+                    Back to Programs
+                </button>
             </div>
         );
     }
@@ -61,198 +91,195 @@ const CourseDetails = () => {
     return (
         <div className="py-12 lg:py-24 bg-bg-page min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Back */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center space-x-3 text-text-secondary hover:text-accent mb-16 transition-all font-black uppercase tracking-[0.2em] text-sm group"
+                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-16 font-black uppercase tracking-widest text-sm"
                 >
-                    <ArrowLeft size={18} className="group-hover:-translate-x-2 transition-transform" />
-                    <span>Back to Programs</span>
+                    <ArrowLeft size={18} />
+                    Back to Programs
                 </button>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 items-start">
-                    {/* Left: Course Image & Details */}
-                    <div className="lg:col-span-2 space-y-20">
-                        <div className="space-y-16">
-                            {/* Title & Rating at the top */}
-                            <div className="space-y-8">
-                                <Reveal>
-                                    <span className="bg-accent/10 border border-accent/20 text-accent px-6 py-2 rounded-full text-xs font-black uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(34,197,94,0.1)]">Premium Program</span>
-                                </Reveal>
-                                <Reveal delay={0.2}>
-                                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-text-primary tracking-tighter leading-[1] uppercase break-words hyphens-auto">{course.title}</h1>
-                                </Reveal>
-                                <Reveal delay={0.4}>
-                                    <div className="flex items-center space-x-8">
-                                        <StarRating rating={course.rating || 4.9} />
-                                        <span className="text-white/10 text-2xl font-thin">|</span>
-                                        <span className="text-text-secondary font-black uppercase tracking-widest text-sm">1,200+ Active Athletes</span>
-                                    </div>
-                                </Reveal>
-                            </div>
+                {/* ================= MOBILE ================= */}
+                <div className="lg:hidden space-y-6">
+                    <Reveal>
+                        <h1 className="text-2xl font-black uppercase">
+                            {course.title}
+                        </h1>
+                        <StarRating rating={course.rating || 4.9} size={12} />
+                    </Reveal>
 
-                            {/* Video below Title & Rating */}
-                            <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl group cursor-pointer border border-white/5">
-                                <img
-                                    src={course.image}
-                                    alt={course.title}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
-                                />
-                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
-                                    <div className="w-20 h-20 glass border border-white/20 rounded-full flex items-center justify-center text-white scale-100 group-hover:scale-125 transition-all shadow-[0_0_50px_rgba(34,197,94,0.3)]">
-                                        <Play size={28} fill="white" className="ml-1" />
-                                    </div>
-                                </div>
-                            </div>
+                    <div className="relative aspect-video rounded-xl overflow-hidden">
+                        <img
+                            src={course.image}
+                            alt={course.title}
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <Play size={24} fill="white" />
                         </div>
-
-                        {/* Mobile Pricing Section - Visible only after video on mobile */}
-                        <div className="lg:hidden space-y-8">
-                            <div className="glass-card p-10 rounded-[2.5rem] border border-accent/20 shadow-[0_0_50px_rgba(34,197,94,0.1)] text-center">
-                                <div className="text-text-secondary text-xs font-black uppercase tracking-[0.2em] mb-4 opacity-60">Program Investment</div>
-                                <div className="text-6xl font-black text-text-primary tracking-tighter mb-8">₹{course.price.toLocaleString('en-IN')}</div>
-                                <div className="space-y-6">
-                                    <button
-                                        onClick={() => !course.slotInfo?.isSoldOut && navigate(`/checkout/${course._id}`)}
-                                        disabled={course.type === 'course' && course.slotInfo?.isSoldOut}
-                                        className={`w-full px-6 py-4 rounded-2xl font-black text-xl transition-all uppercase tracking-wider ${course.type === 'course' && course.slotInfo?.isSoldOut ? 'bg-white/10 text-white/40' : 'bg-accent text-white shadow-[0_0_30px_rgba(34,197,94,0.3)]'}`}
-                                    >
-                                        {course.type === 'course' && course.slotInfo?.isSoldOut ? 'Sold Out' : 'Secure My Spot'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Summary below Video */}
-                        <div className="space-y-10">
-                            <Reveal>
-                                <h3 className="text-2xl font-black text-text-primary mb-8 flex items-center space-x-4 uppercase tracking-tighter">
-                                    <span className="w-12 h-1 bg-accent rounded-full shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-                                    <span>Executive Summary</span>
-                                </h3>
-                            </Reveal>
-                            <Reveal delay={0.2}>
-                                <p className="text-text-secondary text-xl md:text-2xl leading-relaxed font-medium opacity-90 border-l-4 border-accent/20 pl-8">
-                                    {course.fullDescription}
-                                </p>
-                            </Reveal>
-                        </div>
-
-                        {/* How this program works */}
-                        {course.features && (
-                            <div className="space-y-12">
-                                <Reveal>
-                                    <h3 className="text-4xl font-black text-text-primary tracking-tighter uppercase">How this program works?</h3>
-                                </Reveal>
-                                <div className="grid grid-cols-1 gap-8">
-                                    {[
-                                        {
-                                            step: "Step 1: Initial Consultation",
-                                            desc: [
-                                                "We'll start with a detailed talk about your height, weight, age, food preferences, and daily activity levels.",
-                                                "I'll understand your goals — whether it's fat loss, muscle gain, or overall fitness.",
-                                                "We'll discuss any past injuries or health concerns to make sure your plan is safe and effective."
-                                            ]
-                                        },
-                                        {
-                                            step: "Step 2: Personalized Plan Creation",
-                                            desc: [
-                                                "Within 24 hours after our first session, you'll receive your custom diet plan and personalized workout routine.",
-                                                "Both are designed around your goals, schedule, and food preferences, making them easy to follow and realistic."
-                                            ]
-                                        },
-                                        {
-                                            step: "Step 3: Weekly Progress Tracking",
-                                            desc: [
-                                                "In upcoming sessions, we'll track your progress — strength levels, workout consistency, and diet adherence.",
-                                                "Based on your results, I'll modify your workouts and diet to keep you progressing efficiently."
-                                            ]
-                                        },
-                                        {
-                                            step: "Step 4: Ongoing Support & Accountability",
-                                            desc: [
-                                                "You'll have continuous guidance, text support, and feedback whenever you need help.",
-                                                "My focus stays on keeping you consistent, confident, and progressing every single week."
-                                            ]
-                                        }
-                                    ].map((item, idx) => (
-                                        <Reveal key={idx} delay={idx * 0.1}>
-                                            <div className="glass-card p-10 rounded-[2.5rem] border border-white/5 hover:border-accent/20 transition-all group">
-                                                <h4 className="text-2xl font-black text-accent mb-6 uppercase tracking-tight group-hover:text-glow">{item.step}</h4>
-                                                <ul className="space-y-5">
-                                                    {item.desc.map((line, lIdx) => (
-                                                        <li key={lIdx} className="flex items-start space-x-4 text-text-secondary font-medium leading-relaxed group-hover:text-text-primary transition-colors">
-                                                            <CheckCircle size={20} className="text-accent/40 group-hover:text-accent mt-0.5 flex-shrink-0 transition-colors" />
-                                                            <span>{line}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </Reveal>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
 
-                    {/* Right: Checkout Sidebar - Hidden on Mobile */}
-                    <div className="hidden lg:block lg:sticky lg:top-32 glass-card p-6 md:p-12 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden">
-                        {/* Sold Out Overlay for Sidebar */}
-                        {course.type === 'course' && course.slotInfo?.isSoldOut && (
-                            <div className="absolute inset-0 bg-bg-page/40 backdrop-blur-[2px] z-30 flex flex-col items-center justify-center p-8 text-center">
-                                <div className="bg-red-500 text-white font-black px-8 py-3 rounded-full text-xl uppercase tracking-tighter shadow-[0_0_30px_rgba(239,68,68,0.5)] border-2 border-red-400/50 mb-4">
-                                    Sold Out
-                                </div>
-                                <p className="text-text-primary font-bold text-sm uppercase tracking-widest">Waitlist Only for this month</p>
-                            </div>
-                        )}
+                    <div className="flex justify-between items-center">
+                        <div className="text-xl font-black">
+                            ₹{course.price.toLocaleString('en-IN')}
+                        </div>
+                        <button
+                            disabled={course.slotInfo?.isSoldOut}
+                            onClick={() =>
+                                navigate(`/checkout/${course._id}`)
+                            }
+                            className={`px-6 py-3 rounded-full font-black text-xs uppercase ${course.slotInfo?.isSoldOut
+                                ? 'bg-white/10 text-white/40'
+                                : 'bg-accent text-white'
+                                }`}
+                        >
+                            {course.slotInfo?.isSoldOut
+                                ? 'Sold Out'
+                                : 'Secure My Spot'}
+                        </button>
+                    </div>
 
-                        <div className="mb-12 text-center">
-                            <div className="text-text-secondary text-xs font-black uppercase tracking-[0.2em] mb-4 opacity-60">Program Investment</div>
-                            <div className="text-6xl font-black text-text-primary tracking-tighter">₹{course.price.toLocaleString('en-IN')}</div>
+                    {/* Cross Sell */}
+                    {recommendedProduct && (
+                        <div className="mt-6">
+                            <h3 className="text-xs font-black uppercase mb-3">
+                                Similar Product
+                            </h3>
+                            <div
+                                onClick={() =>
+                                    navigate(
+                                        `/course/${recommendedProduct._id}`
+                                    )
+                                }
+                                className="bg-white/5 p-4 rounded-xl cursor-pointer"
+                            >
+                                <h4 className="font-black text-sm mb-2">
+                                    {recommendedProduct.title}
+                                </h4>
+                                <div className="flex gap-4">
+                                    <img
+                                        src={recommendedProduct.image}
+                                        className="w-16 h-20 object-cover rounded-lg"
+                                        alt=""
+                                    />
+                                    <div className="flex-1 text-xs flex flex-col justify-between">
+                                        <div>
+                                            <p className="opacity-70 mb-2 line-clamp-2">
+                                                {recommendedProduct.description ||
+                                                    'Perfect add-on'}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-1">
+                                            <span className="font-black text-accent text-sm">
+                                                ₹{recommendedProduct.price}
+                                            </span>
+                                            <button className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider border border-white/5">
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="bg-white/5 p-4 rounded-xl">
+                        <h3 className="text-xs font-black uppercase mb-2">
+                            Executive Summary
+                        </h3>
+                        <p className="text-xs opacity-80">
+                            {course.fullDescription}
+                        </p>
+                    </div>
+                </div>
+
+                {/* ================= DESKTOP ================= */}
+                <div className="hidden lg:grid grid-cols-3 gap-20 mt-20">
+                    {/* LEFT */}
+                    <div className="col-span-2 space-y-16">
+                        <Reveal>
+                            <h1 className="text-6xl font-black uppercase">
+                                {course.title}
+                            </h1>
+                        </Reveal>
+
+                        <div className="relative aspect-video rounded-3xl overflow-hidden">
+                            <img
+                                src={course.image}
+                                alt={course.title}
+                                className="w-full h-full object-cover"
+                            />
                         </div>
 
                         <Reveal>
-                            <div className="space-y-6">
-                                <button
-                                    onClick={() => !course.slotInfo?.isSoldOut && navigate(`/checkout/${course._id}`)}
-                                    disabled={course.type === 'course' && course.slotInfo?.isSoldOut}
-                                    className={`w-full px-6 py-4 md:py-6 rounded-2xl font-black text-xl transition-all transform hover:scale-[1.03] active:scale-95 uppercase tracking-wider overflow-hidden relative group/btn whitespace-nowrap ${course.type === 'course' && course.slotInfo?.isSoldOut ? 'bg-white/10 text-white/40 cursor-not-allowed opacity-50' : 'bg-accent hover:bg-accent-hover text-white shadow-[0_0_30px_rgba(34,197,94,0.3)] btn-glow'}`}
-                                >
-                                    <span className="relative z-10">{course.type === 'course' && course.slotInfo?.isSoldOut ? 'Sold Out' : 'Secure My Spot'}</span>
-                                    {(!course.slotInfo || !course.slotInfo.isSoldOut) && (
-                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
-                                    )}
-                                </button>
-                                <button
-                                    onClick={() => addToCart(course)}
-                                    disabled={course.type === 'course' && course.slotInfo?.isSoldOut}
-                                    className={`w-full px-6 py-4 md:py-5 rounded-2xl font-black text-sm border transition-all uppercase tracking-[0.2em] flex items-center justify-center space-x-3 mb-10 ${course.type === 'course' && course.slotInfo?.isSoldOut ? 'bg-white/5 border-white/5 text-white/20 cursor-not-allowed' : 'bg-white/5 hover:bg-white/10 text-white border-white/10'}`}
-                                >
-                                    <ShoppingBag size={18} />
-                                    <span>{course.type === 'course' && course.slotInfo?.isSoldOut ? 'Unavailable' : 'Add to Cart'}</span>
-                                </button>
-                            </div>
+                            <h3 className="text-3xl font-black uppercase">
+                                Executive Summary
+                            </h3>
+                            <p className="text-xl opacity-80 mt-4">
+                                {course.fullDescription}
+                            </p>
                         </Reveal>
 
                         {course.features && (
                             <div className="space-y-6">
-                                <div className="text-xs font-black text-text-primary uppercase tracking-[0.3em] border-b border-white/5 pb-4">Plan Inclusions:</div>
-                                <ul className="space-y-5">
-                                    {course.features.map((item, idx) => (
-                                        <li key={idx} className="flex items-start space-x-4 group/item">
-                                            <Zap size={16} className="text-accent mt-1 flex-shrink-0 group-hover:fill-accent transition-all" />
-                                            <span className="text-text-secondary text-sm font-bold uppercase tracking-widest group-hover:text-text-primary transition-colors">{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                {course.features.map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="flex items-start gap-4"
+                                    >
+                                        <CheckCircle
+                                            size={20}
+                                            className="text-accent"
+                                        />
+                                        <span>{item}</span>
+                                    </div>
+                                ))}
                             </div>
                         )}
+                    </div>
 
-                        <div className="mt-16 pt-10 border-t border-white/5 text-center">
-                            <p className="text-text-secondary font-black text-xs uppercase tracking-[0.2em] italic opacity-40">
-                                Trusted by Elite Athletes
-                            </p>
+                    {/* RIGHT */}
+                    <div className="sticky top-32 glass-card p-10 rounded-3xl">
+                        <div className="text-center mb-10">
+                            <div className="text-6xl font-black">
+                                ₹{course.price.toLocaleString('en-IN')}
+                            </div>
                         </div>
+
+                        <button
+                            disabled={course.slotInfo?.isSoldOut}
+                            onClick={() =>
+                                navigate(`/checkout/${course._id}`)
+                            }
+                            className={`w-full py-5 rounded-2xl font-black uppercase ${course.slotInfo?.isSoldOut
+                                ? 'bg-white/10 text-white/40'
+                                : 'bg-accent text-white'
+                                }`}
+                        >
+                            {course.slotInfo?.isSoldOut
+                                ? 'Sold Out'
+                                : 'Secure My Spot'}
+                        </button>
+
+                        <button
+                            onClick={() => addToCart(course)}
+                            className="w-full mt-4 py-4 rounded-2xl border border-white/10 uppercase font-black flex items-center justify-center gap-3"
+                        >
+                            <ShoppingBag size={18} />
+                            Add to Cart
+                        </button>
+
+                        {course.features && (
+                            <ul className="mt-10 space-y-4">
+                                {course.features.map((f, i) => (
+                                    <li key={i} className="flex gap-3">
+                                        <Zap size={14} className="text-accent" />
+                                        <span className="text-sm">{f}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>

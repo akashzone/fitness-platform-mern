@@ -62,6 +62,17 @@ const Header = () => {
 };
 
 const Footer = () => {
+    const [feedback, setFeedback] = React.useState('');
+
+    const handleFeedbackSubmit = (e) => {
+        e.preventDefault();
+        if (!feedback.trim()) return;
+
+        // Open mailto with body
+        window.location.href = `mailto:feedback@fitwithpravinn.com?subject=Website Feedback&body=${encodeURIComponent(feedback)}`;
+        setFeedback('');
+    };
+
     return (
         <footer className="bg-surface border-t border-white/5 py-24 text-text-secondary">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,15 +95,30 @@ const Footer = () => {
                             <Mail size={20} className="text-accent mt-1" />
                             <div className="flex flex-col">
                                 <span className="text-text-primary font-bold text-sm uppercase tracking-widest mb-1 font-sans">Business Email</span>
-                                <span className="font-semibold group-hover:text-text-primary transition-colors">contact@fitwithpravinn.com</span>
+                                <span className="font-semibold group-hover:text-text-primary transition-colors">fitwithpravinn.com</span>
                             </div>
                         </div>
-                        <div className="flex items-start justify-center md:justify-start space-x-4 group">
-                            <Phone size={20} className="text-accent mt-1" />
-                            <div className="flex flex-col">
-                                <span className="text-text-primary font-bold text-sm uppercase tracking-widest mb-1">WhatsApp</span>
-                                <span className="font-semibold group-hover:text-text-primary transition-colors">+91 76720 96669</span>
+
+                        {/* Feedback Input Section */}
+                        <div className="flex flex-col space-y-3 pt-4 border-t border-white/5">
+                            <div className="flex items-center space-x-2 justify-center md:justify-start">
+                                <span className="text-text-primary font-bold text-sm uppercase tracking-widest">Feedback</span>
                             </div>
+                            <form onSubmit={handleFeedbackSubmit} className="max-w-xs mx-auto md:mx-0 flex flex-col gap-3">
+                                <textarea
+                                    value={feedback}
+                                    onChange={(e) => setFeedback(e.target.value)}
+                                    placeholder="Share your thoughts..."
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:bg-white/10 focus:border-accent outline-none transition-all resize-none min-h-[80px] custom-scrollbar"
+                                />
+                                <button
+                                    type="submit"
+                                    className="self-end h-9 px-6 bg-accent text-white rounded-xl hover:bg-accent-hover transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transform active:scale-95 btn-glow"
+                                    disabled={!feedback.trim()}
+                                >
+                                    <span className="text-[10px] font-black uppercase tracking-wider leading-none">Send</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
 

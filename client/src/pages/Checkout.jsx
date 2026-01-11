@@ -6,7 +6,7 @@ import { CreditCard, Lock, ArrowLeft, Shield, Loader2, CheckCircle, AlertCircle,
 import Reveal from '../components/motion/Reveal';
 import MagneticButton from '../components/motion/MagneticButton';
 import { useCart } from '../context/CartContext';
-import FeedbackSection from '../components/FeedbackSection';
+
 
 const Checkout = () => {
     const { id } = useParams();
@@ -129,7 +129,7 @@ const Checkout = () => {
                 >
                     Back to Programs
                 </button>
-                <FeedbackSection />
+
             </div>
         );
     }
@@ -162,10 +162,10 @@ const Checkout = () => {
 
     return (
         <div className="py-24 bg-bg-page min-h-screen selection:bg-accent/30 selection:text-white">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center space-x-3 text-text-secondary hover:text-accent mb-16 transition-all font-black uppercase tracking-[0.2em] text-sm group"
+                    className="flex items-center space-x-3 text-text-secondary hover:text-accent mb-8 md:mb-16 transition-all font-black uppercase tracking-[0.2em] text-xs md:text-sm group"
                 >
                     <ArrowLeft size={18} className="group-hover:-translate-x-2 transition-transform" />
                     <span>Back</span>
@@ -173,11 +173,11 @@ const Checkout = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
                     {/* Checkout Form */}
-                    <Reveal className="lg:col-span-3">
-                        <div className="glass-card p-10 md:p-14 rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden group">
+                    <Reveal className="lg:col-span-3 w-full">
+                        <div className="glass-card p-6 md:p-14 rounded-3xl md:rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none" />
 
-                            <h1 className="text-4xl md:text-5xl font-black mb-12 text-text-primary tracking-tighter uppercase">Secure Checkout</h1>
+                            <h1 className="text-3xl md:text-5xl font-black mb-8 md:mb-12 text-text-primary tracking-tighter uppercase">Secure Checkout</h1>
                             <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
                                 <div className="space-y-3">
                                     <label className="block text-xs font-black text-text-secondary uppercase tracking-[0.3em] pl-2 opacity-60">Full Name</label>
@@ -225,14 +225,14 @@ const Checkout = () => {
                                             disabled={status === 'processing'}
                                             className="w-full bg-accent hover:bg-accent-hover text-white py-5 md:py-6 rounded-2xl font-black text-lg md:text-xl shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02] active:scale-95 btn-glow uppercase tracking-widest overflow-hidden relative group/btn disabled:opacity-50"
                                         >
-                                            <div className="relative z-10 flex items-center justify-center gap-3">
+                                            <div className="relative z-10 flex items-center justify-center gap-2 md:gap-3">
                                                 {status === 'processing' ? (
-                                                    <Loader2 className="animate-spin" size={24} />
+                                                    <Loader2 className="animate-spin" size={20} />
                                                 ) : (
-                                                    <CreditCard size={24} />
+                                                    <CreditCard size={20} />
                                                 )}
-                                                <span className="leading-tight">
-                                                    {status === 'processing' ? 'Processing...' : 'Proceed to Payment'}
+                                                <span className="leading-none text-sm md:text-xl tracking-wider">
+                                                    {status === 'processing' ? 'Processing...' : 'Pay Now'}
                                                 </span>
                                             </div>
                                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
@@ -256,13 +256,13 @@ const Checkout = () => {
                     </Reveal>
 
                     {/* Order Summary */}
-                    <div className="lg:col-span-2 space-y-10">
+                    <div className="lg:col-span-2 space-y-6 md:space-y-10 mt-8 lg:mt-0 w-full">
                         <Reveal x={20}>
-                            <h2 className="text-xl font-black text-text-primary tracking-[0.2em] uppercase pl-2">Order Summary</h2>
+                            <h2 className="text-lg md:text-xl font-black text-text-primary tracking-[0.2em] uppercase pl-2">Order Summary</h2>
                         </Reveal>
 
                         <Reveal x={20} delay={0.2}>
-                            <div className="glass-card border border-white/5 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden">
+                            <div className="glass-card border border-white/5 rounded-3xl md:rounded-[2.5rem] p-5 md:p-8 shadow-2xl relative overflow-hidden">
                                 <div className="space-y-6 mb-10 pb-10 border-b border-white/5 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                                     {checkoutItems.map((item) => (
                                         <div key={item._id} className="flex items-center space-x-6">
@@ -283,15 +283,15 @@ const Checkout = () => {
                                 </div>
 
                                 <div className="space-y-6">
-                                    <div className="flex justify-between text-text-secondary font-bold uppercase tracking-widest text-xs">
+                                    <div className="flex justify-between text-text-secondary font-bold uppercase tracking-widest text-[10px] md:text-xs">
                                         <span>Subtotal</span>
                                         <span className="text-text-primary">₹{total.toLocaleString('en-IN')}</span>
                                     </div>
-                                    <div className="flex justify-between text-text-secondary font-bold uppercase tracking-widest text-xs">
+                                    <div className="flex justify-between text-text-secondary font-bold uppercase tracking-widest text-[10px] md:text-xs">
                                         <span>Service Fee</span>
                                         <span className="text-accent">FREE</span>
                                     </div>
-                                    <div className="flex justify-between text-text-primary text-3xl font-black pt-8 border-t border-white/5 tracking-tighter italic">
+                                    <div className="flex justify-between text-text-primary text-xl md:text-3xl font-black pt-6 md:pt-8 border-t border-white/5 tracking-tighter italic items-center">
                                         <span>Total</span>
                                         <span className="text-glow">₹{total.toLocaleString('en-IN')}</span>
                                     </div>
