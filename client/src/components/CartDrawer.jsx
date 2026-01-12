@@ -90,8 +90,18 @@ const CartDrawer = () => {
                                                 </button>
                                             </div>
                                             <div className="flex items-center justify-between mt-2">
-                                                <p className="text-accent font-black text-sm">₹{item.price.toLocaleString('en-IN')}</p>
-                                                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 bg-white/5 rounded-md text-text-secondary">
+                                                <div className="flex flex-col">
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="text-accent font-black text-sm">₹{item.price.toLocaleString('en-IN')}</p>
+                                                        {item.originalPrice && item.originalPrice > item.price && (
+                                                            <p className="text-[10px] line-through text-white/20 font-bold decoration-accent/30">₹{item.originalPrice.toLocaleString('en-IN')}</p>
+                                                        )}
+                                                    </div>
+                                                    {item.originalPrice && item.originalPrice > item.price && (
+                                                        <p className="text-[8px] text-accent font-black uppercase tracking-widest mt-0.5">Save ₹{(item.originalPrice - item.price).toLocaleString('en-IN')}</p>
+                                                    )}
+                                                </div>
+                                                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 bg-white/5 rounded-md text-text-secondary self-start">
                                                     {item.type}
                                                 </span>
                                             </div>

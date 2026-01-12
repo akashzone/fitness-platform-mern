@@ -9,6 +9,7 @@ import Reveal from '../components/motion/Reveal';
 import MagneticButton from '../components/motion/MagneticButton';
 import { useState, useEffect } from 'react';
 import api from '../utils/api';
+import SkeletonCard from '../components/SkeletonCard';
 
 const Home = () => {
     const heroRef = useRef(null);
@@ -24,10 +25,21 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const cachedData = localStorage.getItem('fitness_home_data_cache');
+        if (cachedData) {
+            try {
+                setData(JSON.parse(cachedData));
+                setLoading(false);
+            } catch (e) {
+                console.error('Failed to parse cached data');
+            }
+        }
+
         const fetchHomeData = async () => {
             try {
                 const response = await api.get('/products');
                 setData(response.data);
+                localStorage.setItem('fitness_home_data_cache', JSON.stringify(response.data));
             } catch (err) {
                 console.error('Home Data Load Error:', err);
             } finally {
@@ -173,9 +185,9 @@ const Home = () => {
                     </Reveal>
 
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
-                        {loading ? (
+                        {loading && !data.products.length ? (
                             [1, 2, 3, 4].map(i => (
-                                <div key={i} className="aspect-[3/4] glass-card animate-pulse rounded-[2rem]" />
+                                <SkeletonCard key={i} />
                             ))
                         ) : (
                             courses.map((course, index) => (

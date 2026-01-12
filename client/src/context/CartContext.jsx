@@ -12,10 +12,10 @@ export const useCart = () => {
 
 const DURATION_CONFIG = {
     "default": [
-        { months: 1, label: "1 Month", priceMultiplier: 1 },
-        { months: 2, label: "2 Months", priceMultiplier: 1.8 },
-        { months: 3, label: "3 Months", priceMultiplier: 2.5, recommended: true },
-        { months: 6, label: "6 Months", priceMultiplier: 4.5 }
+        { months: 1, label: "1 Month", priceMultiplier: 1, originalPriceMultiplier: 1.2 },
+        { months: 2, label: "2 Months", priceMultiplier: 1.8, originalPriceMultiplier: 2.2 },
+        { months: 3, label: "3 Months", priceMultiplier: 2.5, originalPriceMultiplier: 3.5, recommended: true },
+        { months: 6, label: "6 Months", priceMultiplier: 4.5, originalPriceMultiplier: 6.5 }
     ]
 };
 
@@ -47,12 +47,14 @@ export const CartProvider = ({ children }) => {
                     finalProduct.durationMonths = recommended.months;
                     finalProduct.basePrice = product.price; // Store original price
                     finalProduct.price = Math.round(product.price * recommended.priceMultiplier);
+                    finalProduct.originalPrice = Math.round(product.price * recommended.originalPriceMultiplier);
                     finalProduct.displayPrice = finalProduct.price;
                 } else if (!finalProduct.basePrice) {
                     // It came from CourseDetails with a specific duration
                     // We need to figure out its base price to allow future changes
                     const currentOpt = options.find(o => o.months === finalProduct.durationMonths);
                     finalProduct.basePrice = Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
+                    finalProduct.originalPrice = Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
                 }
 
                 finalProduct.durations = options;
@@ -78,10 +80,12 @@ export const CartProvider = ({ children }) => {
                 const newOpt = options.find(o => o.months === newMonths);
                 if (newOpt) {
                     const newPrice = Math.round(item.basePrice * newOpt.priceMultiplier);
+                    const newOriginalPrice = Math.round(item.basePrice * newOpt.originalPriceMultiplier);
                     return {
                         ...item,
                         durationMonths: newMonths,
                         price: newPrice,
+                        originalPrice: newOriginalPrice,
                         displayPrice: newPrice
                     };
                 }

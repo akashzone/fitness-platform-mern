@@ -29,12 +29,11 @@ const CourseDetails = () => {
 
     // Configuration for dynamic pricing based on duration
     const DURATION_CONFIG = {
-        // "4 Weeks Transformation" -> Mapping it to month selection
         "default": [
-            { months: 1, label: "1 Month", priceMultiplier: 1 },
-            { months: 2, label: "2 Months", priceMultiplier: 1.8 },
-            { months: 3, label: "3 Months", priceMultiplier: 2.5, recommended: true },
-            { months: 6, label: "6 Months", priceMultiplier: 4.5 }
+            { months: 1, label: "1 Month", priceMultiplier: 1, originalPriceMultiplier: 1.2 },
+            { months: 2, label: "2 Months", priceMultiplier: 1.8, originalPriceMultiplier: 2.2 },
+            { months: 3, label: "3 Months", priceMultiplier: 2.5, originalPriceMultiplier: 3.5, recommended: true },
+            { months: 6, label: "6 Months", priceMultiplier: 4.5, originalPriceMultiplier: 6.5 }
         ]
     };
 
@@ -88,31 +87,33 @@ const CourseDetails = () => {
     }, [id]);
 
     const getCurrentPrice = () => {
-        if (!course || !selectedDuration) return 0;
-        return Math.round(course.price * selectedDuration.priceMultiplier);
+        if (!course || !selectedDuration) return { price: 0, originalPrice: 0 };
+        return {
+            price: Math.round(course.price * selectedDuration.priceMultiplier),
+            originalPrice: Math.round(course.price * selectedDuration.originalPriceMultiplier)
+        };
     };
 
     const handleAddToCart = () => {
+        const { price, originalPrice } = getCurrentPrice();
         addToCart({
             ...course,
-            price: getCurrentPrice(),
+            price: price,
+            originalPrice: originalPrice,
             durationMonths: selectedDuration.months,
-            displayPrice: getCurrentPrice()
+            displayPrice: price
         });
     };
-
     const handleCheckout = () => {
-        // We pass the selected duration and price as state to checkout if needed, 
-        // but for now the current logic handles ID. 
-        // We might need to adjust checkout to handle custom price/duration.
+        const { price, originalPrice } = getCurrentPrice();
         navigate(`/checkout/${course._id}`, {
             state: {
                 selectedDuration: selectedDuration.months,
-                customPrice: getCurrentPrice()
+                customPrice: price,
+                originalPrice: originalPrice
             }
         });
     };
-
     if (loading) {
         return (
             <div className="min-h-screen bg-bg-page flex items-center justify-center">
@@ -223,8 +224,16 @@ const CourseDetails = () => {
                     <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5">
                         <div className="flex flex-col">
                             <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">Investment</span>
-                            <div className="text-2xl font-black italic text-glow">
-                                ₹{getCurrentPrice().toLocaleString('en-IN')}
+                            <div className="flex items-center gap-3">
+                                <div className="text-2xl font-black italic text-glow">
+                                    ₹{getCurrentPrice().price.toLocaleString('en-IN')}
+                                </div>
+                                <div className="text-sm line-through text-white/30 font-bold decoration-accent/50">
+                                    ₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}
+                                </div>
+                            </div>
+                            <div className="text-accent text-[8px] font-black uppercase tracking-widest mt-1">
+                                Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')} Today
                             </div>
                         </div>
                         <button
@@ -353,8 +362,16 @@ const CourseDetails = () => {
 
                             <div className="text-center mb-10 relative z-10">
                                 <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.4em] block mb-3 opacity-60">Total Investment</span>
-                                <div className="text-7xl font-black italic tracking-tighter text-glow">
-                                    ₹{getCurrentPrice().toLocaleString('en-IN')}
+                                <div className="flex flex-col items-center">
+                                    <div className="text-sm line-through text-white/20 font-bold mb-1 decoration-accent/30">
+                                        ₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}
+                                    </div>
+                                    <div className="text-7xl font-black italic tracking-tighter text-glow">
+                                        ₹{getCurrentPrice().price.toLocaleString('en-IN')}
+                                    </div>
+                                    <div className="bg-accent/10 text-accent text-[10px] px-4 py-1 rounded-full font-black uppercase tracking-widest mt-4 border border-accent/20 animate-bounce">
+                                        Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')}
+                                    </div>
                                 </div>
                             </div>
 

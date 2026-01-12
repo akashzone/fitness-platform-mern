@@ -5,7 +5,8 @@ import api from '../utils/api';
 import CourseCard from '../components/CourseCard';
 import Reveal from '../components/motion/Reveal';
 import CinematicTicker from '../components/motion/CinematicTicker';
-import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
+import SkeletonCard from '../components/SkeletonCard';
 
 const Programs = () => {
     const navigate = useNavigate();
@@ -14,12 +15,25 @@ const Programs = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        const cachedData = localStorage.getItem('fitness_programs_cache');
+        if (cachedData) {
+            try {
+                setData(JSON.parse(cachedData));
+                setLoading(false);
+            } catch (e) {
+                console.error('Failed to parse cached data');
+            }
+        }
+
         const fetchPrograms = async () => {
             try {
                 const response = await api.get('/products');
                 setData(response.data);
+                localStorage.setItem('fitness_programs_cache', JSON.stringify(response.data));
             } catch (err) {
-                setError('Failed to load programs. Please check your connection.');
+                if (!cachedData) {
+                    setError('Failed to load programs. Please check your connection.');
+                }
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -29,13 +43,7 @@ const Programs = () => {
         fetchPrograms();
     }, []);
 
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-bg-page flex items-center justify-center">
-                <Loader2 className="animate-spin text-accent" size={48} />
-            </div>
-        );
-    }
+    // No full screen loader here anymore, we use skeleton UI below
 
     if (error) {
         return (
@@ -85,11 +93,15 @@ const Programs = () => {
                         </div>
                     </Reveal>
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
-                        {courses.map((course, index) => (
-                            <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                <CourseCard course={course} isSoldOut={isSoldOut} />
-                            </Reveal>
-                        ))}
+                        {loading && !data.products.length ? (
+                            [1, 2, 3, 4].map(i => <SkeletonCard key={i} />)
+                        ) : (
+                            courses.map((course, index) => (
+                                <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
+                                    <CourseCard course={course} isSoldOut={isSoldOut} />
+                                </Reveal>
+                            ))
+                        )}
                     </div>
                 </div>
 
@@ -103,11 +115,15 @@ const Programs = () => {
                         </div>
                     </Reveal>
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3 md:gap-10 max-w-5xl">
-                        {ebooks.map((ebook, index) => (
-                            <Reveal key={ebook._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                <CourseCard course={ebook} />
-                            </Reveal>
-                        ))}
+                        {loading && !data.products.length ? (
+                            [1, 2].map(i => <SkeletonCard key={i} />)
+                        ) : (
+                            ebooks.map((ebook, index) => (
+                                <Reveal key={ebook._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
+                                    <CourseCard course={ebook} />
+                                </Reveal>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

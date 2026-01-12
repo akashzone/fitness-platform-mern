@@ -10,6 +10,9 @@ connectDB();
 
 const app = express();
 
+// Health check endpoint (for uptime monitoring)
+app.get('/health', (req, res) => res.status(200).send('OK'));
+
 app.use(cors());
 app.use(express.json());
 
