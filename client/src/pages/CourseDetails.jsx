@@ -8,7 +8,8 @@ import {
     Zap,
     Loader2,
     AlertCircle,
-    ShoppingBag
+    ShoppingBag,
+    ChevronDown
 } from 'lucide-react';
 import Reveal from '../components/motion/Reveal';
 import StarRating from '../components/StarRating';
@@ -23,6 +24,24 @@ const CourseDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [recommendedProduct, setRecommendedProduct] = useState(null);
+    const [selectedDuration, setSelectedDuration] = useState(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    // Configuration for dynamic pricing based on duration
+    const DURATION_CONFIG = {
+        // "4 Weeks Transformation" -> Mapping it to month selection
+        "default": [
+            { months: 1, label: "1 Month", priceMultiplier: 1 },
+            { months: 2, label: "2 Months", priceMultiplier: 1.8 },
+            { months: 3, label: "3 Months", priceMultiplier: 2.5, recommended: true },
+            { months: 6, label: "6 Months", priceMultiplier: 4.5 }
+        ]
+    };
+
+    const getDurationOptions = (courseId) => {
+        // In a real app, this could be specific to the courseId
+        return DURATION_CONFIG.default;
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,6 +57,11 @@ const CourseDetails = () => {
                 );
 
                 setCourse(currentProduct);
+
+                // Set default selected duration (Recommended)
+                const options = getDurationOptions(currentProduct._id);
+                const recommended = options.find(o => o.recommended) || options[0];
+                setSelectedDuration(recommended);
 
                 const targetType =
                     currentProduct.type === 'course' ? 'ebook' : 'course';
@@ -62,6 +86,32 @@ const CourseDetails = () => {
 
         fetchData();
     }, [id]);
+
+    const getCurrentPrice = () => {
+        if (!course || !selectedDuration) return 0;
+        return Math.round(course.price * selectedDuration.priceMultiplier);
+    };
+
+    const handleAddToCart = () => {
+        addToCart({
+            ...course,
+            price: getCurrentPrice(),
+            durationMonths: selectedDuration.months,
+            displayPrice: getCurrentPrice()
+        });
+    };
+
+    const handleCheckout = () => {
+        // We pass the selected duration and price as state to checkout if needed, 
+        // but for now the current logic handles ID. 
+        // We might need to adjust checkout to handle custom price/duration.
+        navigate(`/checkout/${course._id}`, {
+            state: {
+                selectedDuration: selectedDuration.months,
+                customPrice: getCurrentPrice()
+            }
+        });
+    };
 
     if (loading) {
         return (
@@ -88,63 +138,114 @@ const CourseDetails = () => {
         );
     }
 
+    const durationOptions = getDurationOptions(course._id);
+
+
     return (
-        <div className="py-12 lg:py-24 bg-bg-page min-h-screen">
+        <div className="py-12 lg:py-24 bg-bg-page min-h-screen selection:bg-accent/30 selection:text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Back */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-16 font-black uppercase tracking-widest text-sm"
+                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-16 font-black uppercase tracking-widest text-sm group"
                 >
-                    <ArrowLeft size={18} />
+                    <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Programs
                 </button>
 
                 {/* ================= MOBILE ================= */}
-                <div className="lg:hidden space-y-6">
+                <div className="lg:hidden space-y-8">
                     <Reveal>
-                        <h1 className="text-2xl font-black uppercase">
+                        <h1 className="text-3xl font-black uppercase italic tracking-tighter">
                             {course.title}
                         </h1>
-                        <StarRating rating={course.rating || 4.9} size={12} />
+                        <div className="flex items-center gap-3 mt-2">
+                            <StarRating rating={course.rating || 4.9} size={12} />
+                            <span className="text-[10px] text-text-secondary font-bold uppercase tracking-widest">4.9/5 Elite Rating</span>
+                        </div>
                     </Reveal>
 
-                    <div className="relative aspect-video rounded-xl overflow-hidden">
+                    <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/5">
                         <img
                             src={course.image}
                             alt={course.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover grayscale-[0.2]"
                         />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <Play size={24} fill="white" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center">
+                            <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center animate-pulse">
+                                <Play size={20} fill="white" className="ml-1" />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex justify-between items-center">
-                        <div className="text-xl font-black">
-                            ₹{course.price.toLocaleString('en-IN')}
+                    {/* Mobile Custom Duration Selection */}
+                    <div className="space-y-4">
+                        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-text-secondary">Select Program Duration</h3>
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="relative w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-4 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-bold text-sm tracking-widest uppercase"
+                            >
+                                <span className="flex items-center gap-2">
+                                    {selectedDuration?.label}
+                                </span>
+                                {selectedDuration?.recommended && (
+                                    <span className="absolute top-0 right-0 bg-accent text-white text-[7px] px-3 py-1 rounded-tr-xl rounded-bl-xl font-black uppercase shadow-xl z-10 animate-pulse italic">Recommended</span>
+                                )}
+                                <ChevronDown size={18} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
+                            </button>
+
+                            {isDropdownOpen && (
+                                <div className="relative mt-2 bg-white/5 border border-white/10 rounded-xl overflow-hidden z-20 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 mb-4">
+                                    {durationOptions.map((opt) => (
+                                        <button
+                                            key={opt.months}
+                                            onClick={() => {
+                                                setSelectedDuration(opt);
+                                                setIsDropdownOpen(false);
+                                            }}
+                                            className={`w-full px-4 py-4 text-left font-bold text-xs uppercase tracking-widest border-b border-white/5 last:border-0 transition-colors ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-white/5'
+                                                }`}
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <span>{opt.label}</span>
+                                                {opt.recommended && (
+                                                    <span className={`text-[8px] px-2 py-0.5 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent'}`}>MOST RECOMMENDED</span>
+                                                )}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5">
+                        <div className="flex flex-col">
+                            <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">Investment</span>
+                            <div className="text-2xl font-black italic text-glow">
+                                ₹{getCurrentPrice().toLocaleString('en-IN')}
+                            </div>
                         </div>
                         <button
                             disabled={course.slotInfo?.isSoldOut}
-                            onClick={() =>
-                                navigate(`/checkout/${course._id}`)
-                            }
-                            className={`px-6 py-3 rounded-full font-black text-xs uppercase ${course.slotInfo?.isSoldOut
+                            onClick={handleCheckout}
+                            className={`px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${course.slotInfo?.isSoldOut
                                 ? 'bg-white/10 text-white/40'
-                                : 'bg-accent text-white'
+                                : 'bg-accent text-white shadow-[0_0_30px_rgba(34,197,94,0.3)]'
                                 }`}
                         >
                             {course.slotInfo?.isSoldOut
                                 ? 'Sold Out'
-                                : 'Secure My Spot'}
+                                : 'Secure Spot'}
                         </button>
                     </div>
 
                     {/* Cross Sell */}
                     {recommendedProduct && (
                         <div className="mt-6">
-                            <h3 className="text-xs font-black uppercase mb-3">
-                                Similar Product
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-text-secondary px-2">
+                                Ultimate Add-on
                             </h3>
                             <div
                                 onClick={() =>
@@ -152,31 +253,28 @@ const CourseDetails = () => {
                                         `/course/${recommendedProduct._id}`
                                     )
                                 }
-                                className="bg-white/5 p-4 rounded-xl cursor-pointer"
+                                className="glass-card p-4 rounded-2xl cursor-pointer border border-white/5 hover:border-accent/30 transition-all flex gap-4"
                             >
-                                <h4 className="font-black text-sm mb-2">
-                                    {recommendedProduct.title}
-                                </h4>
-                                <div className="flex gap-4">
-                                    <img
-                                        src={recommendedProduct.image}
-                                        className="w-16 h-20 object-cover rounded-lg"
-                                        alt=""
-                                    />
-                                    <div className="flex-1 text-xs flex flex-col justify-between">
-                                        <div>
-                                            <p className="opacity-70 mb-2 line-clamp-2">
-                                                {recommendedProduct.description ||
-                                                    'Perfect add-on'}
-                                            </p>
-                                        </div>
-                                        <div className="flex items-center justify-between mt-1">
-                                            <span className="font-black text-accent text-sm">
-                                                ₹{recommendedProduct.price}
-                                            </span>
-                                            <button className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider border border-white/5">
-                                                View
-                                            </button>
+                                <img
+                                    src={recommendedProduct.image}
+                                    className="w-20 h-24 object-cover rounded-xl grayscale-[0.3]"
+                                    alt=""
+                                />
+                                <div className="flex-1 flex flex-col justify-between py-1">
+                                    <div>
+                                        <h4 className="font-black text-sm uppercase tracking-tight mb-1">
+                                            {recommendedProduct.title}
+                                        </h4>
+                                        <p className="text-[10px] text-text-secondary font-medium line-clamp-2 leading-tight">
+                                            {recommendedProduct.description || 'Enhance your results.'}
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-black text-accent text-sm italic">
+                                            ₹{recommendedProduct.price}
+                                        </span>
+                                        <div className="bg-white/10 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-white/5">
+                                            View
                                         </div>
                                     </div>
                                 </div>
@@ -184,102 +282,155 @@ const CourseDetails = () => {
                         </div>
                     )}
 
-                    <div className="bg-white/5 p-4 rounded-xl">
-                        <h3 className="text-xs font-black uppercase mb-2">
-                            Executive Summary
-                        </h3>
-                        <p className="text-xs opacity-80">
+                    <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+                        <h3 className="text-xs font-black uppercase mb-4 tracking-widest text-text-secondary">Executive Summary</h3>
+                        <p className="text-sm opacity-80 leading-relaxed font-medium">
                             {course.fullDescription}
                         </p>
                     </div>
                 </div>
 
                 {/* ================= DESKTOP ================= */}
-                <div className="hidden lg:grid grid-cols-3 gap-20 mt-20">
+                <div className="hidden lg:grid grid-cols-3 gap-24 mt-20">
                     {/* LEFT */}
-                    <div className="col-span-2 space-y-16">
+                    <div className="col-span-2 space-y-20">
                         <Reveal>
-                            <h1 className="text-6xl font-black uppercase">
+                            <h1 className="text-7xl font-black uppercase italic tracking-tighter leading-[0.9]">
                                 {course.title}
                             </h1>
+                            <div className="flex items-center gap-6 mt-6">
+                                <StarRating rating={course.rating || 4.9} size={16} />
+                                <span className="h-1 w-1 bg-white/20 rounded-full" />
+                                <span className="text-xs text-text-secondary font-black uppercase tracking-[0.3em]">The Elite Choice</span>
+                            </div>
                         </Reveal>
 
-                        <div className="relative aspect-video rounded-3xl overflow-hidden">
+                        <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/5 group">
                             <img
                                 src={course.image}
                                 alt={course.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
                             />
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-700" />
                         </div>
 
-                        <Reveal>
-                            <h3 className="text-3xl font-black uppercase">
-                                Executive Summary
-                            </h3>
-                            <p className="text-xl opacity-80 mt-4">
-                                {course.fullDescription}
-                            </p>
-                        </Reveal>
+                        <div className="space-y-12">
+                            <Reveal>
+                                <h3 className="text-4xl font-black uppercase italic tracking-tighter flex items-center gap-4">
+                                    <span className="h-px w-12 bg-accent" />
+                                    Executive Summary
+                                </h3>
+                                <p className="text-2xl opacity-80 mt-8 leading-relaxed font-medium max-w-4xl">
+                                    {course.fullDescription}
+                                </p>
+                            </Reveal>
 
-                        {course.features && (
-                            <div className="space-y-6">
-                                {course.features.map((item, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="flex items-start gap-4"
-                                    >
-                                        <CheckCircle
-                                            size={20}
-                                            className="text-accent"
-                                        />
-                                        <span>{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                            <Reveal delay={0.2}>
+                                <div className="grid grid-cols-2 gap-8 mt-12">
+                                    {course.features && course.features.map((item, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="flex items-start gap-5 group/feat"
+                                        >
+                                            <div className="mt-1 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center border border-accent/20 group-hover/feat:bg-accent transition-all">
+                                                <CheckCircle
+                                                    size={12}
+                                                    className="text-accent group-hover/feat:text-white"
+                                                />
+                                            </div>
+                                            <span className="text-lg font-bold opacity-70 group-hover/feat:opacity-100 transition-opacity">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Reveal>
+                        </div>
                     </div>
 
                     {/* RIGHT */}
-                    <div className="sticky top-32 glass-card p-10 rounded-3xl">
-                        <div className="text-center mb-10">
-                            <div className="text-6xl font-black">
-                                ₹{course.price.toLocaleString('en-IN')}
+                    <div className="sticky top-32 h-fit">
+                        <div className="glass-card p-10 rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden group/card text-left">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none group-hover/card:bg-accent/10 transition-all duration-1000" />
+
+                            <div className="text-center mb-10 relative z-10">
+                                <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.4em] block mb-3 opacity-60">Total Investment</span>
+                                <div className="text-7xl font-black italic tracking-tighter text-glow">
+                                    ₹{getCurrentPrice().toLocaleString('en-IN')}
+                                </div>
+                            </div>
+
+                            {/* Desktop Custom Duration Selection */}
+                            <div className="space-y-6 mb-10 relative z-10">
+                                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-secondary pl-2">Select Duration</h3>
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        className="relative w-full bg-white/5 border border-white/10 text-white rounded-2xl px-6 py-5 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-black text-sm tracking-widest uppercase hover:bg-white/10"
+                                    >
+                                        <span className="flex items-center gap-3">
+                                            <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                                            {selectedDuration?.label}
+                                        </span>
+                                        {selectedDuration?.recommended && (
+                                            <span className="absolute top-0 right-0 bg-accent text-white text-[9px] px-4 py-1.5 rounded-tr-2xl rounded-bl-2xl font-black uppercase shadow-2xl z-10 animate-pulse italic">Most Recommended</span>
+                                        )}
+                                        <ChevronDown size={20} className={`text-text-secondary transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
+                                    </button>
+
+                                    {isDropdownOpen && (
+                                        <div className="relative mt-3 bg-white/5 border border-white/10 rounded-2xl overflow-hidden z-20 shadow-2xl animate-in fade-in zoom-in-95 duration-200 mb-6">
+                                            {durationOptions.map((opt) => (
+                                                <button
+                                                    key={opt.months}
+                                                    onClick={() => {
+                                                        setSelectedDuration(opt);
+                                                        setIsDropdownOpen(false);
+                                                    }}
+                                                    className={`w-full px-6 py-5 text-left font-black text-xs uppercase tracking-[0.2em] border-b border-white/5 last:border-0 transition-all flex items-center justify-between group/opt ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-accent/10 hover:text-white'
+                                                        }`}
+                                                >
+                                                    <span>{opt.label}</span>
+                                                    {opt.recommended && (
+                                                        <span className={`text-[8px] px-3 py-1 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent group-hover/opt:bg-accent group-hover/opt:text-white'}`}>MOST RECOMMENDED</span>
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="space-y-4 relative z-10">
+                                <button
+                                    disabled={course.slotInfo?.isSoldOut}
+                                    onClick={handleCheckout}
+                                    className={`w-full py-6 rounded-2xl font-black uppercase tracking-widest text-lg transition-all transform hover:scale-[1.02] active:scale-95 btn-glow ${course.slotInfo?.isSoldOut
+                                        ? 'bg-white/10 text-white/40'
+                                        : 'bg-accent text-white shadow-[0_0_30px_rgba(34,197,94,0.3)]'
+                                        }`}
+                                >
+                                    {course.slotInfo?.isSoldOut
+                                        ? 'Sold Out'
+                                        : 'Secure My Spot'}
+                                </button>
+
+                                <button
+                                    onClick={handleAddToCart}
+                                    className="w-full py-5 rounded-2xl border border-white/10 uppercase font-black flex items-center justify-center gap-4 text-white hover:bg-white/5 transition-all text-sm tracking-[0.2em] group/cart"
+                                >
+                                    <ShoppingBag size={20} className="group-hover:rotate-12 transition-transform" />
+                                    Add to Cart
+                                </button>
+                            </div>
+
+                            <div className="mt-10 pt-10 border-t border-white/5 space-y-4">
+                                {course.features && course.features.slice(0, 3).map((f, i) => (
+                                    <div key={i} className="flex gap-4 items-center opacity-60 hover:opacity-100 transition-opacity">
+                                        <Zap size={14} className="text-accent flex-shrink-0" />
+                                        <span className="text-[11px] font-bold uppercase tracking-widest leading-tight">{f}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-
-                        <button
-                            disabled={course.slotInfo?.isSoldOut}
-                            onClick={() =>
-                                navigate(`/checkout/${course._id}`)
-                            }
-                            className={`w-full py-5 rounded-2xl font-black uppercase ${course.slotInfo?.isSoldOut
-                                ? 'bg-white/10 text-white/40'
-                                : 'bg-accent text-white'
-                                }`}
-                        >
-                            {course.slotInfo?.isSoldOut
-                                ? 'Sold Out'
-                                : 'Secure My Spot'}
-                        </button>
-
-                        <button
-                            onClick={() => addToCart(course)}
-                            className="w-full mt-4 py-4 rounded-2xl border border-white/10 uppercase font-black flex items-center justify-center gap-3"
-                        >
-                            <ShoppingBag size={18} />
-                            Add to Cart
-                        </button>
-
-                        {course.features && (
-                            <ul className="mt-10 space-y-4">
-                                {course.features.map((f, i) => (
-                                    <li key={i} className="flex gap-3">
-                                        <Zap size={14} className="text-accent" />
-                                        <span className="text-sm">{f}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
                     </div>
                 </div>
             </div>

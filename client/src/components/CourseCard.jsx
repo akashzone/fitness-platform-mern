@@ -26,8 +26,9 @@ const CourseCard = ({ course, isSoldOut }) => {
                     </div>
                 )}
 
-                <div className="absolute top-2 left-2 md:top-6 md:left-6 glass px-3 py-1 md:px-6 md:py-2 rounded-lg md:rounded-2xl text-[10px] md:text-sm font-black text-white shadow-2xl border-white/10">
-                    ₹{course.price.toLocaleString('en-IN')}
+                <div className="absolute top-2 left-2 md:top-6 md:left-6 glass px-3 py-1 md:px-6 md:py-2 rounded-lg md:rounded-2xl flex flex-col items-center shadow-2xl border-white/10">
+                    <span className="text-[6px] md:text-[8px] uppercase tracking-widest opacity-70">Starting From</span>
+                    <span className="text-[10px] md:text-sm font-black text-white uppercase italic">₹{course.price.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-page/80 to-transparent opacity-60" />
             </div>

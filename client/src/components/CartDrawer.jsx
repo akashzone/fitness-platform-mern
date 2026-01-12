@@ -5,18 +5,13 @@ import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
 const CartDrawer = () => {
-    const { cartItems, removeFromCart, cartTotal, isCartOpen, setIsCartOpen } = useCart();
+    const { cartItems, removeFromCart, updateCartItemDuration, cartTotal, isCartOpen, setIsCartOpen } = useCart();
     const navigate = useNavigate();
 
     const handleCheckout = () => {
         setIsCartOpen(false);
-        // If there's only one item, navigate to that item's checkout
-        if (cartItems.length === 1) {
-            navigate(`/checkout/${cartItems[0]._id}`);
-        } else {
-            // Future: Multi-item checkout page
-            navigate('/checkout/cart');
-        }
+        // Always use cart-based checkout to preserve custom durations/prices from cart
+        navigate('/checkout/cart');
     };
 
     return (
@@ -94,10 +89,40 @@ const CartDrawer = () => {
                                                     <Trash2 size={16} />
                                                 </button>
                                             </div>
-                                            <p className="text-accent font-black text-sm mt-1">₹{item.price.toLocaleString('en-IN')}</p>
-                                            <span className="inline-block mt-2 text-[10px] font-black uppercase tracking-widest px-2 py-0.5 bg-white/5 rounded-md text-text-secondary">
-                                                {item.type}
-                                            </span>
+                                            <div className="flex items-center justify-between mt-2">
+                                                <p className="text-accent font-black text-sm">₹{item.price.toLocaleString('en-IN')}</p>
+                                                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 bg-white/5 rounded-md text-text-secondary">
+                                                    {item.type}
+                                                </span>
+                                            </div>
+
+                                            {item.type === 'course' && (
+                                                <div className="mt-4 space-y-2">
+                                                    <p className="text-[10px] font-black uppercase tracking-widest text-text-secondary">Change Duration</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {item.durations?.map((opt) => (
+                                                            <button
+                                                                key={opt.months}
+                                                                onClick={() => updateCartItemDuration(item._id, opt.months)}
+                                                                className={`relative px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all border ${item.durationMonths === opt.months
+                                                                    ? 'bg-accent border-accent text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]'
+                                                                    : 'bg-white/5 border-white/10 text-text-secondary hover:bg-white/10'
+                                                                    }`}
+                                                            >
+                                                                {opt.months}M
+                                                                {opt.recommended && (
+                                                                    <div className={`absolute -top-1.5 -right-1.5 w-2 h-2 rounded-full bg-accent ring-2 ring-bg-page ${item.durationMonths === opt.months ? 'animate-pulse' : ''}`} title="Recommended" />
+                                                                )}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                    {item.durationMonths === 3 && (
+                                                        <p className="text-[8px] text-accent font-black uppercase tracking-widest animate-pulse mt-1">
+                                                            ★ Most Recommended Plan
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))

@@ -1,20 +1,23 @@
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../utils/api';
 import { CreditCard, Lock, ArrowLeft, Shield, Loader2, CheckCircle, AlertCircle, ShoppingBag } from 'lucide-react';
 import Reveal from '../components/motion/Reveal';
 import MagneticButton from '../components/motion/MagneticButton';
 import { useCart } from '../context/CartContext';
+import PaymentSuccess from '../components/PaymentSuccess';
 
 
 const Checkout = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const { cartItems, cartTotal, clearCart } = useCart();
 
     const [checkoutItems, setCheckoutItems] = useState([]);
     const [total, setTotal] = useState(0);
+    const [duration, setDuration] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [status, setStatus] = useState('idle'); // idle, processing, success, error
@@ -39,7 +42,13 @@ const Checkout = () => {
                 } else {
                     const response = await api.get(`/products/${id}`);
                     setCheckoutItems([response.data]);
-                    setTotal(response.data.price);
+
+                    // Priority to custom price/duration from Detail page
+                    const customPrice = location.state?.customPrice;
+                    const customDuration = location.state?.selectedDuration;
+
+                    setTotal(customPrice || response.data.price);
+                    setDuration(customDuration || null);
                 }
             } catch (err) {
                 setError('Product not found.');
@@ -49,7 +58,7 @@ const Checkout = () => {
             }
         };
         prepareCheckout();
-    }, [id, cartItems, cartTotal, navigate]);
+    }, [id, cartItems, cartTotal, navigate, location.state]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -63,30 +72,27 @@ const Checkout = () => {
         }
 
         setStatus('processing');
+        // primaryItem is now available at the component level
+
         try {
-            // Updated to Cashfree Integration
-            const response = await api.post('/cashfree/create-order', {
-                amount: total,
+            // Bypass Cashfree and call fake payment success endpoint
+            const response = await api.post('/payment/success', {
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                productId: checkoutItems[0]?._id || id // Use the first item ID
+                productId: primaryItem?._id || id,
+                productName: primaryItem?.title || "Fitness Program",
+                productType: primaryItem?.type || "course",
+                durationMonths: duration || primaryItem?.durationMonths,
+                amount: total
             });
 
             if (response.data.success) {
-                const cashfree = new window.Cashfree({
-                    mode: "sandbox" // Change to "production" for live
-                });
-
-                cashfree.checkout({
-                    paymentSessionId: response.data.payment_session_id,
-                    redirectTarget: "_self", // Redirects to the return_url set in backend
-                });
-
-                // Clear cart locally as we are redirecting
+                // Clear cart locally
                 clearCart();
+                setStatus('success');
             } else {
-                alert(response.data.message || "Failed to initialize payment.");
+                alert(response.data.message || "Failed to process payment.");
                 setStatus('idle');
             }
         } catch (err) {
@@ -102,6 +108,8 @@ const Checkout = () => {
         handlePayment();
     };
 
+    const primaryItem = checkoutItems.find(item => item.type === 'course') || checkoutItems[0];
+
     if (loading) {
         return (
             <div className="min-h-screen bg-bg-page flex items-center justify-center">
@@ -112,24 +120,12 @@ const Checkout = () => {
 
     if (status === 'success') {
         return (
-            <div className="min-h-screen bg-bg-page flex flex-col items-center justify-center p-8 text-center">
-                <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(34,197,94,0.3)] border border-accent/20">
-                    <CheckCircle className="text-accent animate-bounce" size={40} />
-                </div>
-                <h1 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase italic">Payment Successful!</h1>
-                <p className="text-text-secondary text-lg max-w-xl mx-auto mb-6 font-medium">
-                    Congratulations! Your order has been secured. Check your email and WhatsApp for confirmation. Our team will deliver your digital products/next steps shortly.
-                </p>
-                <div className="bg-white/5 border border-white/10 px-8 py-4 rounded-[2rem] max-w-lg mx-auto mb-8">
-                    <p className="text-white font-bold opacity-80 italic">"Discipline is the bridge between goals and accomplishment."</p>
-                </div>
-                <button
-                    onClick={() => navigate('/programs')}
-                    className="bg-accent text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-accent-hover transition-all shadow-2xl btn-glow"
-                >
-                    Back to Programs
-                </button>
-
+            <div className="min-h-screen bg-bg-page py-24">
+                <PaymentSuccess
+                    user={formData}
+                    program={{ ...primaryItem, selectedDuration: duration || primaryItem?.durationMonths }}
+                    onBack={() => navigate('/programs')}
+                />
             </div>
         );
     }
