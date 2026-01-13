@@ -1,17 +1,20 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT) || 465,
-    secure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT == '465', // True for 465
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // Use STARTTLS
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
-    connectionTimeout: 5000, // 5 seconds
-    greetingTimeout: 5000,
-    socketTimeout: 5000,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
 });
+
+console.log("[SMTP] User exists:", !!process.env.SMTP_USER);
+console.log("[SMTP] Password exists:", !!process.env.SMTP_PASS);
 
 console.log(`Mailer initialized for user: ${process.env.SMTP_USER}`);
 transporter.verify((error, success) => {
@@ -51,9 +54,9 @@ const sendConfirmationEmail = async (userEmail, userName, productName) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log(`Confirmation email sent to ${userEmail}`);
+        console.log(`[Email] Confirmation email sent to ${userEmail}`);
     } catch (error) {
-        console.error('Email Error:', error);
+        console.error(`[Email] Failed to send confirmation email to ${userEmail}:`, error.message);
     }
 };
 
@@ -96,9 +99,9 @@ const sendEbookEmail = async (userEmail, userName, purchasedItems, orderId) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log(`Confirmation email (ebook) sent to ${userEmail}`);
+        console.log(`[Email] Ebook email sent to ${userEmail}`);
     } catch (error) {
-        console.error('Email Error:', error);
+        console.error(`[Email] Failed to send ebook email to ${userEmail}:`, error.message);
     }
 };
 

@@ -136,18 +136,21 @@ exports.verifyCashfreeOrder = async (req, res) => {
 
             console.log(`[Cashfree] Order ${orderId} marked as PAID. cfPaymentId: ${cfPaymentId}`);
 
-            // 5. Trigger Email Automation (BACKEND ONLY)
-            const product = await Product.findById(order.products[0].productId);
-            if (product) {
-                if (product.type === 'ebook') {
-                    sendEbookEmail(order.email, order.name, order.products, order._id)
-                        .then(() => console.log(`[Email] Ebook email sent to ${order.email}`))
-                        .catch(err => console.error(`[Email] Error sending ebook email:`, err));
-                } else {
-                    sendConfirmationEmail(order.email, order.name, product.title)
-                        .then(() => console.log(`[Email] Confirmation email sent to ${order.email}`))
-                        .catch(err => console.error(`[Email] Error sending confirmation email:`, err));
+            // 5. Trigger Email Automation (Non-blocking)
+            try {
+                const primaryProductData = order.products[0];
+                if (primaryProductData) {
+                    const product = await Product.findById(primaryProductData.productId);
+                    if (product) {
+                        if (product.type === 'ebook') {
+                            sendEbookEmail(order.email, order.name, order.products, order._id);
+                        } else {
+                            sendConfirmationEmail(order.email, order.name, product.title);
+                        }
+                    }
                 }
+            } catch (emailTriggerErr) {
+                console.error("[Email] Critical trigger error:", emailTriggerErr.message);
             }
 
             return res.status(200).json({
