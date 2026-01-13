@@ -33,7 +33,7 @@ const Checkout = () => {
             setLoading(true);
             try {
                 if (id === 'cart') {
-                    if (cartItems.length === 0) {
+                    if (cartItems.length === 0 && status !== 'success') {
                         navigate('/programs');
                         return;
                     }
@@ -72,35 +72,70 @@ const Checkout = () => {
         }
 
         setStatus('processing');
-        // primaryItem is now available at the component level
 
         try {
-            // Bypass Cashfree and call fake payment success endpoint
-            const response = await api.post('/payment/success', {
+            // 1. Create Order in Backend (Will create a PENDING record)
+            const response = await api.post('/cashfree/create-order', {
+                amount: total,
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                productId: primaryItem?._id || id,
-                productName: primaryItem?.title || "Fitness Program",
-                productType: primaryItem?.type || "course",
-                durationMonths: duration || primaryItem?.durationMonths,
-                amount: total
+                productId: primaryItem?._id || id
             });
 
-            if (response.data.success) {
-                // Clear cart locally
-                clearCart();
-                setStatus('success');
-            } else {
-                alert(response.data.message || "Failed to process payment.");
-                setStatus('idle');
-            }
+            const { payment_session_id, order_id } = response.data;
+
+            // 2. Initialize Cashfree
+            const cashfree = new Cashfree({
+                mode: "sandbox" // Use "production" for live
+            });
+
+            // 3. Open Checkout Modal
+            cashfree.checkout({
+                paymentSessionId: payment_session_id,
+                redirectTarget: "_modal",
+            }).then(async (result) => {
+                if (result.error) {
+                    console.error("Cashfree Checkout Error:", result.error);
+                    alert(result.error.message);
+                    setStatus('idle');
+                    return;
+                }
+
+                // If paymentDetails exists, it means the modal closed after a payment attempt
+                if (result.paymentDetails || result.redirect === false) {
+                    console.log("Payment modal closed, verifying status for order:", order_id);
+                    await verifyPayment(order_id);
+                }
+            });
+
         } catch (err) {
             console.error('Checkout Error:', err);
             const errorMessage = err.response?.data?.message || "An error occurred during checkout.";
             alert(errorMessage);
             setStatus('idle');
         }
+    };
+
+    const verifyPayment = async (orderId) => {
+        setStatus('processing'); // Ensure loader is shown while verifying
+
+        // Wait a small bit to allow Cashfree backend to process if needed
+        setTimeout(async () => {
+            try {
+                const verifyRes = await api.get(`/cashfree/verify/${orderId}`);
+                if (verifyRes.data.success) {
+                    clearCart();
+                    setStatus('success');
+                } else {
+                    console.warn("Verification failed:", verifyRes.data.message);
+                    setStatus('error');
+                }
+            } catch (error) {
+                console.error("Verification Error:", error);
+                setStatus('error');
+            }
+        }, 1500);
     };
 
     const handleSubmit = (e) => {
@@ -134,14 +169,25 @@ const Checkout = () => {
         return (
             <div className="min-h-screen bg-bg-page flex flex-col items-center justify-center p-8 text-center">
                 <AlertCircle className="text-red-500 mb-6 animate-pulse" size={64} />
-                <h2 className="text-3xl font-black text-white uppercase mb-4">Payment Verification Failed</h2>
-                <p className="text-text-secondary mb-8 max-w-md">The payment was processed but we couldn't verify it with our servers. Please contact support if your money was debited.</p>
-                <button
-                    onClick={() => setStatus('idle')}
-                    className="bg-white/10 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
-                >
-                    Try Again
-                </button>
+                <h2 className="text-3xl font-black text-white uppercase mb-4">Payment Verification Incomplete</h2>
+                <p className="text-text-secondary mb-8 max-w-md">
+                    We couldn't confirm your payment automatically. This can happen if the modal was closed too early.
+                    If your money was debited, don't worry—our team will verify it manually within 24 hours.
+                </p>
+                <div className="flex gap-4">
+                    <button
+                        onClick={() => setStatus('idle')}
+                        className="bg-white/10 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest hover:bg-white/20 transition-all border border-white/10"
+                    >
+                        Try Again
+                    </button>
+                    <button
+                        onClick={() => navigate('/programs')}
+                        className="bg-accent/10 text-accent px-8 py-3 rounded-xl font-black uppercase tracking-widest hover:bg-accent/20 transition-all border border-accent/10"
+                    >
+                        Return Home
+                    </button>
+                </div>
             </div>
         );
     }

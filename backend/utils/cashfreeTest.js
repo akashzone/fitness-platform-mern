@@ -8,8 +8,8 @@ require('dotenv').config({
 const runCashfreeTest = async () => {
     console.log('--- CASHFREE ISOLATED TEST START ---');
 
-    console.log('App ID:', process.env.CASHFREE_APP_ID);
-    console.log('Secret Exists:', !!process.env.CASHFREE_SECRET_KEY);
+    console.log('Client ID:', process.env.CASHFREE_CLIENT_ID);
+    console.log('Secret Exists:', !!process.env.CASHFREE_CLIENT_SECRET);
 
     try {
         const response = await axios.post(
@@ -27,8 +27,8 @@ const runCashfreeTest = async () => {
             },
             {
                 headers: {
-                    'x-client-id': process.env.CASHFREE_APP_ID,
-                    'x-client-secret': process.env.CASHFREE_SECRET_KEY,
+                    'x-client-id': process.env.CASHFREE_CLIENT_ID,
+                    'x-client-secret': process.env.CASHFREE_CLIENT_SECRET,
                     'x-api-version': '2023-08-01',
                     'Content-Type': 'application/json'
                 }

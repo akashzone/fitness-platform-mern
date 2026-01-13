@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
-const paymentRoutes = require('./routes/paymentRoutes');
 const cashfreeRoutes = require('./routes/cashfreeRoutes');
 
 connectDB();
@@ -28,7 +27,6 @@ const path = require('path');
 
 app.use('/api/products', productRoutes);
 app.use('/api/programs', productRoutes);
-app.use('/api/payment', paymentRoutes);
 app.use('/api/cashfree', cashfreeRoutes);
 app.use('/api/admin', adminRoutes);
 

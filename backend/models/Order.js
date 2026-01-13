@@ -14,8 +14,13 @@ const orderSchema = new Schema({
     }],
     totalAmount: { type: Number, required: true },
     gateway: { type: String, default: 'CASHFREE' },
-    paymentId: { type: String, required: true },
-    paymentStatus: { type: String, required: true },
+    cfOrderId: { type: String, required: true },
+    cfPaymentId: { type: String }, // Optional initially, populated after payment
+    orderStatus: {
+        type: String,
+        enum: ["PENDING", "PAID", "FAILED"],
+        default: "PENDING"
+    },
     month: { type: String, required: true }, // YYYY-MM
     createdAt: { type: Date, default: Date.now }
 });

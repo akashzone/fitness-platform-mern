@@ -154,7 +154,7 @@ const CartDrawer = () => {
                                     <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                                 </button>
                                 <p className="text-[10px] text-center text-text-secondary font-medium italic opacity-60">
-                                    Secure checkout powered by Razorpay
+                                    Secure checkout powered by Cashfree
                                 </p>
                             </div>
                         )}
