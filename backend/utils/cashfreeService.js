@@ -36,6 +36,13 @@ const cashfreeService = axios.create({
 // Interceptor to always use fresh (and trimmed) headers
 cashfreeService.interceptors.request.use(req => {
     const currentConfig = getCashfreeConfig();
+
+    // Masking function for logs
+    const mask = (str) => str ? `${str.substring(0, 4)}...${str.substring(str.length - 4)}` : 'EMPTY';
+
+    console.log(`[Cashfree API Request] Mode: ${currentConfig.isProduction ? 'PROD' : 'SANDBOX'} | URL: ${req.url}`);
+    console.log(`[Cashfree Auth] ID: ${mask(currentConfig.clientId)} | Secret: ${currentConfig.clientSecret ? 'EXISTS' : 'MISSING'}`);
+
     req.headers['x-client-id'] = currentConfig.clientId;
     req.headers['x-client-secret'] = currentConfig.clientSecret;
     req.headers['x-api-version'] = currentConfig.apiVersion;

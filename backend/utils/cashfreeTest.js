@@ -8,8 +8,9 @@ require('dotenv').config({
 const runCashfreeTest = async () => {
     console.log('--- CASHFREE ISOLATED TEST START ---');
 
-    console.log('Client ID:', process.env.CASHFREE_CLIENT_ID);
-    console.log('Secret Exists:', !!process.env.CASHFREE_CLIENT_SECRET);
+    const mask = (str) => str ? `${str.substring(0, 4)}...${str.substring(str.length - 4)}` : 'EMPTY';
+    console.log('Client ID:', mask(process.env.CASHFREE_CLIENT_ID));
+    console.log('Secret:', process.env.CASHFREE_CLIENT_SECRET ? 'EXISTS' : 'MISSING');
 
     try {
         const response = await axios.post(
