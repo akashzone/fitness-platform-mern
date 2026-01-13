@@ -111,8 +111,9 @@ const Checkout = () => {
 
         } catch (err) {
             console.error('Checkout Error:', err);
-            const errorMessage = err.response?.data?.message || "An error occurred during checkout.";
-            alert(errorMessage);
+            console.dir(err); // Detailed debug info in console
+            const errorMessage = err.response?.data?.message || err.message || "An error occurred during checkout.";
+            alert(`Error: ${errorMessage}`);
             setStatus('idle');
         }
     };
