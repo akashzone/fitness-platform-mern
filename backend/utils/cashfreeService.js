@@ -1,15 +1,24 @@
 const axios = require('axios');
 
+console.log(`[Cashfree] Initializing in ${process.env.CASHFREE_ENV || 'sandbox'} mode`);
+if (!process.env.CASHFREE_CLIENT_ID && !process.env.CASHFREE_APP_ID) {
+    console.warn('[Cashfree] WARNING: API Keys (Client ID) not found in environment variables!');
+}
+
 const CASHFREE_ENV = process.env.CASHFREE_ENV || 'sandbox';
-const BASE_URL = CASHFREE_ENV === 'production'
+// Support both 'sandbox'/'production' and 'TEST'/'PROD' as values
+const isProduction = CASHFREE_ENV.toLowerCase() === 'production' || CASHFREE_ENV.toUpperCase() === 'PROD';
+
+const BASE_URL = isProduction
     ? 'https://api.cashfree.com/pg'
     : 'https://sandbox.cashfree.com/pg';
 
 const cashfreeService = axios.create({
     baseURL: BASE_URL,
     headers: {
-        'x-client-id': process.env.CASHFREE_CLIENT_ID,
-        'x-client-secret': process.env.CASHFREE_CLIENT_SECRET,
+        // Fallback to APP_ID/SECRET_KEY if CLIENT_ID/CLIENT_SECRET is missing
+        'x-client-id': process.env.CASHFREE_CLIENT_ID || process.env.CASHFREE_APP_ID,
+        'x-client-secret': process.env.CASHFREE_CLIENT_SECRET || process.env.CASHFREE_SECRET_KEY,
         'x-api-version': process.env.CASHFREE_API_VERSION || '2023-08-01',
         'Content-Type': 'application/json'
     }
