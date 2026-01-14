@@ -219,7 +219,7 @@ const Checkout = () => {
     }
 
     return (
-        <div className="pt-24 pb-32 bg-bg-page min-h-screen selection:bg-accent/30 selection:text-white">
+        <div className="pt-2 md:pt-24 pb-10 md:pb-32 bg-bg-page min-h-screen selection:bg-accent/30 selection:text-white">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-[440px] lg:max-w-none mx-auto w-full">
                     <button

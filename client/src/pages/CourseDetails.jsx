@@ -219,11 +219,12 @@ const CourseDetails = () => {
                                 <div className="text-xl md:text-2xl font-black italic text-glow whitespace-nowrap">
                                     ₹{getCurrentPrice().price.toLocaleString('en-IN')}
                                 </div>
-                                <div className="text-[10px] line-through text-white/20 font-bold decoration-accent/50 whitespace-nowrap">
+                                <div className="price-original text-[13px] md:text-lg whitespace-nowrap ml-2">
+                                    <span className="text-[9px] md:text-xs opacity-50 font-black mr-1 uppercase">Was</span>
                                     ₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}
                                 </div>
                             </div>
-                            <div className="text-accent text-[8px] font-black uppercase tracking-widest mt-0.5 whitespace-nowrap">
+                            <div className="text-accent text-[10px] md:text-[11px] font-black uppercase tracking-widest mt-1 whitespace-nowrap">
                                 Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')}
                             </div>
                         </div>
@@ -357,7 +358,8 @@ const CourseDetails = () => {
                             <div className="text-center mb-10 relative z-10">
                                 <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.4em] block mb-3 opacity-60">Total Investment</span>
                                 <div className="flex flex-col items-center">
-                                    <div className="text-sm line-through text-white/20 font-bold mb-1 decoration-accent/30">
+                                    <div className="price-original text-2xl md:text-4xl whitespace-nowrap mb-2">
+                                        <span className="text-sm md:text-lg opacity-40 font-black mr-2 uppercase tracking-widest">Original Value</span>
                                         ₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}
                                     </div>
                                     <div className="text-7xl font-black italic tracking-tighter text-glow">

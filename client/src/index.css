@@ -82,24 +82,25 @@ body {
 
 /* Pricing Utilities */
 .price-original {
-  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
-  font-weight: 700;
+  font-size: clamp(0.7rem, 2vw, 1.2rem);
+  font-weight: 800;
   color: white;
-  /* Match discount price theme */
-  opacity: 0.8;
+  opacity: 0.4;
   position: relative;
-  padding: 0 6px;
+  padding: 0 4px;
+  display: inline-block;
 }
 
 .price-original::after {
   content: '';
   position: absolute;
-  left: -2px;
-  right: -2px;
+  left: -1px;
+  right: -1px;
   top: 50%;
   height: 2px;
   background: white;
-  transform: rotate(-10deg);
+  transform: translateY(-50%) rotate(-8deg);
+  opacity: 0.6;
 }
 
 .price-final {

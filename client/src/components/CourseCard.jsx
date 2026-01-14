@@ -33,6 +33,7 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
                     <div className="flex flex-col items-center leading-none">
                         {!hideOriginalPrice && (
                             <span className="price-original mb-1 md:mb-2 text-[10px] md:text-base">
+                                <span className="text-[7px] md:text-[10px] opacity-60 mr-1 uppercase">Was</span>
                                 ₹{Math.round((course.displayPrice || course.price) * 1.2).toLocaleString('en-IN')}
                             </span>
                         )}
