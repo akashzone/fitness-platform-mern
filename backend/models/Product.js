@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true }, // Semantic ID like '4-weeks-transformation'
     title: { type: String, required: true },
     description: { type: String, required: true },
     duration: { type: String },

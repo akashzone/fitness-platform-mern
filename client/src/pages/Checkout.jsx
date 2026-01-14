@@ -7,7 +7,7 @@ import Reveal from '../components/motion/Reveal';
 import MagneticButton from '../components/motion/MagneticButton';
 import { useCart } from '../context/CartContext';
 import PaymentSuccess from '../components/PaymentSuccess';
-
+import { courses } from '../data/courses';
 
 const Checkout = () => {
     const { id } = useParams();
@@ -40,14 +40,19 @@ const Checkout = () => {
                     setCheckoutItems(cartItems);
                     setTotal(cartTotal);
                 } else {
-                    const response = await api.get(`/products/${id}`);
-                    setCheckoutItems([response.data]);
+                    const product = courses.find(c => c.id === id || c._id === id);
+                    if (!product) {
+                        setError('Product not found.');
+                        setLoading(false);
+                        return;
+                    }
+                    setCheckoutItems([product]);
 
                     // Priority to custom price/duration from Detail page
                     const customPrice = location.state?.customPrice;
                     const customDuration = location.state?.selectedDuration;
 
-                    setTotal(customPrice || response.data.displayPrice || response.data.price);
+                    setTotal(customPrice || product.displayPrice || product.price);
                     setDuration(customDuration || null);
                 }
             } catch (err) {
@@ -80,7 +85,8 @@ const Checkout = () => {
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                productId: primaryItem?._id || id
+                productId: checkoutItems[0].id || checkoutItems[0]._id,
+                durationMonths: duration?.months
             });
 
             const { payment_session_id, order_id, environment } = response.data;
@@ -165,7 +171,7 @@ const Checkout = () => {
 
     if (status === 'success') {
         return (
-            <div className="min-h-screen bg-bg-page py-24">
+            <div className="min-h-screen bg-bg-page py-12">
                 <PaymentSuccess
                     user={formData}
                     program={{ ...primaryItem, selectedDuration: duration || primaryItem?.durationMonths }}

@@ -2,14 +2,12 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, ShieldCheck, Zap } from 'lucide-react';
-import { courses } from '../data/mockData';
+import { courses } from '../data/courses';
 import CourseCard from '../components/CourseCard';
 import TestimonialSlider from '../components/TestimonialSlider';
 import Reveal from '../components/motion/Reveal';
 import MagneticButton from '../components/motion/MagneticButton';
 import { useState, useEffect } from 'react';
-import api from '../utils/api';
-import SkeletonCard from '../components/SkeletonCard';
 
 const Home = () => {
     const heroRef = useRef(null);
@@ -21,36 +19,24 @@ const Home = () => {
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
     const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
 
-    const [data, setData] = useState({ products: [], slotInfo: null });
-    const [loading, setLoading] = useState(true);
+    // Although we use static courses, we still check slotInfo from backend
+    // to show 'Sold Out' status if needed (as per requirement 3 & 9)
+    const [slotInfo, setSlotInfo] = useState(null);
 
     useEffect(() => {
-        const cachedData = localStorage.getItem('fitness_home_data_cache');
-        if (cachedData) {
+        const fetchSlotInfo = async () => {
             try {
-                setData(JSON.parse(cachedData));
-                setLoading(false);
-            } catch (e) {
-                console.error('Failed to parse cached data');
-            }
-        }
-
-        const fetchHomeData = async () => {
-            try {
+                // We only fetch slot info, not products
                 const response = await api.get('/products');
-                setData(response.data);
-                localStorage.setItem('fitness_home_data_cache', JSON.stringify(response.data));
+                setSlotInfo(response.data.slotInfo);
             } catch (err) {
-                console.error('Home Data Load Error:', err);
-            } finally {
-                setLoading(false);
+                console.error('Slot Info Load Error:', err);
             }
         };
-        fetchHomeData();
+        fetchSlotInfo();
     }, []);
 
-    const courses = data.products.filter(p => p.type === 'course');
-    const isSoldOut = data.slotInfo?.isSoldOut;
+    const isSoldOut = slotInfo?.isSoldOut;
 
     return (
         <div className="bg-bg-page selection:bg-accent/40 selection:text-white">
@@ -185,17 +171,11 @@ const Home = () => {
                     </Reveal>
 
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
-                        {loading && !data.products.length ? (
-                            [1, 2, 3, 4].map(i => (
-                                <SkeletonCard key={i} />
-                            ))
-                        ) : (
-                            courses.map((course, index) => (
-                                <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                    <CourseCard course={course} isSoldOut={isSoldOut} />
-                                </Reveal>
-                            ))
-                        )}
+                        {courses.map((course, index) => (
+                            <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
+                                <CourseCard course={course} isSoldOut={isSoldOut} />
+                            </Reveal>
+                        ))}
                     </div>
                 </div>
             </section>

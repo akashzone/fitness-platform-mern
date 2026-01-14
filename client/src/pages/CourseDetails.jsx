@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../utils/api';
 import {
     CheckCircle,
     ArrowLeft,
@@ -14,6 +13,7 @@ import {
 import Reveal from '../components/motion/Reveal';
 import StarRating from '../components/StarRating';
 import { useCart } from '../context/CartContext';
+import { courses } from '../data/courses';
 
 const CourseDetails = () => {
     const { id } = useParams();
@@ -38,52 +38,32 @@ const CourseDetails = () => {
     };
 
     const getDurationOptions = (courseId) => {
-        // In a real app, this could be specific to the courseId
         return DURATION_CONFIG.default;
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [productRes, allProductsRes] = await Promise.all([
-                    api.get(`/products/${id}`),
-                    api.get('/products')
-                ]);
+        const currentProduct = courses.find(c => c.id === id || c._id === id);
 
-                const currentProduct = productRes.data;
-                const allProducts = allProductsRes.data.products.filter(
-                    p => p._id !== id
+        if (currentProduct) {
+            setCourse(currentProduct);
+
+            // Set default selected duration (Recommended)
+            const options = getDurationOptions(currentProduct.id);
+            const recommended = options.find(o => o.recommended) || options[0];
+            setSelectedDuration(recommended);
+
+            // Similar Products logic: Other courses only
+            const otherCourses = courses.filter(c => c.id !== currentProduct.id && c._id !== currentProduct._id);
+            if (otherCourses.length > 0) {
+                setRecommendedProduct(
+                    otherCourses[Math.floor(Math.random() * otherCourses.length)]
                 );
-
-                setCourse(currentProduct);
-
-                // Set default selected duration (Recommended)
-                const options = getDurationOptions(currentProduct._id);
-                const recommended = options.find(o => o.recommended) || options[0];
-                setSelectedDuration(recommended);
-
-                const targetType =
-                    currentProduct.type === 'course' ? 'ebook' : 'course';
-
-                const pool =
-                    allProducts.filter(p => p.type === targetType).length > 0
-                        ? allProducts.filter(p => p.type === targetType)
-                        : allProducts;
-
-                if (pool.length > 0) {
-                    setRecommendedProduct(
-                        pool[Math.floor(Math.random() * pool.length)]
-                    );
-                }
-            } catch (err) {
-                console.error(err);
-                setError('Product not found or connection error.');
-            } finally {
-                setLoading(false);
             }
-        };
-
-        fetchData();
+            setLoading(false);
+        } else {
+            setError('Product not found.');
+            setLoading(false);
+        }
     }, [id]);
 
     const getCurrentPrice = () => {
@@ -149,12 +129,12 @@ const CourseDetails = () => {
 
 
     return (
-        <div className="py-12 lg:py-24 bg-bg-page min-h-screen selection:bg-accent/30 selection:text-white">
+        <div className="py-6 lg:py-12 bg-bg-page min-h-screen selection:bg-accent/30 selection:text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Back */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-16 font-black uppercase tracking-widest text-sm group"
+                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-8 md:mb-12 font-black uppercase tracking-widest text-sm group"
                 >
                     <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Programs
@@ -230,27 +210,27 @@ const CourseDetails = () => {
                         </div>
                     </div>
 
-                    <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">
+                    <div className="flex justify-between items-center bg-white/5 p-4 md:p-6 rounded-2xl border border-white/5 gap-2">
+                        <div className="flex flex-col min-w-0">
+                            <span className="text-[9px] font-black text-text-secondary uppercase tracking-widest opacity-60">
                                 {course.isLiveTest ? 'Test Investment' : 'Investment'}
                             </span>
-                            <div className="flex items-center gap-3">
-                                <div className="text-2xl font-black italic text-glow">
+                            <div className="flex items-center gap-2">
+                                <div className="text-xl md:text-2xl font-black italic text-glow whitespace-nowrap">
                                     ₹{getCurrentPrice().price.toLocaleString('en-IN')}
                                 </div>
-                                <div className="text-sm line-through text-white/30 font-bold decoration-accent/50">
+                                <div className="text-[10px] line-through text-white/20 font-bold decoration-accent/50 whitespace-nowrap">
                                     ₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}
                                 </div>
                             </div>
-                            <div className="text-accent text-[8px] font-black uppercase tracking-widest mt-1">
-                                Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')} Today
+                            <div className="text-accent text-[8px] font-black uppercase tracking-widest mt-0.5 whitespace-nowrap">
+                                Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')}
                             </div>
                         </div>
                         <button
                             disabled={course.slotInfo?.isSoldOut}
                             onClick={handleCheckout}
-                            className={`px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${course.slotInfo?.isSoldOut
+                            className={`px-4 py-2.5 md:px-8 md:py-4 rounded-xl font-black text-[10px] md:text-xs uppercase tracking-widest transition-all flex-shrink-0 ${course.slotInfo?.isSoldOut
                                 ? 'bg-white/10 text-white/40'
                                 : 'bg-accent text-white shadow-[0_0_30px_rgba(34,197,94,0.3)]'
                                 }`}

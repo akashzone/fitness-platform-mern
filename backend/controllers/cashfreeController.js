@@ -11,7 +11,7 @@ const { sendPurchaseConfirmationEmail } = require('../utils/sendEmail');
  */
 exports.createCashfreeOrder = async (req, res) => {
     try {
-        const { amount, name, email, phone, productId } = req.body;
+        const { amount, name, email, phone, productId, durationMonths } = req.body;
 
         const currentMonth = getCurrentMonth();
 
@@ -25,7 +25,7 @@ exports.createCashfreeOrder = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Course slots for this month are sold out!' });
         }
 
-        const product = await Product.findById(productId);
+        const product = await Product.findOne({ id: productId });
         const orderId = `order_${Date.now()}`;
 
         // 2. Create PENDING Order in MongoDB
@@ -34,9 +34,10 @@ exports.createCashfreeOrder = async (req, res) => {
             email,
             phone,
             products: product ? [{
-                productId: product._id,
+                productId: product.id,
                 title: product.title,
-                price: product.price,
+                duration: durationMonths ? `${durationMonths} Months` : product.duration,
+                price: amount, // Use requested amount (final price)
                 type: product.type
             }] : [],
             totalAmount: amount,
@@ -134,7 +135,7 @@ exports.verifyCashfreeOrder = async (req, res) => {
                     const primaryProductData = order.products[0];
                     if (!primaryProductData) return;
 
-                    const product = await Product.findById(primaryProductData.productId);
+                    const product = await Product.findOne({ id: primaryProductData.productId });
                     if (!product) {
                         console.error(`[Email Automation] Product ${primaryProductData.productId} not found for order ${orderId}`);
                         return;

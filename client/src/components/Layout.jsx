@@ -23,11 +23,11 @@ const Header = () => {
     return (
         <header className="glass fixed top-0 left-0 right-0 z-50 border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20">
+                <div className="flex justify-between items-center h-16 md:h-20">
                     {/* Left space for alignment */}
                     <div className="w-10 md:w-20 lg:block hidden" />
 
-                    <Link to="/" className="text-xl md:text-3xl font-black tracking-tighter text-text-primary uppercase group">
+                    <Link to="/" className="text-lg md:text-3xl font-black tracking-tighter text-text-primary uppercase group">
                         FITWITH<span className="text-accent italic group-hover:text-glow transition-all">PRAVINN</span>
                     </Link>
 
@@ -170,7 +170,7 @@ const VerticalScrollProgress = () => {
     return (
         <motion.div
             style={{ opacity }}
-            className="fixed left-6 md:left-12 top-1/2 -translate-y-1/2 h-64 md:h-80 w-10 flex flex-col items-center justify-between z-[100] hidden md:flex pointer-events-none"
+            className="fixed left-3 md:left-12 top-1/2 -translate-y-1/2 h-48 md:h-80 w-8 md:w-10 flex flex-col items-center justify-between z-[100] pointer-events-none"
         >
             {/* The Track Line */}
             <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-1 bg-white/10 overflow-hidden rounded-full">

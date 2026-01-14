@@ -34,61 +34,51 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         setCartItems(prevItems => {
-            const isCourse = product.type === 'course';
-
             // Business Rule: Courses should have duration info
             let finalProduct = { ...product };
-            if (isCourse) {
-                const options = getDurationOptions();
-                const recommended = options.find(o => o.recommended) || options[0];
+            const options = getDurationOptions();
+            const recommended = options.find(o => o.recommended) || options[0];
 
-                // If duration info is missing (e.g. from CourseCard), set defaults
-                if (!finalProduct.durationMonths) {
-                    finalProduct.durationMonths = recommended.months;
-                    finalProduct.basePrice = product.price; // Store original price
+            // If duration info is missing (e.g. from CourseCard), set defaults
+            if (!finalProduct.durationMonths) {
+                finalProduct.durationMonths = recommended.months;
+                finalProduct.basePrice = product.price; // Store original price
 
-                    if (product.isLiveTest) {
-                        finalProduct.price = 30;
-                        finalProduct.originalPrice = Math.round(30 * 1.2);
-                        finalProduct.displayPrice = 30;
-                    } else {
-                        finalProduct.price = Math.round(product.price * recommended.priceMultiplier);
-                        finalProduct.originalPrice = Math.round(product.price * recommended.originalPriceMultiplier);
-                        finalProduct.displayPrice = finalProduct.price;
-                    }
-                } else if (!finalProduct.basePrice) {
-                    // It came from CourseDetails with a specific duration
-                    // We need to figure out its base price to allow future changes
-                    if (product.isLiveTest) {
-                        finalProduct.basePrice = 30; // Conceptually
-                        finalProduct.price = 30;
-                        finalProduct.displayPrice = 30;
-                    } else {
-                        const currentOpt = options.find(o => o.months === finalProduct.durationMonths);
-                        finalProduct.basePrice = Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
-                        finalProduct.originalPrice = Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
-                    }
+                if (product.isLiveTest) {
+                    finalProduct.price = 30;
+                    finalProduct.originalPrice = Math.round(30 * 1.2);
+                    finalProduct.displayPrice = 30;
+                } else {
+                    finalProduct.price = Math.round(product.price * recommended.priceMultiplier);
+                    finalProduct.originalPrice = Math.round(product.price * recommended.originalPriceMultiplier);
+                    finalProduct.displayPrice = finalProduct.price;
                 }
-
-                finalProduct.durations = options;
-
-                const otherItems = prevItems.filter(item => item.type !== 'course');
-                return [...otherItems, finalProduct];
+            } else if (!finalProduct.basePrice) {
+                // It came from CourseDetails with a specific duration
+                if (product.isLiveTest) {
+                    finalProduct.basePrice = 30;
+                    finalProduct.price = 30;
+                    finalProduct.displayPrice = 30;
+                } else {
+                    const currentOpt = options.find(o => o.months === finalProduct.durationMonths);
+                    finalProduct.basePrice = Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
+                    finalProduct.originalPrice = Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
+                }
             }
 
-            // Ebooks: Multiple allowed, but avoid duplicates
-            if (prevItems.find(item => item._id === product._id)) {
-                return prevItems;
-            }
+            finalProduct.durations = options;
 
-            return [...prevItems, finalProduct];
+            // Business Rule: ONLY ONE COURSE ALLOWED IN CART
+            // (Ebooks removed, so cart effectively holds only one item now)
+            return [finalProduct];
         });
         setIsCartOpen(true);
     };
 
     const updateCartItemDuration = (productId, newMonths) => {
         setCartItems(prevItems => prevItems.map(item => {
-            if (item._id === productId && item.type === 'course') {
+            const isMatch = item.id === productId || item._id === productId;
+            if (isMatch) {
                 const options = getDurationOptions();
                 const newOpt = options.find(o => o.months === newMonths);
                 if (newOpt) {
@@ -116,7 +106,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeFromCart = (productId) => {
-        setCartItems(prevItems => prevItems.filter(item => item._id !== productId));
+        setCartItems(prevItems => prevItems.filter(item => item.id !== productId && item._id !== productId));
     };
 
     const clearCart = () => {

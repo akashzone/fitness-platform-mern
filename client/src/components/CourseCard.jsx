@@ -5,8 +5,7 @@ import StarRating from './StarRating';
 
 const CourseCard = ({ course, isSoldOut }) => {
     const { addToCart } = useCart();
-    const isEbook = course.type === 'ebook';
-    const showSoldOut = !isEbook && isSoldOut;
+    const showSoldOut = isSoldOut;
 
     return (
         <div className={`glass-card rounded-2xl md:rounded-[2rem] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 group flex flex-col h-full border border-white/5 hover:border-accent/30 ${showSoldOut ? 'opacity-70 grayscale pointer-events-none' : ''}`}>
@@ -52,7 +51,7 @@ const CourseCard = ({ course, isSoldOut }) => {
 
                 <div className="mt-auto w-full grid grid-cols-2 gap-2 md:gap-4 relative z-20">
                     <Link
-                        to={showSoldOut ? '#' : `/course/${course._id}`}
+                        to={showSoldOut ? '#' : `/course/${course.id || course._id}`}
                         className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all border border-white/10 text-white text-[10px] md:text-xs uppercase tracking-widest hover:bg-white/5 ${showSoldOut ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                         {showSoldOut ? 'Wait' : 'Details'}

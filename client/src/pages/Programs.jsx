@@ -1,49 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import api from '../utils/api';
+import { courses } from '../data/courses';
 import CourseCard from '../components/CourseCard';
 import Reveal from '../components/motion/Reveal';
 import CinematicTicker from '../components/motion/CinematicTicker';
 import { ArrowLeft, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
-import SkeletonCard from '../components/SkeletonCard';
 
 const Programs = () => {
     const navigate = useNavigate();
-    const [data, setData] = useState({ products: [], slotInfo: null });
+    const [slotInfo, setSlotInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const cachedData = localStorage.getItem('fitness_programs_cache');
-        if (cachedData) {
-            try {
-                setData(JSON.parse(cachedData));
-                setLoading(false);
-            } catch (e) {
-                console.error('Failed to parse cached data');
-            }
-        }
-
-        const fetchPrograms = async () => {
+        const fetchSlotInfo = async () => {
             try {
                 const response = await api.get('/products');
-                setData(response.data);
-                localStorage.setItem('fitness_programs_cache', JSON.stringify(response.data));
+                setSlotInfo(response.data.slotInfo);
             } catch (err) {
-                if (!cachedData) {
-                    setError('Failed to load programs. Please check your connection.');
-                }
-                console.error(err);
+                console.error('Slot Info Load Error:', err);
+                // We don't block the UI if slot info fails
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchPrograms();
+        fetchSlotInfo();
     }, []);
-
-    // No full screen loader here anymore, we use skeleton UI below
 
     if (error) {
         return (
@@ -60,9 +44,7 @@ const Programs = () => {
         );
     }
 
-    const courses = data.products.filter(p => p.type === 'course');
-    const ebooks = data.products.filter(p => p.type === 'ebook');
-    const isSoldOut = data.slotInfo?.isSoldOut;
+    const isSoldOut = slotInfo?.isSoldOut;
 
     return (
         <div className="bg-bg-page pt-24 pb-20 md:pt-32 md:pb-40">
@@ -76,9 +58,9 @@ const Programs = () => {
                 </button>
 
                 {/* Cinematic Slot Tracker */}
-                {data.slotInfo && (
+                {slotInfo && (
                     <CinematicTicker
-                        text={`Current Availability: ${data.slotInfo.slotsLeft} / 20 SLOTS REMAINING — SECURE YOUR ELITE TRAINING SPOT — `}
+                        text={`Current Availability: ${slotInfo.slotsLeft} / 20 SLOTS REMAINING — SECURE YOUR ELITE TRAINING SPOT — `}
                         speed={30}
                     />
                 )}
@@ -93,37 +75,11 @@ const Programs = () => {
                         </div>
                     </Reveal>
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
-                        {loading && !data.products.length ? (
-                            [1, 2, 3, 4].map(i => <SkeletonCard key={i} />)
-                        ) : (
-                            courses.map((course, index) => (
-                                <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                    <CourseCard course={course} isSoldOut={isSoldOut} />
-                                </Reveal>
-                            ))
-                        )}
-                    </div>
-                </div>
-
-                {/* E-books - Priority 2 */}
-                <div>
-                    <Reveal className="mb-12">
-                        <div className="flex items-end justify-between border-l-4 border-accent pl-6">
-                            <h2 className="text-3xl md:text-4xl font-black text-text-primary uppercase tracking-wider">
-                                Elite <span className="text-accent">E-Books</span>
-                            </h2>
-                        </div>
-                    </Reveal>
-                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3 md:gap-10 max-w-5xl">
-                        {loading && !data.products.length ? (
-                            [1, 2].map(i => <SkeletonCard key={i} />)
-                        ) : (
-                            ebooks.map((ebook, index) => (
-                                <Reveal key={ebook._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                    <CourseCard course={ebook} />
-                                </Reveal>
-                            ))
-                        )}
+                        {courses.map((course, index) => (
+                            <Reveal key={course.id} delay={index * 0.1} scale={0.9} y={40} width="100%">
+                                <CourseCard course={course} isSoldOut={isSoldOut} />
+                            </Reveal>
+                        ))}
                     </div>
                 </div>
             </div>
