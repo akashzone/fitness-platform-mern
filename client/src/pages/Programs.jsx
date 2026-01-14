@@ -62,7 +62,7 @@ const Programs = () => {
                 {slotInfo && (
                     <CinematicTicker
                         text={`Current Availability: ${slotInfo.slotsLeft} / 20 SLOTS REMAINING — SECURE YOUR ELITE TRAINING SPOT — `}
-                        speed={30}
+                        speed={window.innerWidth < 768 ? 12 : 20}
                     />
                 )}
 

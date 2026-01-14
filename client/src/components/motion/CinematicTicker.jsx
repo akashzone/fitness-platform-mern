@@ -19,24 +19,25 @@ const CinematicTicker = ({ text, speed = 25 }) => {
                     ease: "linear",
                 }}
             >
-                {/* Double the content to ensure seamless wrapping */}
-                {[...Array(20)].map((_, i) => (
+                {/* 12 items ensure screen is always filled even on large displays */}
+                {[...Array(12)].map((_, i) => (
                     <span
                         key={i}
-                        className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white/20 mx-8 italic flex items-center gap-8 shrink-0"
+                        className="text-2xl md:text-5xl font-black uppercase tracking-tighter text-white/20 mx-4 md:mx-8 italic flex items-center gap-4 md:gap-8 shrink-0"
                         style={{
-                            filter: 'blur(0.8px)', // Subtle cinematic motion blur
+                            // Remove blur on mobile for GPU performance
+                            filter: window.innerWidth < 768 ? 'none' : 'blur(0.8px)',
                             transition: 'filter 0.3s ease'
                         }}
                     >
                         {text}
-                        <span className="w-12 h-[2px] bg-accent/30 rounded-full" />
+                        <span className="w-6 md:w-12 h-[2px] bg-accent/30 rounded-full" />
                     </span>
                 ))}
             </motion.div>
 
-            {/* Decorative Overlay for extra depth */}
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(0,255,136,0.1),transparent_70%)]" />
+            {/* Decorative Overlay for extra depth - Hidden on mobile if needed for perf */}
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(0,255,136,0.1),transparent_70%)] hidden md:block" />
         </div>
     );
 };

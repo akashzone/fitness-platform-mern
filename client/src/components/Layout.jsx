@@ -163,7 +163,7 @@ const Layout = ({ children }) => {
             <main className="flex-grow pt-20">
                 {children}
             </main>
-            <Footer ref={footerRef} />
+            {!isAdmin && <Footer ref={footerRef} />}
 
             {/* WhatsApp & Back to Top Buttons - Hidden on Admin Pages */}
             {!isAdmin && (

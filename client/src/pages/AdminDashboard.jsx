@@ -79,12 +79,12 @@ const AdminDashboard = () => {
     }
 
     return (
-        <div className="min-h-screen bg-bg-page py-12 lg:py-24 px-4 sm:px-6 lg:px-8 font-sans">
+        <div className="min-h-screen bg-bg-page pt-8 pb-12 lg:py-24 px-4 sm:px-6 lg:px-8 font-sans">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-8 mb-8 md:mb-16">
                     <Reveal>
                         <div className="space-y-2">
-                            <h1 className="text-4xl md:text-5xl font-black text-text-primary uppercase tracking-tighter italic text-glow-subtle">
+                            <h1 className="text-2xl md:text-5xl font-black text-text-primary uppercase tracking-tighter italic text-glow-subtle">
                                 Order <span className="text-accent">Control</span>
                             </h1>
                             <p className="text-text-secondary text-sm font-black uppercase tracking-[0.3em] opacity-60">
@@ -141,53 +141,53 @@ const AdminDashboard = () => {
 
                 {summary && (
                     <Reveal>
-                        <div className="glass-card mb-12 rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl">
+                        <div className="glass-card mb-6 md:mb-12 rounded-xl md:rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl">
                             <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/5">
                                 {/* Total Orders */}
-                                <div className="p-8 space-y-3">
+                                <div className="p-3 md:p-8 space-y-1 md:space-y-3">
                                     <p className="text-text-secondary text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Total Orders</p>
                                     <div className="flex items-center space-x-3">
-                                        <div className="p-2.5 bg-accent/10 rounded-lg">
+                                        <div className="p-1.5 md:p-2.5 bg-accent/10 rounded-lg">
                                             <Package size={18} className="text-accent" />
                                         </div>
-                                        <h3 className="text-3xl font-black text-white italic">{summary.totalOrders}</h3>
+                                        <h3 className="text-xl md:text-3xl font-black text-white italic">{summary.totalOrders}</h3>
                                     </div>
                                 </div>
 
                                 {/* Total Revenue */}
-                                <div className="p-8 space-y-3">
+                                <div className="p-3 md:p-8 space-y-1 md:space-y-3">
                                     <p className="text-text-secondary text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Total Revenue</p>
                                     <div className="flex items-center space-x-3">
-                                        <div className="p-2.5 bg-accent text-white rounded-lg shadow-[0_0_15px_rgba(34,197,94,0.3)]">
+                                        <div className="p-1.5 md:p-2.5 bg-accent text-white rounded-lg shadow-[0_0_15px_rgba(34,197,94,0.3)]">
                                             <IndianRupee size={18} />
                                         </div>
-                                        <h3 className="text-3xl font-black text-accent italic tracking-tighter">
+                                        <h3 className="text-lg md:text-3xl font-black text-accent italic tracking-tighter">
                                             {summary.totalRevenue.toLocaleString('en-IN')}
                                         </h3>
                                     </div>
                                 </div>
 
                                 {/* Course Sales */}
-                                <div className="p-8 space-y-3">
+                                <div className="p-3 md:p-8 space-y-1 md:space-y-3">
                                     <p className="text-text-secondary text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Course Sales</p>
                                     <div className="flex items-center space-x-3">
-                                        <div className="p-2.5 bg-white/5 rounded-lg border border-white/5">
+                                        <div className="p-1.5 md:p-2.5 bg-white/5 rounded-lg border border-white/5">
                                             <User size={18} className="text-white/40" />
                                         </div>
-                                        <h3 className="text-3xl font-black text-white italic tracking-tighter">
+                                        <h3 className="text-lg md:text-3xl font-black text-white italic tracking-tighter">
                                             {summary.courseRevenue.toLocaleString('en-IN')}
                                         </h3>
                                     </div>
                                 </div>
 
                                 {/* Ebook Sales */}
-                                <div className="p-8 space-y-3">
+                                <div className="p-3 md:p-8 space-y-1 md:space-y-3">
                                     <p className="text-text-secondary text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Ebook Sales</p>
                                     <div className="flex items-center space-x-3">
-                                        <div className="p-2.5 bg-white/5 rounded-lg border border-white/5">
+                                        <div className="p-1.5 md:p-2.5 bg-white/5 rounded-lg border border-white/5">
                                             <Package size={18} className="text-white/40" />
                                         </div>
-                                        <h3 className="text-3xl font-black text-white italic tracking-tighter">
+                                        <h3 className="text-lg md:text-3xl font-black text-white italic tracking-tighter">
                                             {summary.ebookRevenue.toLocaleString('en-IN')}
                                         </h3>
                                     </div>
