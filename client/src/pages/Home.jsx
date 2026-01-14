@@ -52,7 +52,7 @@ const Home = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-bg-page/20 to-transparent" />
                 </motion.div>
 
-                <div className="relative z-10 max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
                     <div className="max-w-4xl">
                         <Reveal delay={0.1} width="100%">
                             <div className="w-full flex justify-center pt-8">
@@ -96,7 +96,7 @@ const Home = () => {
             {/* About Section */}
             <section id="about" className="py-20 lg:py-40 bg-surface relative overflow-hidden">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
-                <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                         <Reveal x={-50} duration={0.8} width="100%">
                             <span className="lg:hidden text-accent font-black uppercase tracking-[0.4em] text-sm mb-6 block">The Coach</span>
@@ -157,7 +157,7 @@ const Home = () => {
 
             {/* Courses Section */}
             <section id="courses" className="py-40 bg-bg-page relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Reveal className="text-center mb-32 max-w-4xl mx-auto">
                         <span className="text-accent font-black uppercase tracking-[0.4em] text-sm md:text-base">Elite Programs</span>
                         <h2 className="text-5xl md:text-8xl font-black mt-6 mb-8 text-text-primary tracking-tighter uppercase leading-[0.9]">Master Your Physique</h2>
@@ -178,7 +178,7 @@ const Home = () => {
             {/* Testimonials Section */}
             <section className="py-40 bg-surface border-y border-white/5 relative overflow-hidden">
                 <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 blur-[150px] rounded-full pointer-events-none" />
-                <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                         <Reveal x={-30}>
                             <div className="space-y-12">

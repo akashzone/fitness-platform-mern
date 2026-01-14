@@ -61,7 +61,7 @@ const Header = () => {
     );
 };
 
-const Footer = () => {
+const Footer = React.forwardRef((props, ref) => {
     const [feedback, setFeedback] = React.useState('');
 
     const handleFeedbackSubmit = (e) => {
@@ -74,8 +74,8 @@ const Footer = () => {
     };
 
     return (
-        <footer className="bg-surface border-t border-white/5 py-24 text-text-secondary">
-            <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
+        <footer ref={ref} className="bg-surface border-t border-white/5 py-24 text-text-secondary">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-20 items-start text-center md:text-left">
                     <div>
                         <Link to="/" className="flex items-center space-x-4 justify-center md:justify-start">
@@ -144,39 +144,81 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
+});
 
-const VerticalScrollProgress = () => {
+const VerticalScrollProgress = ({ footerRef }) => {
     const location = useLocation();
     const isHome = location.pathname === '/';
-    const { scrollYProgress } = useScroll();
-
-    // Track from ~15% (About start) to 100%
-    const scrollYDelayed = useTransform(scrollYProgress, [0.15, 1], [0, 1]);
-    const scaleY = useSpring(scrollYDelayed, {
+    const [progress, setProgress] = React.useState(0);
+    const springProgress = useSpring(progress, {
         stiffness: 100,
         damping: 30,
         restDelta: 0.001
     });
 
-    // Fade in the timeline when we reach the about section - hidden on Hero
-    const opacity = useTransform(scrollYProgress, [0.12, 0.15], [0, 1]);
+    React.useEffect(() => {
+        if (!isHome) return;
 
-    // For the moving dot position
-    const dotY = useTransform(scrollYDelayed, [0, 1], ["0%", "100%"]);
+        const updateProgress = () => {
+            if (!footerRef.current) return;
+
+            const scrollY = window.scrollY;
+            const viewportHeight = window.innerHeight;
+            const totalHeight = document.documentElement.scrollHeight;
+            const footerTop = footerRef.current.offsetTop;
+
+            // We want the progress to be 0 at the start of the page
+            // and 1 exactly when we reach the bottom of the page (which is the bottom of the footer)
+            // The maximum scrollable value is totalHeight - viewportHeight
+            const maxScroll = totalHeight - viewportHeight;
+
+            if (maxScroll <= 0) {
+                setProgress(1);
+                return;
+            }
+
+            // Define the range: 
+            // Start filling after Hero (~15% of page or fixed pixel value)
+            // Hard stop at 1.0 at maxScroll
+            const startThreshold = totalHeight * 0.15;
+
+            let p = 0;
+            if (scrollY > startThreshold) {
+                p = (scrollY - startThreshold) / (maxScroll - startThreshold);
+            }
+
+            setProgress(Math.min(1, Math.max(0, p)));
+        };
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress);
+        window.addEventListener('orientationchange', updateProgress);
+
+        // Initial call
+        updateProgress();
+
+        return () => {
+            window.removeEventListener('scroll', updateProgress);
+            window.removeEventListener('resize', updateProgress);
+            window.removeEventListener('orientationchange', updateProgress);
+        };
+    }, [isHome, footerRef]);
+
+    const opacity = useSpring(progress > 0 ? 1 : 0);
+    const dotY = useTransform(springProgress, [0, 1], ["0%", "100%"]);
 
     if (!isHome) return null;
 
     return (
         <motion.div
-            style={{ opacity }}
+            style={{ opacity: progress > 0.01 ? 1 : 0 }}
             className="fixed left-2 md:left-12 top-1/2 -translate-y-1/2 h-[70vh] md:h-[60vh] w-8 md:w-10 flex flex-col items-center justify-between z-[100] pointer-events-none"
         >
             {/* The Track Line */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-1 bg-white/10 overflow-hidden rounded-full">
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-white/10 overflow-hidden rounded-full">
                 <motion.div
                     className="w-full bg-accent origin-top shadow-[0_0_15px_rgba(34,197,94,0.5)]"
-                    style={{ scaleY, height: '100%' }}
+                    style={{ scaleY: springProgress, height: '100%' }}
                 />
             </div>
 
@@ -190,8 +232,8 @@ const VerticalScrollProgress = () => {
 
             {/* Moving Glowing Dot */}
             <motion.div
-                className="absolute left-1/2 -translate-x-1/2 w-5 h-5 bg-accent rounded-full shadow-[0_0_20px_rgba(34,197,94,0.8)] z-20 flex items-center justify-center"
-                style={{ top: dotY }}
+                className="absolute left-1/2 w-5 h-5 bg-accent rounded-full shadow-[0_0_20px_rgba(34,197,94,0.8)] z-20 flex items-center justify-center"
+                style={{ top: dotY, x: "-50%", y: "-50%" }}
             >
                 <div className="w-2.5 h-2.5 bg-white rounded-full opacity-50" />
             </motion.div>
@@ -202,17 +244,20 @@ const VerticalScrollProgress = () => {
 const Layout = ({ children }) => {
     const location = useLocation();
     const isAdmin = location.pathname.startsWith('/admin');
+    const footerRef = React.useRef(null);
 
     return (
-        <div className="min-h-screen flex flex-col bg-bg-page text-text-primary font-sans selection:bg-accent/30 selection:text-white">
+        <div
+            className="min-h-screen flex flex-col bg-bg-page text-text-primary font-sans selection:bg-accent/30 selection:text-white"
+        >
             <CustomCursor />
             <Header />
             {!isAdmin && <CartDrawer />}
-            <VerticalScrollProgress />
+            <VerticalScrollProgress footerRef={footerRef} />
             <main className="flex-grow pt-20">
                 {children}
             </main>
-            <Footer />
+            <Footer ref={footerRef} />
 
             {/* WhatsApp & Back to Top Buttons - Hidden on Admin Pages */}
             {!isAdmin && (

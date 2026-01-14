@@ -79,3 +79,45 @@ body {
 .overlay-cinematic {
   background: linear-gradient(to top, rgba(11, 15, 20, 0.9) 0%, rgba(11, 15, 20, 0.4) 50%, rgba(11, 15, 20, 0) 100%);
 }
+
+/* Pricing Utilities */
+.price-original {
+  font-size: clamp(0.7rem, 0.75vw, 1.1rem);
+  font-weight: 700;
+  color: var(--color-accent);
+  /* Match discount price theme */
+  opacity: 0.8;
+  position: relative;
+  display: inline-block;
+  padding: 0 6px;
+}
+
+.price-original::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  height: 2px;
+  background: var(--color-accent);
+  opacity: 1;
+  transform: rotate(-10deg);
+}
+
+.price-final {
+  font-size: clamp(1.1rem, 1.6vw, 2.2rem);
+  font-weight: 950;
+  font-style: italic;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.pricing-badge-label {
+  font-size: clamp(0.5rem, 0.5vw, 0.7rem);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-weight: 900;
+  opacity: 0.5;
+  margin-bottom: 4px;
+}

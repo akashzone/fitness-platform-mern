@@ -47,7 +47,7 @@ const Programs = () => {
     const isSoldOut = slotInfo?.isSoldOut;
 
     return (
-        <div className="bg-bg-page pt-24 pb-20 md:pt-32 md:pb-40">
+        <div className="bg-bg-page pt-8 pb-10 md:pt-12 md:pb-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <button
                     onClick={() => navigate('/')}
@@ -66,7 +66,7 @@ const Programs = () => {
                 )}
 
                 {/* Training Programs - Priority 1 */}
-                <div className="mb-32">
+                <div className="mb-12">
                     <Reveal className="mb-12">
                         <div className="flex items-end justify-between border-l-4 border-accent pl-6">
                             <h2 className="text-3xl md:text-4xl font-black text-text-primary uppercase tracking-wider">
