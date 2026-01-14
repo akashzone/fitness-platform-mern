@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { courses } from '../data/courses';
+import api from '../utils/api';
 import CourseCard from '../components/CourseCard';
 import Reveal from '../components/motion/Reveal';
 import CinematicTicker from '../components/motion/CinematicTicker';
