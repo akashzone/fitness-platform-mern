@@ -189,14 +189,14 @@ const Home = () => {
                                         Pravin's approach to science-based training completely changed how I look at fitness. It's not about working harder, it's about working smarter.
                                     </p>
                                 </div>
-                                <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-6 md:gap-16">
+                                <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-2 md:gap-16">
                                     <div className="group">
                                         <div className="text-3xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">10K+</div>
-                                        <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-3 tracking-[0.2em] opacity-60">Lives Impacted</div>
+                                        <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-2 tracking-[0.2em] opacity-60">Lives Impacted</div>
                                     </div>
                                     <div className="group">
                                         <div className="text-3xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">4.9/5</div>
-                                        <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-3 tracking-[0.2em] opacity-60">Satisfaction</div>
+                                        <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-2 tracking-[0.2em] opacity-60">Satisfaction</div>
                                     </div>
                                 </div>
                             </div>

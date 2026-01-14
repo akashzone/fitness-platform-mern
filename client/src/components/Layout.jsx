@@ -75,7 +75,7 @@ const Footer = () => {
 
     return (
         <footer className="bg-surface border-t border-white/5 py-24 text-text-secondary">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-20 items-start text-center md:text-left">
                     <div>
                         <Link to="/" className="flex items-center space-x-4 justify-center md:justify-start">
@@ -84,7 +84,7 @@ const Footer = () => {
                                 FITWITH<span className="text-accent italic">PRAVINN</span>
                             </span>
                         </Link>
-                        <p className="mt-8 text-text-secondary text-base leading-relaxed max-w-sm font-medium">
+                        <p className="mt-8 text-text-secondary text-sm md:text-base leading-relaxed max-w-sm font-medium">
                             Elite fitness educator, transformation coach, and lifestyle influencer based in Mumbai. Dedicated to making self-improvement simple and achievable.
                         </p>
                     </div>
@@ -94,15 +94,15 @@ const Footer = () => {
                         <div className="flex items-start justify-center md:justify-start space-x-4 group">
                             <Mail size={20} className="text-accent mt-1" />
                             <div className="flex flex-col">
-                                <span className="text-text-primary font-bold text-sm uppercase tracking-widest mb-1 font-sans">Business Email</span>
-                                <span className="font-semibold group-hover:text-text-primary transition-colors">fitwithpravinn.com</span>
+                                <span className="text-text-primary font-bold text-[10px] md:text-sm uppercase tracking-widest mb-1 font-sans">Business Email</span>
+                                <span className="font-semibold text-sm md:text-base group-hover:text-text-primary transition-colors">fitwithpravinn.com</span>
                             </div>
                         </div>
 
                         {/* Feedback Input Section */}
                         <div className="flex flex-col space-y-3 pt-4 border-t border-white/5">
                             <div className="flex items-center space-x-2 justify-center md:justify-start">
-                                <span className="text-text-primary font-bold text-sm uppercase tracking-widest">Feedback</span>
+                                <span className="text-text-primary font-bold text-[10px] md:text-sm uppercase tracking-widest">Feedback</span>
                             </div>
                             <form onSubmit={handleFeedbackSubmit} className="max-w-xs mx-auto md:mx-0 flex flex-col gap-3">
                                 <textarea
@@ -151,16 +151,16 @@ const VerticalScrollProgress = () => {
     const isHome = location.pathname === '/';
     const { scrollYProgress } = useScroll();
 
-    // Track from ~8% (About start) to 100%
-    const scrollYDelayed = useTransform(scrollYProgress, [0.08, 1], [0, 1]);
+    // Track from ~15% (About start) to 100%
+    const scrollYDelayed = useTransform(scrollYProgress, [0.15, 1], [0, 1]);
     const scaleY = useSpring(scrollYDelayed, {
         stiffness: 100,
         damping: 30,
         restDelta: 0.001
     });
 
-    // Fade in the timeline when we reach the about section
-    const opacity = useTransform(scrollYProgress, [0.05, 0.08], [0, 1]);
+    // Fade in the timeline when we reach the about section - hidden on Hero
+    const opacity = useTransform(scrollYProgress, [0.12, 0.15], [0, 1]);
 
     // For the moving dot position
     const dotY = useTransform(scrollYDelayed, [0, 1], ["0%", "100%"]);
@@ -170,7 +170,7 @@ const VerticalScrollProgress = () => {
     return (
         <motion.div
             style={{ opacity }}
-            className="fixed left-2 md:left-12 top-1/2 -translate-y-1/2 h-48 md:h-80 w-8 md:w-10 flex flex-col items-center justify-between z-[100] pointer-events-none"
+            className="fixed left-2 md:left-12 top-1/2 -translate-y-1/2 h-[70vh] md:h-[60vh] w-8 md:w-10 flex flex-col items-center justify-between z-[100] pointer-events-none"
         >
             {/* The Track Line */}
             <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-1 bg-white/10 overflow-hidden rounded-full">
