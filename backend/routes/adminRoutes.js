@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
+const Admin = require('../models/Admin');
 const Order = require('../models/Order');
+const MonthlySlot = require('../models/MonthlySlot');
+const getCurrentMonth = require('../utils/getCurrentMonth');
 
 // Middleware to protect routes
 const auth = async (req, res, next) => {
@@ -97,6 +100,26 @@ router.get('/analytics', auth, async (req, res) => {
                 period: period || 'all'
             }
         });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// @desc    Reset monthly slots
+// @route   POST /api/admin/reset-slots
+router.post('/reset-slots', auth, async (req, res) => {
+    try {
+        const currentMonth = getCurrentMonth();
+        let slotInfo = await MonthlySlot.findOne({ month: currentMonth });
+
+        if (!slotInfo) {
+            slotInfo = await MonthlySlot.create({ month: currentMonth, usedSlots: 0 });
+        } else {
+            slotInfo.usedSlots = 0;
+            await slotInfo.save();
+        }
+
+        res.json({ success: true, message: 'Monthly slots reset successfully for ' + currentMonth });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error' });
     }

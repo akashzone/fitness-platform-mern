@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
-import { Loader2, Package, Calendar, Phone, Mail, User, IndianRupee, ChevronDown } from 'lucide-react';
+import { Loader2, Package, Calendar, Phone, Mail, User, IndianRupee, ChevronDown, RefreshCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Reveal from '../components/motion/Reveal';
 
@@ -52,6 +52,25 @@ const AdminDashboard = () => {
     const handleLogout = () => {
         localStorage.removeItem('adminToken');
         navigate('/admin/login');
+    };
+
+    const handleResetSlots = async () => {
+        if (!window.confirm("Are you sure you want to reset the monthly slots? This action cannot be undone.")) {
+            return;
+        }
+
+        const token = localStorage.getItem('adminToken');
+        try {
+            const res = await api.post('/admin/reset-slots', {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            alert(res.data.message);
+            // Optionally refresh dashboard data if slots info was displayed there, 
+            // but currently it shows orders/revenues.
+        } catch (err) {
+            console.error('Reset slots error:', err);
+            alert('Failed to reset monthly slots.');
+        }
     };
 
     const handlePeriodChange = (e) => {
@@ -129,6 +148,14 @@ const AdminDashboard = () => {
                                 )}
                             </AnimatePresence>
                         </div>
+
+                        <button
+                            onClick={handleResetSlots}
+                            className="bg-red-500/10 hover:bg-red-500/20 text-red-500 px-6 py-3 rounded-xl font-black uppercase text-xs tracking-[0.1em] border border-red-500/20 transition-all shadow-xl flex items-center gap-2"
+                        >
+                            <RefreshCcw size={14} />
+                            <span>Reset Slots</span>
+                        </button>
 
                         <button
                             onClick={handleLogout}
