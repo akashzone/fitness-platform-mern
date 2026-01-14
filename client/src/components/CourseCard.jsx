@@ -42,7 +42,7 @@ const CourseCard = ({ course, isSoldOut }) => {
                 <div className="mb-2 md:mb-6">
                     <StarRating rating={course.rating || 4.9} />
                 </div>
-                <h3 className="text-xs md:text-2xl lg:text-2xl font-black mb-1 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.1] tracking-tight uppercase break-words hyphens-auto w-full">
+                <h3 className="text-[10px] md:text-2xl lg:text-2xl font-black mb-1 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.1] tracking-tight uppercase break-words hyphens-auto w-full">
                     {course.title}
                 </h3>
                 <p className="text-text-secondary text-[10px] md:text-base mb-3 md:mb-10 line-clamp-2 md:line-clamp-3 leading-relaxed font-medium opacity-80">

@@ -52,7 +52,7 @@ const Home = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-bg-page/20 to-transparent" />
                 </motion.div>
 
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+                <div className="relative z-10 max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8 text-center flex flex-col items-center">
                     <div className="max-w-4xl">
                         <Reveal delay={0.1} width="100%">
                             <div className="w-full flex justify-center pt-8">
@@ -63,7 +63,7 @@ const Home = () => {
                             </div>
                         </Reveal>
 
-                        <h1 className="text-3xl md:text-6xl font-black tracking-tighter text-text-primary mb-6 leading-[1.1] uppercase flex flex-col items-center gap-2">
+                        <h1 className="text-2xl md:text-6xl font-black tracking-tighter text-text-primary mb-6 leading-[1.1] uppercase flex flex-col items-center gap-2">
                             <span>DISCIPLINE</span>
                             <span className="text-accent italic text-glow">OVER</span>
                             <span className="text-accent italic text-glow">MOTIVATION</span>
@@ -96,7 +96,7 @@ const Home = () => {
             {/* About Section */}
             <section id="about" className="py-20 lg:py-40 bg-surface relative overflow-hidden">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                         <Reveal x={-50} duration={0.8} width="100%">
                             <span className="lg:hidden text-accent font-black uppercase tracking-[0.4em] text-sm mb-6 block">The Coach</span>
@@ -120,26 +120,21 @@ const Home = () => {
                             <Reveal delay={0.2}>
                                 <div className="max-w-xl">
                                     <span className="hidden lg:block text-accent font-black uppercase tracking-[0.4em] text-sm">The Coach</span>
-                                    <h2 className="text-5xl md:text-6xl font-black mt-6 mb-10 text-text-primary tracking-tighter leading-tight">
-                                        About <br /> <span className="text-accent italic whitespace-nowrap">Pravin Kumar</span>
+                                    <h2 className="text-3xl md:text-6xl font-black mt-6 mb-10 text-text-primary tracking-tighter leading-tight">
+                                        About <br /> <span className="text-accent italic">Pravin Kumar</span>
                                     </h2>
                                 </div>
                             </Reveal>
 
                             <Reveal delay={0.4} staggerChildren={0.2}>
-                                <div className="space-y-8 text-text-secondary text-lg md:text-xl leading-relaxed font-medium">
+                                <div className="space-y-8 text-text-secondary text-base md:text-xl leading-relaxed font-medium">
                                     <p className="hover:text-text-primary transition-colors cursor-default">
                                         Praveen Kumar, widely known as <span className="text-text-primary font-bold">FitWithPravinn</span>, is a Mumbai-based fitness educator, transformation coach, and lifestyle influencer. His mission is to make self-improvement simple, practical, and achievable for everyone.
                                     </p>
                                     <p className="hover:text-text-primary transition-colors cursor-default">
                                         Through Instagram, YouTube, and Snapchat, Praveen shares science-based workouts, nutrition guidance, and disciplined lifestyle habits that help people transform their bodies and mindset.
                                     </p>
-                                    <p className="hover:text-text-primary transition-colors cursor-default">
-                                        Along with inspiring thousands online, Praveen also provides 1:1 Personal Training and works with leading fitness brands to bring high-quality coaching to his community.
-                                    </p>
-                                    <p className="hover:text-text-primary transition-colors cursor-default">
-                                        Here, you will find structured fitness courses, coaching programs, and resources designed to help you build confidence, strength, and long-term lifestyle discipline.
-                                    </p>
+
                                 </div>
                             </Reveal>
 
@@ -161,8 +156,8 @@ const Home = () => {
             </section>
 
             {/* Courses Section */}
-            <section id="courses" className="py-40 bg-bg-page">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section id="courses" className="py-40 bg-bg-page relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
                     <Reveal className="text-center mb-32 max-w-4xl mx-auto">
                         <span className="text-accent font-black uppercase tracking-[0.4em] text-sm md:text-base">Elite Programs</span>
                         <h2 className="text-5xl md:text-8xl font-black mt-6 mb-8 text-text-primary tracking-tighter uppercase leading-[0.9]">Master Your Physique</h2>
@@ -183,25 +178,25 @@ const Home = () => {
             {/* Testimonials Section */}
             <section className="py-40 bg-surface border-y border-white/5 relative overflow-hidden">
                 <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 blur-[150px] rounded-full pointer-events-none" />
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 pl-10 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                         <Reveal x={-30}>
                             <div className="space-y-12">
                                 <div>
-                                    <span className="text-accent font-black uppercase tracking-[0.4em] text-sm">Success Stories</span>
-                                    <h2 className="text-5xl md:text-8xl font-black mt-6 mb-10 text-text-primary tracking-tighter">Proven <br />Results.</h2>
-                                    <p className="text-text-secondary text-2xl font-medium leading-relaxed italic before:content-['“'] after:content-['”'] opacity-80">
+                                    <span className="text-accent font-black uppercase tracking-[0.4em] text-xs">Success Stories</span>
+                                    <h2 className="text-4xl md:text-8xl font-black mt-6 mb-10 text-text-primary tracking-tighter uppercase leading-[0.9]">Proven <br />Results.</h2>
+                                    <p className="text-text-secondary text-base md:text-2xl font-medium leading-relaxed italic before:content-['“'] after:content-['”'] opacity-80">
                                         Pravin's approach to science-based training completely changed how I look at fitness. It's not about working harder, it's about working smarter.
                                     </p>
                                 </div>
-                                <div className="flex flex-wrap items-center gap-10 md:gap-16">
+                                <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-6 md:gap-16">
                                     <div className="group">
-                                        <div className="text-4xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">10K+</div>
-                                        <div className="text-text-secondary text-xs font-black uppercase mt-3 tracking-[0.2em] opacity-60">Lives Impacted</div>
+                                        <div className="text-3xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">10K+</div>
+                                        <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-3 tracking-[0.2em] opacity-60">Lives Impacted</div>
                                     </div>
                                     <div className="group">
-                                        <div className="text-4xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">4.9/5</div>
-                                        <div className="text-text-secondary text-xs font-black uppercase mt-3 tracking-[0.2em] opacity-60">Satisfaction</div>
+                                        <div className="text-3xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">4.9/5</div>
+                                        <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-3 tracking-[0.2em] opacity-60">Satisfaction</div>
                                     </div>
                                 </div>
                             </div>
