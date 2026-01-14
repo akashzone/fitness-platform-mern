@@ -28,10 +28,12 @@ const CourseCard = ({ course, isSoldOut }) => {
                 )}
 
                 <div className="absolute top-2 left-2 md:top-6 md:left-6 glass px-3 py-1.5 md:px-6 md:py-3 rounded-lg md:rounded-2xl flex flex-col items-center shadow-2xl border-white/10 group-hover:border-accent/20 transition-all">
-                    <span className="text-[6px] md:text-[8px] uppercase tracking-widest opacity-70 mb-0.5">Starting From</span>
+                    <span className="text-[6px] md:text-[8px] uppercase tracking-widest opacity-70 mb-0.5">
+                        {course.isLiveTest ? 'Live Testing' : 'Starting From'}
+                    </span>
                     <div className="flex flex-col items-center leading-none">
-                        <span className="text-[8px] md:text-[10px] line-through text-white/30 font-bold mb-0.5">₹{Math.round(course.price * 1.2).toLocaleString('en-IN')}</span>
-                        <span className="text-[10px] md:text-base font-black text-white uppercase italic">₹{course.price.toLocaleString('en-IN')}</span>
+                        <span className="text-[8px] md:text-[10px] line-through text-white/30 font-bold mb-0.5">₹{Math.round((course.displayPrice || course.price) * 1.2).toLocaleString('en-IN')}</span>
+                        <span className="text-[10px] md:text-base font-black text-white uppercase italic">₹{(course.displayPrice || course.price).toLocaleString('en-IN')}</span>
                     </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-page/80 to-transparent opacity-60" />

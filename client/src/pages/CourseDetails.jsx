@@ -88,6 +88,12 @@ const CourseDetails = () => {
 
     const getCurrentPrice = () => {
         if (!course || !selectedDuration) return { price: 0, originalPrice: 0 };
+        if (course.isLiveTest) {
+            return {
+                price: 30,
+                originalPrice: Math.round(30 * 1.2)
+            };
+        }
         return {
             price: Math.round(course.price * selectedDuration.priceMultiplier),
             originalPrice: Math.round(course.price * selectedDuration.originalPriceMultiplier)
@@ -163,6 +169,9 @@ const CourseDetails = () => {
                         <div className="flex items-center gap-3 mt-2">
                             <StarRating rating={course.rating || 4.9} size={12} />
                             <span className="text-[10px] text-text-secondary font-bold uppercase tracking-widest">4.9/5 Elite Rating</span>
+                            {course.isLiveTest && (
+                                <span className="bg-accent/20 text-accent text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest border border-accent/30 animate-pulse">Live Testing</span>
+                            )}
                         </div>
                     </Reveal>
 
@@ -223,7 +232,9 @@ const CourseDetails = () => {
 
                     <div className="flex justify-between items-center bg-white/5 p-6 rounded-2xl border border-white/5">
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">Investment</span>
+                            <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">
+                                {course.isLiveTest ? 'Test Investment' : 'Investment'}
+                            </span>
                             <div className="flex items-center gap-3">
                                 <div className="text-2xl font-black italic text-glow">
                                     ₹{getCurrentPrice().price.toLocaleString('en-IN')}
@@ -311,6 +322,9 @@ const CourseDetails = () => {
                                 <StarRating rating={course.rating || 4.9} size={16} />
                                 <span className="h-1 w-1 bg-white/20 rounded-full" />
                                 <span className="text-xs text-text-secondary font-black uppercase tracking-[0.3em]">The Elite Choice</span>
+                                {course.isLiveTest && (
+                                    <span className="bg-accent/20 text-accent text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest border border-accent/30 animate-pulse">Live Testing Mode Active</span>
+                                )}
                             </div>
                         </Reveal>
 

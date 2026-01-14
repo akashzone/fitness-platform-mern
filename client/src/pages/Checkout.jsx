@@ -47,7 +47,7 @@ const Checkout = () => {
                     const customPrice = location.state?.customPrice;
                     const customDuration = location.state?.selectedDuration;
 
-                    setTotal(customPrice || response.data.price);
+                    setTotal(customPrice || response.data.displayPrice || response.data.price);
                     setDuration(customDuration || null);
                 }
             } catch (err) {
@@ -83,11 +83,11 @@ const Checkout = () => {
                 productId: primaryItem?._id || id
             });
 
-            const { payment_session_id, order_id } = response.data;
+            const { payment_session_id, order_id, environment } = response.data;
 
             // 2. Initialize Cashfree
             const cashfree = new Cashfree({
-                mode: "sandbox" // Use "production" for live
+                mode: environment || "sandbox"
             });
 
             // 3. Open Checkout Modal
@@ -118,25 +118,34 @@ const Checkout = () => {
         }
     };
 
-    const verifyPayment = async (orderId) => {
-        setStatus('processing'); // Ensure loader is shown while verifying
+    const verifyPayment = async (orderId, retryCount = 0) => {
+        setStatus('processing');
 
-        // Wait a small bit to allow Cashfree backend to process if needed
-        setTimeout(async () => {
-            try {
-                const verifyRes = await api.get(`/cashfree/verify/${orderId}`);
-                if (verifyRes.data.success) {
-                    clearCart();
-                    setStatus('success');
+        try {
+            const verifyRes = await api.get(`/cashfree/verify/${orderId}`);
+
+            if (verifyRes.data.success) {
+                clearCart();
+                setStatus('success');
+            } else {
+                // If it's not a success yet, retry up to 3 times with 2s delay
+                if (retryCount < 3) {
+                    console.log(`Verification inconclusive, retrying... (${retryCount + 1}/3)`);
+                    setTimeout(() => verifyPayment(orderId, retryCount + 1), 2000);
                 } else {
-                    console.warn("Verification failed:", verifyRes.data.message);
+                    console.warn("Verification failed after retries:", verifyRes.data.message);
                     setStatus('error');
                 }
-            } catch (error) {
-                console.error("Verification Error:", error);
+            }
+        } catch (error) {
+            console.error("Verification Error:", error);
+            // Even on network error, try retrying
+            if (retryCount < 3) {
+                setTimeout(() => verifyPayment(orderId, retryCount + 1), 2000);
+            } else {
                 setStatus('error');
             }
-        }, 1500);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -335,7 +344,9 @@ const Checkout = () => {
                                         <span className="text-accent">FREE</span>
                                     </div>
                                     <div className="flex justify-between text-text-primary text-xl md:text-3xl font-black pt-6 md:pt-8 border-t border-white/5 tracking-tighter italic items-center">
-                                        <span>Total</span>
+                                        <div className="flex flex-col text-left">
+                                            <span>Total</span>
+                                        </div>
                                         <span className="text-glow">₹{total.toLocaleString('en-IN')}</span>
                                     </div>
                                 </div>

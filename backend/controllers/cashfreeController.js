@@ -3,7 +3,7 @@ const Order = require('../models/Order');
 const MonthlySlot = require('../models/MonthlySlot');
 const Product = require('../models/Product');
 const getCurrentMonth = require('../utils/getCurrentMonth');
-const { sendConfirmationEmail, sendEbookEmail } = require('../config/mailer');
+const { sendPurchaseConfirmationEmail } = require('../utils/sendEmail');
 
 /**
  * @desc    Create Cashfree Order
@@ -59,17 +59,19 @@ exports.createCashfreeOrder = async (req, res) => {
                 customer_name: name
             },
             order_meta: {
-                return_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/payment-status?order_id={order_id}`
+                return_url: `${process.env.FRONTEND_URL || 'https://fitwithpravinn.com'}/payment-status?order_id={order_id}`
             },
             order_note: productId
         };
 
         const response = await cashfreeService.createOrder(orderRequest);
 
+
         return res.status(200).json({
             success: true,
             payment_session_id: response.payment_session_id,
-            order_id: response.order_id
+            order_id: response.order_id,
+            environment: cashfreeService.getIsProduction() ? 'production' : 'sandbox'
         });
 
     } catch (error) {
@@ -94,71 +96,72 @@ exports.verifyCashfreeOrder = async (req, res) => {
         console.log(`[Cashfree] Verifying order: ${orderId}, Status: ${orderDetails.order_status}`);
 
         if (orderDetails.order_status === 'PAID') {
-            // Find the pending order
             const order = await Order.findOne({ cfOrderId: orderId });
 
             if (!order) {
+                console.error(`[Cashfree Fulfillment] Order ${orderId} not found in database!`);
                 return res.status(404).json({ success: false, message: 'Order not found in database' });
             }
 
             if (order.orderStatus === 'PAID') {
-                return res.status(200).json({ success: true, message: 'Order already verified', order });
+                return res.status(200).json({ success: true, message: 'Order already fulfilled', order });
             }
 
-            // 2. Extract cf_payment_id (from the last successful payment)
-            // Note: v2023-08-01 getOrder returns payments in a nested call or via another endpoint if not included.
-            // Actually, getOrder DOES NOT always return payments by default if using minimalist API.
-            // However, the request asked to extract it. Let's try to find it.
-            let cfPaymentId = "N/A";
+            // 1. Update Order in DB first
+            order.orderStatus = 'PAID';
 
-            // If Cashfree provides payments in the order details
+            // Try to find a payment ID for logging, but don't fail if missing
             if (orderDetails.payments && orderDetails.payments.length > 0) {
                 const successfulPayment = orderDetails.payments.find(p => p.payment_status === 'SUCCESS');
                 if (successfulPayment) {
-                    cfPaymentId = successfulPayment.cf_payment_id;
+                    order.cfPaymentId = successfulPayment.cf_payment_id;
                 }
-            } else {
-                // In some versions we might need to call /orders/{order_id}/payments
-                // But let's assume getOrder for this API version provides it or it's not strictly required if we just want "PAID"
-                console.warn("[Cashfree] payments array missing in getOrder response.");
             }
 
-            // 3. Update Order in DB
-            order.orderStatus = 'PAID';
-            order.cfPaymentId = cfPaymentId;
             await order.save();
 
-            // 4. Update Slots
+            // 2. Update Slots
             await MonthlySlot.findOneAndUpdate(
                 { month: order.month },
                 { $inc: { usedSlots: 1 } }
             );
 
-            console.log(`[Cashfree] Order ${orderId} marked as PAID. cfPaymentId: ${cfPaymentId}`);
+            console.log(`[Cashfree Fulfillment] Order ${orderId} matched as PAID and fulfilled in DB.`);
 
-            // 5. Trigger Email Automation (Non-blocking)
-            try {
-                const primaryProductData = order.products[0];
-                if (primaryProductData) {
+            // 3. Trigger Email Automation (Non-blocking & Retry-safe logged)
+            setImmediate(async () => {
+                try {
+                    const primaryProductData = order.products[0];
+                    if (!primaryProductData) return;
+
                     const product = await Product.findById(primaryProductData.productId);
-                    if (product) {
-                        if (product.type === 'ebook') {
-                            sendEbookEmail(order.email, order.name, order.products, order._id);
-                        } else {
-                            sendConfirmationEmail(order.email, order.name, product.title);
-                        }
+                    if (!product) {
+                        console.error(`[Email Automation] Product ${primaryProductData.productId} not found for order ${orderId}`);
+                        return;
                     }
+
+                    await sendPurchaseConfirmationEmail({
+                        to: order.email,
+                        name: order.name,
+                        courseName: product.title,
+                        months: product.duration || 'N/A',
+                        amount: order.totalAmount,
+                        orderId: order.cfOrderId
+                    });
+
+                    console.log(`[Email Automation] Confirmation successfully sent to ${order.email}`);
+                } catch (emailErr) {
+                    console.error(`[Email Automation] FAILED for ${order.email}:`, emailErr.message);
                 }
-            } catch (emailTriggerErr) {
-                console.error("[Email] Critical trigger error:", emailTriggerErr.message);
-            }
+            });
 
             return res.status(200).json({
                 success: true,
-                message: 'Payment verified and recorded successfully',
+                message: 'Payment verified and fulfillment completed.',
                 order
             });
-        } else {
+        }
+        else {
             return res.status(400).json({
                 success: false,
                 message: `Payment status: ${orderDetails.order_status}`,

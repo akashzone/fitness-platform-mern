@@ -16,8 +16,18 @@ exports.getProducts = async (req, res) => {
             slotInfo = await MonthlySlot.create({ month: currentMonth });
         }
 
+        const isLiveTest = process.env.LIVE_TEST_MODE === "true";
+        const productsWithDisplayPrice = products.map(p => {
+            const productObj = p.toObject();
+            return {
+                ...productObj,
+                displayPrice: isLiveTest ? 30 : productObj.price,
+                isLiveTest
+            };
+        });
+
         res.json({
-            products,
+            products: productsWithDisplayPrice,
             slotInfo: {
                 month: slotInfo.month,
                 maxSlots: slotInfo.maxSlots,
@@ -45,8 +55,11 @@ exports.getProductById = async (req, res) => {
                 slotInfo = await MonthlySlot.create({ month: currentMonth });
             }
 
+            const isLiveTest = process.env.LIVE_TEST_MODE === "true";
             res.json({
                 ...product.toObject(),
+                displayPrice: isLiveTest ? 30 : product.price,
+                isLiveTest,
                 slotInfo: {
                     month: slotInfo.month,
                     maxSlots: slotInfo.maxSlots,

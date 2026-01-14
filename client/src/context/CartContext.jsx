@@ -46,15 +46,28 @@ export const CartProvider = ({ children }) => {
                 if (!finalProduct.durationMonths) {
                     finalProduct.durationMonths = recommended.months;
                     finalProduct.basePrice = product.price; // Store original price
-                    finalProduct.price = Math.round(product.price * recommended.priceMultiplier);
-                    finalProduct.originalPrice = Math.round(product.price * recommended.originalPriceMultiplier);
-                    finalProduct.displayPrice = finalProduct.price;
+
+                    if (product.isLiveTest) {
+                        finalProduct.price = 30;
+                        finalProduct.originalPrice = Math.round(30 * 1.2);
+                        finalProduct.displayPrice = 30;
+                    } else {
+                        finalProduct.price = Math.round(product.price * recommended.priceMultiplier);
+                        finalProduct.originalPrice = Math.round(product.price * recommended.originalPriceMultiplier);
+                        finalProduct.displayPrice = finalProduct.price;
+                    }
                 } else if (!finalProduct.basePrice) {
                     // It came from CourseDetails with a specific duration
                     // We need to figure out its base price to allow future changes
-                    const currentOpt = options.find(o => o.months === finalProduct.durationMonths);
-                    finalProduct.basePrice = Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
-                    finalProduct.originalPrice = Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
+                    if (product.isLiveTest) {
+                        finalProduct.basePrice = 30; // Conceptually
+                        finalProduct.price = 30;
+                        finalProduct.displayPrice = 30;
+                    } else {
+                        const currentOpt = options.find(o => o.months === finalProduct.durationMonths);
+                        finalProduct.basePrice = Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
+                        finalProduct.originalPrice = Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
+                    }
                 }
 
                 finalProduct.durations = options;
@@ -79,6 +92,14 @@ export const CartProvider = ({ children }) => {
                 const options = getDurationOptions();
                 const newOpt = options.find(o => o.months === newMonths);
                 if (newOpt) {
+                    if (item.isLiveTest) {
+                        return {
+                            ...item,
+                            durationMonths: newMonths,
+                            price: 30,
+                            displayPrice: 30
+                        };
+                    }
                     const newPrice = Math.round(item.basePrice * newOpt.priceMultiplier);
                     const newOriginalPrice = Math.round(item.basePrice * newOpt.originalPriceMultiplier);
                     return {
