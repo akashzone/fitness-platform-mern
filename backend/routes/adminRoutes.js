@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
-const Admin = require('../models/Admin');
 const Order = require('../models/Order');
 const MonthlySlot = require('../models/MonthlySlot');
 const getCurrentMonth = require('../utils/getCurrentMonth');
