@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import StarRating from './StarRating';
 
-const CourseCard = ({ course, isSoldOut }) => {
+const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
     const { addToCart } = useCart();
     const showSoldOut = isSoldOut;
 
@@ -26,15 +26,17 @@ const CourseCard = ({ course, isSoldOut }) => {
                     </div>
                 )}
 
-                <div className="absolute top-1 left-1 md:top-6 md:left-6 glass px-2 py-1 md:px-8 md:py-4 rounded-xl md:rounded-3xl flex flex-col items-center shadow-2xl border-white/10 group-hover:border-accent/30 transition-all duration-500">
-                    <span className="pricing-badge-label text-[10px] md:text-[12px]">
+                <div className="absolute top-1 left-1 md:top-6 md:left-6 bg-black/40 md:glass px-2 py-1 md:px-8 md:py-4 rounded-xl md:rounded-3xl flex flex-col items-center shadow-2xl border border-white/10 group-hover:border-accent/30 transition-all duration-500 backdrop-blur-md md:backdrop-blur-xl">
+                    <span className="pricing-badge-label text-[9px] md:text-[12px] opacity-80 mb-0.5 md:mb-1">
                         {course.isLiveTest ? 'Live Testing' : 'Starting From'}
                     </span>
                     <div className="flex flex-col items-center leading-none">
-                        <span className="price-original mb-1 md:mb-2">
-                            ₹{Math.round((course.displayPrice || course.price) * 1.2).toLocaleString('en-IN')}
-                        </span>
-                        <span className="price-final text-glow">
+                        {!hideOriginalPrice && (
+                            <span className="price-original mb-1 md:mb-2 text-[10px] md:text-base">
+                                ₹{Math.round((course.displayPrice || course.price) * 1.2).toLocaleString('en-IN')}
+                            </span>
+                        )}
+                        <span className="price-final text-glow text-xs md:text-2xl">
                             ₹{(course.displayPrice || course.price).toLocaleString('en-IN')}
                         </span>
                     </div>
@@ -43,29 +45,29 @@ const CourseCard = ({ course, isSoldOut }) => {
             </div>
 
             <div className="p-3 md:p-8 flex flex-col items-center text-center flex-grow relative z-10">
-                <div className="mb-2 md:mb-6">
+                <div className="mb-2 md:mb-6 opacity-60 md:opacity-100 scale-75 md:scale-100 origin-center">
                     <StarRating rating={course.rating || 4.9} />
                 </div>
-                <h3 className="text-[10px] md:text-2xl lg:text-2xl font-black mb-1 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.1] tracking-tight uppercase break-words hyphens-auto w-full">
+                <h3 className="text-[11px] md:text-2xl lg:text-2xl font-black mb-1 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.2] tracking-tight uppercase break-words hyphens-auto w-full">
                     {course.title}
                 </h3>
-                <p className="text-text-secondary text-[10px] md:text-base mb-3 md:mb-10 line-clamp-2 md:line-clamp-3 leading-relaxed font-medium opacity-80">
+                <p className="text-text-secondary text-[10px] md:text-base mb-3 md:mb-10 line-clamp-2 md:line-clamp-3 leading-relaxed font-medium opacity-70 md:opacity-80">
                     {course.description}
                 </p>
 
                 <div className="mt-auto w-full grid grid-cols-2 gap-2 md:gap-4 relative z-20">
                     <Link
                         to={showSoldOut ? '#' : `/course/${course.id || course._id}`}
-                        className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all border border-white/10 text-white text-[10px] md:text-xs uppercase tracking-widest hover:bg-white/5 ${showSoldOut ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all border border-white/5 md:border-white/10 text-white/50 md:text-white text-[9px] md:text-xs uppercase tracking-widest hover:bg-white/5 hover:text-white ${showSoldOut ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                         {showSoldOut ? 'Wait' : 'Details'}
                     </Link>
                     <button
                         onClick={() => !showSoldOut && addToCart(course)}
                         disabled={showSoldOut}
-                        className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all btn-glow shadow-xl group/btn overflow-hidden relative text-[10px] md:text-xs uppercase tracking-widest ${showSoldOut ? 'bg-white/10 text-white/40 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
+                        className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all btn-glow shadow-xl group/btn overflow-hidden relative text-[9px] md:text-xs uppercase tracking-widest ${showSoldOut ? 'bg-white/10 text-white/40 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
                     >
-                        <span className="relative z-10">Add</span>
+                        <span className="relative z-10">ADD</span>
                         {!showSoldOut && (
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
                         )}

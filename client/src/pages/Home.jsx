@@ -101,7 +101,7 @@ const Home = () => {
                         <Reveal x={-50} duration={0.8} width="100%">
                             <span className="lg:hidden text-accent font-black uppercase tracking-[0.4em] text-sm mb-6 block">The Coach</span>
                             <div className="relative group">
-                                <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl shadow-accent/5 relative w-3/4 max-w-xs mx-auto lg:w-full lg:max-w-none">
+                                <div className="aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl shadow-accent/5 relative w-[88%] max-w-sm mx-auto lg:w-full lg:max-w-none">
                                     <img
                                         src="/assets/pravin_about.png"
                                         className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-110"
@@ -156,19 +156,19 @@ const Home = () => {
             </section>
 
             {/* Courses Section */}
-            <section id="courses" className="py-40 bg-bg-page relative overflow-hidden">
+            <section id="courses" className="py-20 md:py-40 bg-bg-page relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <Reveal className="text-center mb-32 max-w-4xl mx-auto">
+                    <Reveal className="text-center mb-16 md:mb-32 max-w-4xl mx-auto">
                         <span className="text-accent font-black uppercase tracking-[0.4em] text-sm md:text-base">Elite Programs</span>
                         <h2 className="text-5xl md:text-8xl font-black mt-6 mb-8 text-text-primary tracking-tighter uppercase leading-[0.9]">Master Your Physique</h2>
                         <div className="flex justify-center">
                         </div>
                     </Reveal>
 
-                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
                         {courses.map((course, index) => (
                             <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                <CourseCard course={course} isSoldOut={isSoldOut} />
+                                <CourseCard course={course} isSoldOut={isSoldOut} hideOriginalPrice={true} />
                             </Reveal>
                         ))}
                     </div>
@@ -176,7 +176,7 @@ const Home = () => {
             </section>
 
             {/* Testimonials Section */}
-            <section className="py-40 bg-surface border-y border-white/5 relative overflow-hidden">
+            <section className="py-20 md:py-40 bg-surface border-y border-white/5 relative overflow-hidden">
                 <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 blur-[150px] rounded-full pointer-events-none" />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">

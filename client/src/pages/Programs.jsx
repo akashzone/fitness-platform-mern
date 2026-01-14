@@ -74,10 +74,10 @@ const Programs = () => {
                             </h2>
                         </div>
                     </Reveal>
-                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-10">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
                         {courses.map((course, index) => (
                             <Reveal key={course.id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                <CourseCard course={course} isSoldOut={isSoldOut} />
+                                <CourseCard course={course} isSoldOut={isSoldOut} hideOriginalPrice={true} />
                             </Reveal>
                         ))}
                     </div>

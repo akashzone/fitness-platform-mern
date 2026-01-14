@@ -146,6 +146,53 @@ const Footer = React.forwardRef((props, ref) => {
     );
 });
 
+const VerticalScrollProgress = () => {
+    const location = useLocation();
+    const isHome = location.pathname === '/';
+    const { scrollYProgress } = useScroll();
+
+    const springProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    const dotY = useTransform(springProgress, [0, 1], ["0%", "100%"]);
+
+    if (!isHome) return null;
+
+    return (
+        <motion.div
+            style={{ opacity: useTransform(scrollYProgress, [0, 0.01], [0, 1]) }}
+            className="fixed left-2 md:left-12 top-1/2 -translate-y-1/2 h-[70vh] md:h-[60vh] w-8 md:w-10 hidden md:flex flex-col items-center justify-between z-[100] pointer-events-none"
+        >
+            {/* The Track Line */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-white/10 overflow-hidden rounded-full">
+                <motion.div
+                    className="w-full bg-accent origin-top shadow-[0_0_15px_rgba(34,197,94,0.5)]"
+                    style={{ scaleY: springProgress, height: '100%' }}
+                />
+            </div>
+
+            {/* Static Dots */}
+            {[0, 1, 2].map((i) => (
+                <div
+                    key={i}
+                    className="w-3 h-3 rounded-full bg-surface border-2 border-white/20 relative z-10"
+                />
+            ))}
+
+            {/* Moving Glowing Dot */}
+            <motion.div
+                className="absolute left-1/2 w-5 h-5 bg-accent rounded-full shadow-[0_0_20px_rgba(34,197,94,0.8)] z-20 flex items-center justify-center"
+                style={{ top: dotY, x: "-50%", y: "-50%" }}
+            >
+                <div className="w-2.5 h-2.5 bg-white rounded-full opacity-50" />
+            </motion.div>
+        </motion.div>
+    );
+};
+
 const Layout = ({ children }) => {
     const location = useLocation();
     const isAdmin = location.pathname.startsWith('/admin');
@@ -158,6 +205,7 @@ const Layout = ({ children }) => {
             <CustomCursor />
             <Header />
             {!isAdmin && <CartDrawer />}
+            <VerticalScrollProgress />
             <main className="flex-grow pt-20">
                 {children}
             </main>
