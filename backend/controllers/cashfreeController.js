@@ -187,6 +187,79 @@ exports.verifyCashfreeOrder = async (req, res) => {
  * @desc    Cashfree Webhook Handler
  */
 exports.cashfreeWebhook = async (req, res) => {
-    res.status(200).send('Webhook received');
+    try {
+        console.log('[Cashfree Webhook] Received:', JSON.stringify(req.body, null, 2));
+
+        const data = req.body.data;
+        const type = req.body.type;
+
+        if (type === 'PAYMENT_SUCCESS_WEBHOOK') {
+            const orderId = data.order.order_id;
+            console.log(`[Cashfree Webhook] Processing Success for Order: ${orderId}`);
+
+            // To ensure security and latest status, fetch from Cashfree API directly
+            // This avoids needing complex signature verification logic here by relying on our own authenticated API call
+            const orderDetails = await cashfreeService.getOrder(orderId);
+
+            if (orderDetails.order_status === 'PAID') {
+                const order = await Order.findOne({ cfOrderId: orderId });
+
+                if (!order) {
+                    console.error(`[Webhook] Order ${orderId} not found in DB`);
+                    return res.status(404).json({ message: 'Order not found' });
+                }
+
+                if (order.orderStatus === 'PAID') {
+                    console.log(`[Webhook] Order ${orderId} already fulfilled. Skipping.`);
+                    return res.status(200).json({ message: 'Already fulfilled' });
+                }
+
+                // 1. Update Order
+                order.orderStatus = 'PAID';
+                if (orderDetails.payments && orderDetails.payments.length > 0) {
+                    const successfulPayment = orderDetails.payments.find(p => p.payment_status === 'SUCCESS');
+                    if (successfulPayment) {
+                        order.cfPaymentId = successfulPayment.cf_payment_id;
+                    }
+                }
+                await order.save();
+
+                // 2. Update Slots
+                await MonthlySlot.findOneAndUpdate(
+                    { month: order.month },
+                    { $inc: { usedSlots: 1 } }
+                );
+
+                console.log(`[Webhook] Order ${orderId} fulfilled successfully via Webhook.`);
+
+                // 3. Send Email
+                const primaryProductData = order.products[0];
+                if (primaryProductData) {
+                    const product = await Product.findOne({ id: primaryProductData.productId });
+                    if (product) {
+                        const emailResult = await sendPurchaseConfirmationEmail({
+                            to: order.email,
+                            name: order.name,
+                            courseName: product.title,
+                            months: product.duration || 'N/A',
+                            amount: order.totalAmount,
+                            orderId: order.cfOrderId
+                        });
+
+                        if (emailResult && emailResult.success) {
+                            console.log(`[Webhook Email] Sent to ${order.email}`);
+                        } else {
+                            console.error(`[Webhook Email] FAILED for ${order.email}:`, emailResult?.error);
+                        }
+                    }
+                }
+            }
+        }
+
+        res.status(200).json({ success: true, message: 'Webhook processed' });
+    } catch (err) {
+        console.error('[Cashfree Webhook] Error:', err);
+        res.status(500).json({ message: err.message });
+    }
 };
 
