@@ -14,6 +14,12 @@ const sendPurchaseConfirmationEmail = async ({
   orderId,
 }) => {
   console.log(`[Resend] Preparing to send email to: ${to}, Course: ${courseName}, Order: ${orderId}`);
+
+  if (!process.env.RESEND_API_KEY) {
+    console.error("❌ RESEND_API_KEY is missing in environment variables!");
+    return { success: false, error: "Missing RESEND_API_KEY" };
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from: "FitWithPravinn <onboarding@fitwithpravinn.com>",
@@ -45,12 +51,14 @@ const sendPurchaseConfirmationEmail = async ({
 
     if (error) {
       console.error("❌ Resend API Error:", JSON.stringify(error, null, 2));
-      return;
+      return { success: false, error };
     }
 
     console.log("✅ Resend email sent successfully to:", to);
+    return { success: true, data };
   } catch (err) {
     console.error("❌ Resend SDK Exception:", err);
+    return { success: false, error: err.message };
   }
 };
 

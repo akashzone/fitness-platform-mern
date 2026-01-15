@@ -37,7 +37,7 @@ app.get('/api/test-email', async (req, res) => {
     const testEmail = req.query.email || 'fitwithpravinn@gmail.com';
     try {
         console.log(`[Test] Manually triggering Resend email to: ${testEmail}`);
-        await sendPurchaseConfirmationEmail({
+        const result = await sendPurchaseConfirmationEmail({
             to: testEmail,
             name: 'Test User',
             courseName: 'Diagnostic Fitness Program',
@@ -45,7 +45,12 @@ app.get('/api/test-email', async (req, res) => {
             amount: 499,
             orderId: 'TEST_123'
         });
-        res.status(200).json({ success: true, message: `Resend test email triggered to ${testEmail}. Check logs for result.` });
+
+        if (result && !result.success) {
+            return res.status(500).json({ success: false, message: 'Resend Failed', error: result.error });
+        }
+
+        res.status(200).json({ success: true, message: `Resend test email triggered to ${testEmail}. Check inbox.`, details: result });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }

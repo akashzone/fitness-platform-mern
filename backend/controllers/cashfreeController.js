@@ -141,7 +141,7 @@ exports.verifyCashfreeOrder = async (req, res) => {
                         return;
                     }
 
-                    await sendPurchaseConfirmationEmail({
+                    const emailResult = await sendPurchaseConfirmationEmail({
                         to: order.email,
                         name: order.name,
                         courseName: product.title,
@@ -150,9 +150,13 @@ exports.verifyCashfreeOrder = async (req, res) => {
                         orderId: order.cfOrderId
                     });
 
-                    console.log(`[Email Automation] Confirmation successfully sent to ${order.email}`);
+                    if (emailResult && emailResult.success) {
+                        console.log(`[Email Automation] Confirmation successfully sent to ${order.email}`);
+                    } else {
+                        console.error(`[Email Automation] FAILED for ${order.email}:`, emailResult ? emailResult.error : 'Unknown error');
+                    }
                 } catch (emailErr) {
-                    console.error(`[Email Automation] FAILED for ${order.email}:`, emailErr.message);
+                    console.error(`[Email Automation] Exception for ${order.email}:`, emailErr.message);
                 }
             });
 
