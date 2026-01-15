@@ -12,7 +12,7 @@ const products = [
         title: "4 Weeks Transformation",
         description: "Ignite your fitness journey with a focused 4-week personalized training and diet plan.",
         fullDescription: "The 4-Week Transformation is designed for those who need a jumpstart. This intensive program focuses on rapid adaptation, metabolic priming, and establishing the foundational habits required for long-term success. You'll receive a custom-tailored nutrition protocol and a high-intensity training split optimized for your specific goals.",
-        price: 5800,
+        price: 30,
         duration: "4 Weeks",
         image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000&auto=format&fit=crop",
         type: "course",

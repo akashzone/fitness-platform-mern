@@ -29,6 +29,24 @@ if (!config.clientId || !config.clientSecret) {
     console.warn('\n[Cashfree] ⚠️  CRITICAL: API Credentials missing or empty!');
 }
 
+// CRITICAL SAFETY CHECK
+if (config.isProduction && config.clientId.startsWith('TEST')) {
+    const errorMsg = `
+    🚨 FATAL ERROR: PRODUCTION MODE DETECTED BUT TEST KEYS FOUND! 🚨
+    -------------------------------------------------------------
+    You have set CASHFREE_ENV=PROD but are using keys starting with 'TEST'.
+    This is extremely dangerous and will result in 401 Unauthorized errors.
+    
+    ACTION REQUIRED:
+    1. Go to Render Dashboard -> Environment.
+    2. Replace CASHFREE_APP_ID with your PRODUCTION Client ID.
+    3. Replace CASHFREE_SECRET_KEY with your PRODUCTION Client Secret.
+    -------------------------------------------------------------
+    `;
+    console.error(errorMsg);
+    throw new Error(errorMsg); // Stop the server to prevent accidental live usage with bad config
+}
+
 // Export functions to get current state dynamically
 exports.getIsProduction = () => getCashfreeConfig().isProduction;
 exports.getBaseUrl = () => getCashfreeConfig().baseUrl;
