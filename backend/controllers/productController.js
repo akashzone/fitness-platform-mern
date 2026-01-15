@@ -14,6 +14,8 @@ exports.getProducts = async (req, res) => {
             slotInfo = await MonthlySlot.create({ month: currentMonth });
         }
 
+        const products = await Product.find({ isActive: true });
+
         res.json({
             slotInfo: {
                 month: slotInfo.month,
@@ -21,7 +23,8 @@ exports.getProducts = async (req, res) => {
                 usedSlots: slotInfo.usedSlots,
                 slotsLeft: slotInfo.maxSlots - slotInfo.usedSlots,
                 isSoldOut: slotInfo.usedSlots >= slotInfo.maxSlots
-            }
+            },
+            products // Return the products list
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -21,19 +21,23 @@ const Home = () => {
 
     // Although we use static courses, we still check slotInfo from backend
     // to show 'Sold Out' status if needed (as per requirement 3 & 9)
+    // Use static courses as initial state, then update from backend
     const [slotInfo, setSlotInfo] = useState(null);
+    const [products, setProducts] = useState(courses);
 
     useEffect(() => {
-        const fetchSlotInfo = async () => {
+        const fetchData = async () => {
             try {
-                // We only fetch slot info, not products
                 const response = await api.get('/products');
-                setSlotInfo(response.data.slotInfo);
+                if (response.data.slotInfo) setSlotInfo(response.data.slotInfo);
+                if (response.data.products && response.data.products.length > 0) {
+                    setProducts(response.data.products);
+                }
             } catch (err) {
-                console.error('Slot Info Load Error:', err);
+                console.error('Data Load Error:', err);
             }
         };
-        fetchSlotInfo();
+        fetchData();
     }, []);
 
     const isSoldOut = slotInfo?.isSoldOut;
@@ -182,7 +186,7 @@ const Home = () => {
                         </Reveal>
 
                         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
-                            {courses.map((course, index) => (
+                            {products.map((course, index) => (
                                 <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
                                     <CourseCard course={course} isSoldOut={isSoldOut} hideOriginalPrice={true} />
                                 </Reveal>

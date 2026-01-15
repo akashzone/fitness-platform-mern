@@ -11,23 +11,27 @@ import { ArrowLeft, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
 const Programs = () => {
     const navigate = useNavigate();
     const [slotInfo, setSlotInfo] = useState(null);
+    const [products, setProducts] = useState(courses);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchSlotInfo = async () => {
+        const fetchData = async () => {
             try {
                 const response = await api.get('/products');
-                setSlotInfo(response.data.slotInfo);
+                if (response.data.slotInfo) setSlotInfo(response.data.slotInfo);
+                if (response.data.products && response.data.products.length > 0) {
+                    setProducts(response.data.products);
+                }
             } catch (err) {
-                console.error('Slot Info Load Error:', err);
+                console.error('Data Load Error:', err);
                 // We don't block the UI if slot info fails
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchSlotInfo();
+        fetchData();
     }, []);
 
     if (error) {
@@ -76,7 +80,7 @@ const Programs = () => {
                         </div>
                     </Reveal>
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
-                        {courses.map((course, index) => (
+                        {products.map((course, index) => (
                             <Reveal key={course.id} delay={index * 0.1} scale={0.9} y={40} width="100%">
                                 <CourseCard course={course} isSoldOut={isSoldOut} hideOriginalPrice={true} />
                             </Reveal>
