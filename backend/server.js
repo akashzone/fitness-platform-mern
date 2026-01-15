@@ -113,6 +113,16 @@ seedAdmin();
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`);
+
+    // FORCE UPDATE FOR LIVE TESTING (As requested by User)
+    // This ensures prices are 30 INR immediately after deployment without manual seeding
+    try {
+        const Product = require('./models/Product');
+        await Product.updateMany({}, { $set: { price: 30 } });
+        console.log('✅ [Auto-Fix] All product prices forced to ₹30 for Live Testing.');
+    } catch (err) {
+        console.error('❌ [Auto-Fix] Failed to update prices:', err);
+    }
 });
