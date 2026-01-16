@@ -1,74 +1,95 @@
 export const courses = [
     {
-        id: "4-weeks-transformation",
-        _id: "4-weeks-transformation", // Keeping _id for compatibility with existing code
-        title: "4 Weeks Transformation",
-        duration: "4 Weeks",
-        description: "Ignite your fitness journey with a focused 4-week personalized training and diet plan.",
-        price: 5800,
+        id: "foundation-plan",
+        _id: "foundation-plan",
+        title: "FOUNDATION PLAN",
+        duration: "One-time",
+        description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
+        price: 2000,
         rating: 4.8,
         image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000&auto=format&fit=crop",
         features: [
-            "Personalized Workout Plan",
-            "Customized Diet Plan",
-            "Weekly Progress Tracking",
-            "Text Support (8hrs/Day)",
-            "1 Fixed Coaching Call/Week"
+            "Customised Diet Plan",
+            "Customised Workout Plan",
+            "One-time Consultation"
         ],
-        fullDescription: "The 4-Week Transformation is designed for those who need a jumpstart. This intensive program focuses on rapid adaptation, metabolic priming, and establishing the foundational habits required for long-term success. You'll receive a custom-tailored nutrition protocol and a high-intensity training split optimized for your specific goals."
+        fullDescription: "A perfect starting point for your fitness journey. Get a fully customized diet and workout plan tailored to your specific goals and lifestyle. This is a one-time service designed to give you the blueprint you need to succeed.",
+        plans: [
+            { months: 1, label: "One-time", price: 2000, originalPrice: 2400, note: "Standard" }
+        ]
     },
     {
-        id: "8-weeks-momentum",
-        _id: "8-weeks-momentum",
-        title: "8 Weeks Momentum",
-        duration: "8 Weeks",
-        description: "Build serious consistency and see visible changes with our 8-week structured coaching.",
-        price: 9900,
+        id: "guided-transformation",
+        _id: "guided-transformation",
+        title: "GUIDED TRANSFORMATION",
+        duration: "Flexible",
+        description: "• Weekly Check-ins\n• Monthly Sessions for Consistent Progress",
+        price: 4000,
         rating: 4.9,
         image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
         features: [
-            "Personalized Workout & Diet",
-            "Weekly Progress Tracking",
-            "Text Support (12hrs/Day)",
-            "1 Flexible Coaching Call/Week",
-            "Instalments Available"
+            "Weekly check-in via google form",
+            "Monthly 1 session (3+1 sessions for 3 months plan)",
+            "8 hrs text support",
+            "Personalised diet plan",
+            "Personalised workout plan"
         ],
-        fullDescription: "Consistency is where the magic happens. The 8-Week Momentum program dives deeper into body recomposition. We'll fine-tune your macronutrients and implement progressive overload techniques to ensure you don't just see changes in the mirror, but also feel the performance gains in the gym. Elite accountability included."
+        fullDescription: "Get structured guidance with our Guided Transformation plan. Includes weekly check-ins via Google Form to track your progress, a monthly strategy session to refine your plan, and 8 hours of text support for your queries. Perfect for those who need a balance of independence and guidance.",
+        plans: [
+            { months: 1, label: "1 Month", price: 4000, originalPrice: 5000, note: "High entry" },
+            { months: 2, label: "2 Months", price: 7500, originalPrice: 9000, note: "Minor relief" },
+            { months: 3, label: "3 Months", price: 11000, originalPrice: 14000, note: "Best value", recommended: true },
+            { months: 6, label: "6 Months", price: 20000, originalPrice: 25000, note: "Commitment bonus" }
+        ]
     },
     {
-        id: "12-weeks-peak-performance",
-        _id: "12-weeks-peak-performance",
-        title: "12 Weeks Peak Performance",
-        duration: "12 Weeks",
-        description: "Achieve your peak physique with our comprehensive 12-week elite coaching program.",
-        price: 13500,
+        id: "structured-coaching",
+        _id: "structured-coaching",
+        title: "STRUCTURED COACHING",
+        duration: "Flexible",
+        description: "• Monthly 2 Online Sessions\n• 12 hrs Text Support for Serious Results",
+        price: 5500,
         rating: 4.9,
         image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop",
         features: [
-            "Peak Performance Training",
-            "Advanced Nutrition Mastery",
-            "Supplement & Recipe Guidance",
-            "Text Support (12hrs/Day)",
-            "Flexible Coaching Calls"
+            "Weekly check-in via google form",
+            "Monthly 2 online sessions (6+2 sessions for 3 months plan)",
+            "12 hrs text support",
+            "Personalised diet plan",
+            "Personalised workout plan",
+            "1 session can be rescheduled if missed"
         ],
-        fullDescription: "This is our flagship transformation program. 12 weeks of data-driven coaching designed to push you to your absolute peak. Whether you're aiming for a photo-shoot ready physique or elite-level strength, this program covers everything: metabolic periodization, advanced hypertrophy cycles, and psychological coaching to build an unbreakable mind."
+        fullDescription: "Step up your game with Structured Coaching. This plan offers more frequent interaction with 2 online sessions per month and 12 hours of text support. Ideal for individuals who want closer monitoring and more dynamic adjustments to their training and nutrition.",
+        plans: [
+            { months: 1, label: "1 Month", price: 5500, originalPrice: 6500, note: "Premium entry" },
+            { months: 2, label: "2 Months", price: 10500, originalPrice: 13000, note: "Small relief" },
+            { months: 3, label: "3 Months", price: 14000, originalPrice: 17500, note: "Best value", recommended: true },
+            { months: 6, label: "6 Months", price: 26000, originalPrice: 33000, note: "Serious clients" }
+        ]
     },
     {
-        id: "20-weeks-elite-lifestyle",
-        _id: "20-weeks-elite-lifestyle",
-        title: "20 Weeks Elite Lifestyle",
-        duration: "20 Weeks",
-        description: "The ultimate lifestyle transformation for those committed to becoming the best version of themselves.",
-        price: 21000,
+        id: "elite-1-1-coaching",
+        _id: "elite-1-1-coaching",
+        title: "ELITE 1:1 COACHING",
+        duration: "Flexible",
+        description: "• Weekly Sessions\n• 24hrs Text Support for Ultimate Transformation",
+        price: 7000,
         rating: 5.0,
         image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1000&auto=format&fit=crop",
         features: [
-            "24/7 Priority Text Support",
-            "Flexible + Review Calls",
-            "Full Lifestyle Discipline",
-            "Advanced Supplement Guide",
-            "Instalments Available"
+            "Weekly check-in via google form",
+            "Weekly sessions (12+1 sessions for 3 months plan)",
+            "24hrs text support",
+            "Personalised diet plan",
+            "Personalised workout plan",
+            "2 sessions can be rescheduled every month if missed"
         ],
-        fullDescription: "Transformation isn't a destination; it's a lifestyle. The 20-Week Elite Lifestyle program is for the truly committed. We focus on sustainable transformation—teaching you the 'why' behind the 'what'. By the end of this program, you won't just have an elite physique; you'll have the knowledge to maintain it for the rest of your life."
+        fullDescription: "The ultimate coaching experience. Elite 1:1 Coaching provides maximum accountability with weekly sessions and round-the-clock text support. This is for those who demand the best and are ready to commit fully to their transformation with constant guidance at every step.",
+        plans: [
+            { months: 1, label: "1 Month", price: 7000, originalPrice: 9000, note: "Premium" },
+            { months: 2, label: "2 Months", price: 13500, originalPrice: 17000, note: "Minor save" },
+            { months: 3, label: "3 Months", price: 18000, originalPrice: 23000, note: "Best value", recommended: true },
+            { months: 6, label: "6 Months", price: 34000, originalPrice: 42000, note: "Long-term elite" }
+        ]
     }
 ];

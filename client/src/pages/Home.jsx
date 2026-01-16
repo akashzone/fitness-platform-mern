@@ -135,7 +135,7 @@ const Home = () => {
 
             <div ref={containerRef}>
                 {/* About Section */}
-                <section id="about" className="py-20 lg:py-40 bg-surface relative overflow-hidden text-left">
+                <section id="about" className="py-10 md:py-20 lg:py-40 bg-surface relative overflow-hidden text-left">
                     <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -157,7 +157,7 @@ const Home = () => {
                                 </div>
                             </Reveal>
 
-                            <div className="space-y-10">
+                            <div className="space-y-6 md:space-y-10">
                                 <Reveal delay={0.2}>
                                     <div className="max-w-xl">
                                         <span className="hidden lg:block text-accent font-black uppercase tracking-[0.4em] text-sm">The Coach</span>
@@ -168,19 +168,19 @@ const Home = () => {
                                 </Reveal>
 
                                 <Reveal delay={0.4} staggerChildren={0.2}>
-                                    <div className="space-y-8 text-text-secondary text-base md:text-xl leading-relaxed font-medium">
+                                    <div className="space-y-6 text-text-secondary text-base md:text-lg leading-relaxed font-medium">
                                         <p className="hover:text-text-primary transition-colors cursor-default">
-                                            Praveen Kumar, widely known as <span className="text-text-primary font-bold">FitWithPravinn</span>, is a Mumbai-based fitness educator, transformation coach, and lifestyle influencer. His mission is to make self-improvement simple, practical, and achievable for everyone.
+                                            Hi, I’m <span className="text-text-primary font-bold">Pravin</span>, the coach behind fitwithpravinn. I’m an online fitness coach and content creator helping people transform through structured training, sustainable nutrition, and consistent habits. My approach is practical, science-backed, and focused on long-term results.
                                         </p>
                                         <p className="hover:text-text-primary transition-colors cursor-default">
-                                            Through Instagram, YouTube, and Snapchat, Praveen shares science-based workouts, nutrition guidance, and disciplined lifestyle habits that help people transform their bodies and mindset.
+                                            What makes my coaching different is personal involvement and accountability. Every client gets customized guidance, progress tracking, and plan updates based on real progress. Whether your goal is fat loss, muscle gain, or overall fitness, I’ll guide you clearly and keep you on track.
                                         </p>
 
                                     </div>
                                 </Reveal>
 
                                 <Reveal delay={0.6}>
-                                    <div className="pt-8 text-left">
+                                    <div className="pt-2 md:pt-8 text-left">
                                         <MagneticButton distance={0.2}>
                                             <Link to="/programs" className="text-accent font-black text-2xl hover:text-white transition-all inline-flex items-center space-x-6 group">
                                                 <span>Explore My Programs</span>

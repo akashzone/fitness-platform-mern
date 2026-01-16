@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
     CheckCircle,
     ArrowLeft,
+    ArrowRight,
     Play,
     Zap,
     Loader2,
@@ -38,6 +39,11 @@ const CourseDetails = () => {
     };
 
     const getDurationOptions = (courseId) => {
+        // If the course object itself has plans, use them
+        if (course && course.plans) {
+            return course.plans;
+        }
+        // Fallback or logic for other courses if any (though we updated all)
         return DURATION_CONFIG.default;
     };
 
@@ -48,7 +54,7 @@ const CourseDetails = () => {
             setCourse(currentProduct);
 
             // Set default selected duration (Recommended)
-            const options = getDurationOptions(currentProduct.id);
+            const options = currentProduct.plans || getDurationOptions(currentProduct.id);
             const recommended = options.find(o => o.recommended) || options[0];
             setSelectedDuration(recommended);
 
@@ -74,6 +80,15 @@ const CourseDetails = () => {
                 originalPrice: Math.round(30 * 1.2)
             };
         }
+
+        // Use explicit price from plans if available
+        if (selectedDuration.price !== undefined) {
+            return {
+                price: selectedDuration.price,
+                originalPrice: selectedDuration.originalPrice || Math.round(selectedDuration.price * 1.2)
+            };
+        }
+
         return {
             price: Math.round(course.price * selectedDuration.priceMultiplier),
             originalPrice: Math.round(course.price * selectedDuration.originalPriceMultiplier)
@@ -125,7 +140,7 @@ const CourseDetails = () => {
         );
     }
 
-    const durationOptions = getDurationOptions(course._id);
+    const durationOptions = course?.plans || getDurationOptions(course?._id);
 
 
     return (
@@ -134,7 +149,7 @@ const CourseDetails = () => {
                 {/* Back */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-8 md:mb-12 font-black uppercase tracking-widest text-sm group"
+                    className="flex items-center gap-3 text-text-secondary hover:text-accent mb-6 md:mb-4 font-black uppercase tracking-widest text-sm group"
                 >
                     <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Programs
@@ -169,46 +184,49 @@ const CourseDetails = () => {
                     </div>
 
                     {/* Mobile Custom Duration Selection */}
-                    <div className="space-y-4">
-                        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-text-secondary">Select Program Duration</h3>
-                        <div className="relative">
-                            <button
-                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="relative w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-4 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-bold text-sm tracking-widest uppercase"
-                            >
-                                <span className="flex items-center gap-2">
-                                    {selectedDuration?.label}
-                                </span>
-                                {selectedDuration?.recommended && (
-                                    <span className="absolute top-0 right-0 bg-accent text-white text-[7px] px-3 py-1 rounded-tr-xl rounded-bl-xl font-black uppercase shadow-xl z-10 animate-pulse italic">Recommended</span>
-                                )}
-                                <ChevronDown size={18} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
-                            </button>
+                    {/* Mobile Custom Duration Selection - Only show if more than 1 option */}
+                    {durationOptions.length > 1 && (
+                        <div className="space-y-4">
+                            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-text-secondary">Select Program Duration</h3>
+                            <div className="relative">
+                                <button
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="relative w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-4 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-bold text-sm tracking-widest uppercase"
+                                >
+                                    <span className="flex items-center gap-2">
+                                        {selectedDuration?.label}
+                                    </span>
+                                    {selectedDuration?.recommended && (
+                                        <span className="absolute top-0 right-0 bg-accent text-white text-[7px] px-3 py-1 rounded-tr-xl rounded-bl-xl font-black uppercase shadow-xl z-10 animate-pulse italic">Recommended</span>
+                                    )}
+                                    <ChevronDown size={18} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
+                                </button>
 
-                            {isDropdownOpen && (
-                                <div className="relative mt-2 bg-white/5 border border-white/10 rounded-xl overflow-hidden z-20 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 mb-4">
-                                    {durationOptions.map((opt) => (
-                                        <button
-                                            key={opt.months}
-                                            onClick={() => {
-                                                setSelectedDuration(opt);
-                                                setIsDropdownOpen(false);
-                                            }}
-                                            className={`w-full px-4 py-4 text-left font-bold text-xs uppercase tracking-widest border-b border-white/5 last:border-0 transition-colors ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-white/5'
-                                                }`}
-                                        >
-                                            <div className="flex items-center justify-between">
-                                                <span>{opt.label}</span>
-                                                {opt.recommended && (
-                                                    <span className={`text-[8px] px-2 py-0.5 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent'}`}>MOST RECOMMENDED</span>
-                                                )}
-                                            </div>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                                {isDropdownOpen && (
+                                    <div className="relative mt-2 bg-white/5 border border-white/10 rounded-xl overflow-hidden z-20 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 mb-4">
+                                        {durationOptions.map((opt) => (
+                                            <button
+                                                key={opt.months}
+                                                onClick={() => {
+                                                    setSelectedDuration(opt);
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                className={`w-full px-4 py-4 text-left font-bold text-xs uppercase tracking-widest border-b border-white/5 last:border-0 transition-colors ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-white/5'
+                                                    }`}
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <span>{opt.label}</span>
+                                                    {opt.recommended && (
+                                                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent'}`}>MOST RECOMMENDED</span>
+                                                    )}
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="flex justify-between items-center bg-white/5 p-4 md:p-6 rounded-2xl border border-white/5 gap-2">
                         <div className="flex flex-col min-w-0">
@@ -292,9 +310,9 @@ const CourseDetails = () => {
                 </div>
 
                 {/* ================= DESKTOP ================= */}
-                <div className="hidden lg:grid grid-cols-3 gap-24 mt-20">
+                <div className="hidden lg:grid grid-cols-3 gap-24 mt-4">
                     {/* LEFT */}
-                    <div className="col-span-2 space-y-20">
+                    <div className="col-span-2 space-y-6">
                         <Reveal>
                             <h1 className="text-7xl font-black uppercase italic tracking-tighter leading-[0.9]">
                                 {course.title}
@@ -372,45 +390,48 @@ const CourseDetails = () => {
                             </div>
 
                             {/* Desktop Custom Duration Selection */}
-                            <div className="space-y-6 mb-10 relative z-10">
-                                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-secondary pl-2">Select Duration</h3>
-                                <div className="relative">
-                                    <button
-                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                        className="relative w-full bg-white/5 border border-white/10 text-white rounded-2xl px-6 py-5 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-black text-sm tracking-widest uppercase hover:bg-white/10"
-                                    >
-                                        <span className="flex items-center gap-3">
-                                            <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                                            {selectedDuration?.label}
-                                        </span>
-                                        {selectedDuration?.recommended && (
-                                            <span className="absolute top-0 right-0 bg-accent text-white text-[9px] px-4 py-1.5 rounded-tr-2xl rounded-bl-2xl font-black uppercase shadow-2xl z-10 animate-pulse italic">Most Recommended</span>
-                                        )}
-                                        <ChevronDown size={20} className={`text-text-secondary transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
-                                    </button>
+                            {/* Desktop Custom Duration Selection - Only show if more than 1 option */}
+                            {durationOptions.length > 1 && (
+                                <div className="space-y-6 mb-10 relative z-10">
+                                    <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-secondary pl-2">Select Duration</h3>
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                            className="relative w-full bg-white/5 border border-white/10 text-white rounded-2xl px-6 py-5 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-black text-sm tracking-widest uppercase hover:bg-white/10"
+                                        >
+                                            <span className="flex items-center gap-3">
+                                                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                                                {selectedDuration?.label}
+                                            </span>
+                                            {selectedDuration?.recommended && (
+                                                <span className="absolute top-0 right-0 bg-accent text-white text-[9px] px-4 py-1.5 rounded-tr-2xl rounded-bl-2xl font-black uppercase shadow-2xl z-10 animate-pulse italic">Most Recommended</span>
+                                            )}
+                                            <ChevronDown size={20} className={`text-text-secondary transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
+                                        </button>
 
-                                    {isDropdownOpen && (
-                                        <div className="relative mt-3 bg-white/5 border border-white/10 rounded-2xl overflow-hidden z-20 shadow-2xl animate-in fade-in zoom-in-95 duration-200 mb-6">
-                                            {durationOptions.map((opt) => (
-                                                <button
-                                                    key={opt.months}
-                                                    onClick={() => {
-                                                        setSelectedDuration(opt);
-                                                        setIsDropdownOpen(false);
-                                                    }}
-                                                    className={`w-full px-6 py-5 text-left font-black text-xs uppercase tracking-[0.2em] border-b border-white/5 last:border-0 transition-all flex items-center justify-between group/opt ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-accent/10 hover:text-white'
-                                                        }`}
-                                                >
-                                                    <span>{opt.label}</span>
-                                                    {opt.recommended && (
-                                                        <span className={`text-[8px] px-3 py-1 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent group-hover/opt:bg-accent group-hover/opt:text-white'}`}>MOST RECOMMENDED</span>
-                                                    )}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
+                                        {isDropdownOpen && (
+                                            <div className="relative mt-3 bg-white/5 border border-white/10 rounded-2xl overflow-hidden z-20 shadow-2xl animate-in fade-in zoom-in-95 duration-200 mb-6">
+                                                {durationOptions.map((opt) => (
+                                                    <button
+                                                        key={opt.months}
+                                                        onClick={() => {
+                                                            setSelectedDuration(opt);
+                                                            setIsDropdownOpen(false);
+                                                        }}
+                                                        className={`w-full px-6 py-5 text-left font-black text-xs uppercase tracking-[0.2em] border-b border-white/5 last:border-0 transition-all flex items-center justify-between group/opt ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-accent/10 hover:text-white'
+                                                            }`}
+                                                    >
+                                                        <span>{opt.label}</span>
+                                                        {opt.recommended && (
+                                                            <span className={`text-[8px] px-3 py-1 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent group-hover/opt:bg-accent group-hover/opt:text-white'}`}>MOST RECOMMENDED</span>
+                                                        )}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <div className="space-y-4 relative z-10">
                                 <button
@@ -444,6 +465,38 @@ const CourseDetails = () => {
                                 ))}
                             </div>
                         </div>
+
+                        {/* Recommendation Card */}
+                        {recommendedProduct && (
+                            <div
+                                onClick={() => navigate(`/course/${recommendedProduct.id || recommendedProduct._id}`)}
+                                className="glass-card mt-6 p-6 rounded-[2rem] border border-white/5 cursor-pointer group active:scale-95 transition-all hover:border-accent/40 relative overflow-hidden bg-black/20"
+                            >
+                                <div className="flex gap-5 items-center relative z-10">
+                                    <img
+                                        src={recommendedProduct.image}
+                                        alt={recommendedProduct.title}
+                                        className="w-16 h-16 rounded-xl object-cover grayscale group-hover:grayscale-0 transition-all border border-white/10 shadow-lg"
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <Zap size={10} className="text-accent animate-pulse" />
+                                            <span className="text-[9px] text-accent font-black uppercase tracking-widest">Recommended For You</span>
+                                        </div>
+                                        <h4 className="text-sm font-black uppercase leading-tight group-hover:text-white text-text-primary/90 transition-colors truncate">
+                                            {recommendedProduct.title}
+                                        </h4>
+                                        <div className="mt-1 text-[10px] uppercase tracking-wider opacity-60 font-bold">
+                                            from ₹{recommendedProduct.price}
+                                        </div>
+                                    </div>
+                                    <div className="bg-white/5 p-3 rounded-full border border-white/5 group-hover:bg-accent group-hover:text-white transition-all shadow-xl group-hover:shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                                        <ArrowRight size={18} />
+                                    </div>
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

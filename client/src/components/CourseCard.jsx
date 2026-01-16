@@ -1,14 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import StarRating from './StarRating';
 
 const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
     const { addToCart } = useCart();
+    const navigate = useNavigate();
     const showSoldOut = isSoldOut;
 
+    const handleCardClick = (e) => {
+        if (showSoldOut) return;
+        // Don't navigate if clicking the Add button
+        if (e.target.closest('button')) return;
+        navigate(`/course/${course.id || course._id}`);
+    };
+
     return (
-        <div className={`glass-card rounded-2xl md:rounded-[2rem] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 group flex flex-col h-full border border-white/5 hover:border-accent/30 ${showSoldOut ? 'opacity-70 grayscale pointer-events-none' : ''}`}>
+        <div
+            onClick={handleCardClick}
+            className={`glass-card rounded-2xl md:rounded-[2rem] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 group flex flex-col h-full border border-white/5 hover:border-accent/30 cursor-pointer ${showSoldOut ? 'opacity-70 grayscale pointer-events-none' : ''}`}
+        >
             <div className="relative aspect-[16/11] overflow-hidden">
                 <img
                     src={course.image}
@@ -46,25 +57,42 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
             </div>
 
             <div className="p-3 md:p-8 flex flex-col items-center text-center flex-grow relative z-10">
-                <div className="mb-2 md:mb-6 opacity-60 md:opacity-100 scale-75 md:scale-100 origin-center">
+                <div className="mb-1 md:mb-6 opacity-60 md:opacity-100 scale-75 md:scale-100 origin-center">
                     <StarRating rating={course.rating || 4.9} />
                 </div>
-                <h3 className="text-[11px] md:text-2xl lg:text-2xl font-black mb-1 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.2] tracking-tight uppercase break-words hyphens-auto w-full">
+                <h3 className="text-[10px] md:text-xl lg:text-xl font-black mb-0 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.2] tracking-tight uppercase break-words hyphens-auto w-full">
                     {course.title}
                 </h3>
-                <p className="text-text-secondary text-[10px] md:text-base mb-3 md:mb-10 line-clamp-2 md:line-clamp-3 leading-relaxed font-medium opacity-70 md:opacity-80">
-                    {course.description}
-                </p>
+                <ul className="text-text-secondary text-xs md:text-sm mb-3 md:mb-8 text-left w-full space-y-1.5 pl-1 opacity-80 min-h-[80px]">
+                    {course.features?.slice(0, 3).map((feature, idx) => (
+                        <li key={idx} className="flex items-start leading-tight">
+                            <span className="mr-2 text-accent">•</span>
+                            <span>{feature}</span>
+                        </li>
+                    ))}
+                    {course.features?.length > 3 && (
+                        <li className="flex items-start leading-tight pt-1">
+                            <span className="text-accent group-hover:text-white transition-colors font-bold text-xs uppercase tracking-wider flex items-center gap-1">
+                                <span>View all benefits</span>
+                                <span className="text-lg leading-none">→</span>
+                            </span>
+                        </li>
+                    )}
+                </ul>
 
                 <div className="mt-auto w-full grid grid-cols-2 gap-2 md:gap-4 relative z-20">
                     <Link
                         to={showSoldOut ? '#' : `/course/${course.id || course._id}`}
+                        onClick={(e) => e.stopPropagation()}
                         className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all border border-white/5 md:border-white/10 text-white/50 md:text-white text-[9px] md:text-xs uppercase tracking-widest hover:bg-white/5 hover:text-white ${showSoldOut ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                         {showSoldOut ? 'Wait' : 'Details'}
                     </Link>
                     <button
-                        onClick={() => !showSoldOut && addToCart(course)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (!showSoldOut) addToCart(course);
+                        }}
                         disabled={showSoldOut}
                         className={`flex items-center justify-center w-full font-black py-2 md:py-4 rounded-lg md:rounded-xl transition-all btn-glow shadow-xl group/btn overflow-hidden relative text-[9px] md:text-xs uppercase tracking-widest ${showSoldOut ? 'bg-white/10 text-white/40 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
                     >
