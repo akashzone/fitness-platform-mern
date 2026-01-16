@@ -88,7 +88,7 @@ const Home = () => {
                         Your browser does not support the video tag.
                     </video>
 
-                    <div className="absolute inset-0 bg-black/30" />
+                    <div className="absolute inset-0 bg-primary-brand/80 mix-blend-multiply" />
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-bg-page/20 to-transparent" />
                 </motion.div>
 
