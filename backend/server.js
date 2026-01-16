@@ -75,11 +75,10 @@ app.get('/api/fix-prices-now', async (req, res) => {
     try {
         let updates = [];
         for (const p of correctProducts) {
-            // Find by custom 'id' field or '_id' if that was used. 
-            // Assuming 'id' field is used in Product schema based on seed files.
-            // We update BOTH price and displayPrice if it exists.
+            // Find by custom 'id' field (defined as String in schema)
+            // We do NOT query _id to prevent CastError if _id is ObjectId
             const update = await Product.updateMany(
-                { $or: [{ id: p.id }, { _id: p.id }] },
+                { id: p.id },
                 { $set: { price: p.price, displayPrice: p.price } }
             );
             updates.push({ id: p.id, result: update });
