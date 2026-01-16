@@ -238,6 +238,14 @@ const CourseDetails = () => {
 
                     <div className="flex justify-between items-center bg-white/5 p-4 md:p-6 rounded-2xl border border-white/5 gap-2">
                         <div className="flex flex-col min-w-0">
+                            {slotInfo && (
+                                <div className="flex items-center gap-2 mb-1">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${slotInfo.slotsLeft > 0 ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
+                                    <span className={`text-[10px] font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
+                                        {slotInfo.slotsLeft > 0 ? `${slotInfo.slotsLeft}/${slotInfo.maxSlots} Spots Available` : 'Sold Out'}
+                                    </span>
+                                </div>
+                            )}
                             <span className="text-[9px] font-black text-text-secondary uppercase tracking-widest opacity-60">
                                 Investment
                             </span>
