@@ -45,10 +45,10 @@ const courses = [
         image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop",
         features: [
             "Weekly check-in via google form",
-            "Monthly 2 online sessions (6+2 sessions for 3 months plan)",
             "12 hrs text support",
             "Personalised diet plan",
             "Personalised workout plan",
+            "Monthly 2 online sessions (6+2 sessions for 3 months plan)",
             "1 session can be rescheduled if missed"
         ],
         fullDescription: "Step up your game with Structured Coaching. This plan offers more frequent interaction with 2 online sessions per month and 12 hours of text support. Ideal for individuals who want closer monitoring and more dynamic adjustments to their training and nutrition.",

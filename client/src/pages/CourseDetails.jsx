@@ -15,6 +15,7 @@ import Reveal from '../components/motion/Reveal';
 import StarRating from '../components/StarRating';
 import { useCart } from '../context/CartContext';
 import { courses } from '../data/courses';
+import api from '../utils/api';
 
 const CourseDetails = () => {
     const { id } = useParams();
@@ -27,6 +28,21 @@ const CourseDetails = () => {
     const [recommendedProduct, setRecommendedProduct] = useState(null);
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [slotInfo, setSlotInfo] = useState(null);
+
+    useEffect(() => {
+        const fetchSlots = async () => {
+            try {
+                const response = await api.get('/products');
+                if (response.data.slotInfo) {
+                    setSlotInfo(response.data.slotInfo);
+                }
+            } catch (error) {
+                console.error('Failed to fetch slots:', error);
+            }
+        };
+        fetchSlots();
+    }, []);
 
     // Configuration for dynamic pricing based on duration
     const DURATION_CONFIG = {
@@ -74,12 +90,6 @@ const CourseDetails = () => {
 
     const getCurrentPrice = () => {
         if (!course || !selectedDuration) return { price: 0, originalPrice: 0 };
-        if (course.isLiveTest) {
-            return {
-                price: 30,
-                originalPrice: Math.round(30 * 1.2)
-            };
-        }
 
         // Use explicit price from plans if available
         if (selectedDuration.price !== undefined) {
@@ -164,9 +174,7 @@ const CourseDetails = () => {
                         <div className="flex items-center gap-3 mt-2">
                             <StarRating rating={course.rating || 4.9} size={12} />
                             <span className="text-[10px] text-text-secondary font-bold uppercase tracking-widest">4.9/5 Elite Rating</span>
-                            {course.isLiveTest && (
-                                <span className="bg-accent/20 text-accent text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest border border-accent/30 animate-pulse">Live Testing</span>
-                            )}
+
                         </div>
                     </Reveal>
 
@@ -231,7 +239,7 @@ const CourseDetails = () => {
                     <div className="flex justify-between items-center bg-white/5 p-4 md:p-6 rounded-2xl border border-white/5 gap-2">
                         <div className="flex flex-col min-w-0">
                             <span className="text-[9px] font-black text-text-secondary uppercase tracking-widest opacity-60">
-                                {course.isLiveTest ? 'Test Investment' : 'Investment'}
+                                Investment
                             </span>
                             <div className="flex items-center gap-2">
                                 <div className="text-xl md:text-2xl font-black italic text-glow whitespace-nowrap">
@@ -321,9 +329,7 @@ const CourseDetails = () => {
                                 <StarRating rating={course.rating || 4.9} size={16} />
                                 <span className="h-1 w-1 bg-white/20 rounded-full" />
                                 <span className="text-xs text-text-secondary font-black uppercase tracking-[0.3em]">The Elite Choice</span>
-                                {course.isLiveTest && (
-                                    <span className="bg-accent/20 text-accent text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest border border-accent/30 animate-pulse">Live Testing Mode Active</span>
-                                )}
+
                             </div>
                         </Reveal>
 
@@ -374,6 +380,14 @@ const CourseDetails = () => {
                             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none group-hover/card:bg-accent/10 transition-all duration-1000" />
 
                             <div className="text-center mb-10 relative z-10">
+                                {slotInfo && (
+                                    <div className="flex items-center justify-center gap-2 mb-4">
+                                        <div className={`w-2 h-2 rounded-full ${slotInfo.slotsLeft > 0 ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
+                                        <span className={`text-xs font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
+                                            {slotInfo.slotsLeft > 0 ? `Hurry! Only ${slotInfo.slotsLeft} Spots Available` : 'Sold Out'}
+                                        </span>
+                                    </div>
+                                )}
                                 <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.4em] block mb-3 opacity-60">Total Investment</span>
                                 <div className="flex flex-col items-center">
                                     <div className="price-original text-2xl md:text-4xl whitespace-nowrap mb-2">

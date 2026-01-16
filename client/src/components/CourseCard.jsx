@@ -39,7 +39,7 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
 
                 <div className="absolute top-1 left-1 md:top-6 md:left-6 bg-black/40 md:glass px-2 py-1 md:px-8 md:py-4 rounded-xl md:rounded-3xl flex flex-col items-center shadow-2xl border border-white/10 group-hover:border-accent/30 transition-all duration-500 backdrop-blur-md md:backdrop-blur-xl">
                     <span className="pricing-badge-label text-[9px] md:text-[12px] opacity-80 mb-0.5 md:mb-1">
-                        {course.isLiveTest ? 'Live Testing' : 'Starting From'}
+                        Starting From
                     </span>
                     <div className="flex flex-col items-center leading-none">
                         {!hideOriginalPrice && (
