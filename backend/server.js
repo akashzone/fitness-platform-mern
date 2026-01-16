@@ -56,6 +56,43 @@ app.get('/api/test-email', async (req, res) => {
     }
 });
 
+// EMERGENCY FIX: Route to RESET prices to correct values
+app.get('/api/fix-prices-now', async (req, res) => {
+    const Product = require('./models/Product');
+    const correctProducts = [
+        { id: "4-weeks-transformation", price: 2000 },
+        { id: "8-weeks-momentum", price: 4000 },
+        { id: "12-weeks-peak-performance", price: 5500 },
+        { id: "20-weeks-elite-lifestyle", price: 7000 },
+
+        // Handle potential ID variations (legacy vs new) if needed, based on seed-products.js
+        { id: "foundation-plan", price: 2000 },
+        { id: "guided-transformation", price: 4000 },
+        { id: "structured-coaching", price: 5500 },
+        { id: "elite-1-1-coaching", price: 7000 }
+    ];
+
+    try {
+        let updates = [];
+        for (const p of correctProducts) {
+            // Find by custom 'id' field or '_id' if that was used. 
+            // Assuming 'id' field is used in Product schema based on seed files.
+            // We update BOTH price and displayPrice if it exists.
+            const update = await Product.updateMany(
+                { $or: [{ id: p.id }, { _id: p.id }] },
+                { $set: { price: p.price, displayPrice: p.price } }
+            );
+            updates.push({ id: p.id, result: update });
+        }
+
+        console.log('✅ [Manual-Fix] Prices reset to correct values.');
+        res.status(200).json({ success: true, message: 'Prices reset successfully', details: updates });
+    } catch (err) {
+        console.error('❌ [Manual-Fix] Failed:', err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 
 
 // Serve static files from the frontend
