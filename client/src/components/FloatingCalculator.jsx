@@ -56,7 +56,7 @@ const FloatingCalculator = () => {
                                 whileTap={{ scale: 0.9 }}
                                 className="relative flex items-center justify-center w-14 h-14 bg-[#22c55e] text-white rounded-full shadow-[0_10px_30px_rgba(34,197,94,0.4)] border-2 border-white/20 hover:border-white/40 transition-colors z-10"
                             >
-                                <Calculator size={28} className="text-white fill-current" />
+                                <Calculator size={28} className="text-white" />
                             </motion.button>
                         </Link>
                     </div>

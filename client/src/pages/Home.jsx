@@ -62,12 +62,33 @@ const Home = () => {
             {/* Hero Section */}
             <section ref={heroRef} className="relative h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-bg-page">
                 <motion.div style={{ y, opacity }} className="absolute inset-0 z-0 h-full w-full">
-                    <img
-                        src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2000&auto=format&fit=crop"
-                        alt="Hero Background"
-                        className="w-full h-full object-cover scale-110"
-                    />
-                    <div className="absolute inset-0 bg-primary-brand/80 mix-blend-multiply" />
+                    {/* Desktop Video */}
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className="hidden lg:block w-full h-full object-cover hero-video-desktop"
+                    >
+                        <source src="/assets/desktop.MOV" />
+                        Your browser does not support the video tag.
+                    </video>
+
+                    {/* Mobile Video */}
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className="block lg:hidden w-full h-full object-cover hero-video-mobile"
+                    >
+                        <source src="/assets/phone.MOV" />
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div className="absolute inset-0 bg-black/30" />
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-page via-bg-page/20 to-transparent" />
                 </motion.div>
 

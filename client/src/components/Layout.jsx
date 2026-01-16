@@ -128,13 +128,9 @@ const Footer = React.forwardRef((props, ref) => {
                                 <Instagram size={32} />
                             </a>
                             <a href="https://youtube.com/@fitwithpravinn" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-all transform hover:scale-125 hover:text-glow">
-                                <Youtube size={32} />
+                                <Youtube size={35} />
                             </a>
                         </div>
-                        <p className="text-text-secondary text-xs font-bold leading-relaxed">
-                            Snapchat: fitwithpravinn <br />
-                            Access all resources via Linktree.
-                        </p>
                     </div>
                 </div>
                 <div className="mt-12 md:mt-24 pt-8 md:pt-12 border-t border-white/5 text-center text-text-secondary text-sm font-bold opacity-60">
