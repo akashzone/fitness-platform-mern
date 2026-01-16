@@ -28,11 +28,9 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Only fetch slot info from backend, use static products
                 const response = await api.get('/products');
                 if (response.data.slotInfo) setSlotInfo(response.data.slotInfo);
-                if (response.data.products && response.data.products.length > 0) {
-                    setProducts(response.data.products);
-                }
             } catch (err) {
                 console.error('Data Load Error:', err);
             }
