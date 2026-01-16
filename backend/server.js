@@ -56,17 +56,7 @@ app.get('/api/test-email', async (req, res) => {
     }
 });
 
-// TEMPORARY: Route to update prices for Live Testing (Since Shell is invalid)
-app.get('/api/update-prices-30', async (req, res) => {
-    const Product = require('./models/Product');
-    try {
-        await Product.updateMany({}, { $set: { price: 30 } });
-        console.log('All product prices updated to ₹30 for testing.');
-        res.status(200).json({ success: true, message: 'All product prices updated to ₹30' });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
-});
+
 
 // Serve static files from the frontend
 // Check both root dist and client/dist for flexibility
@@ -115,14 +105,4 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`);
-
-    // FORCE UPDATE FOR LIVE TESTING (As requested by User)
-    // This ensures prices are 30 INR immediately after deployment without manual seeding
-    try {
-        const Product = require('./models/Product');
-        await Product.updateMany({}, { $set: { price: 30 } });
-        console.log('✅ [Auto-Fix] All product prices forced to ₹30 for Live Testing.');
-    } catch (err) {
-        console.error('❌ [Auto-Fix] Failed to update prices:', err);
-    }
 });
