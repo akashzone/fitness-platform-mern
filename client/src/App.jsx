@@ -8,6 +8,7 @@ import Checkout from './pages/Checkout';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import PaymentStatus from './pages/PaymentStatus';
+import CalorieCalculator from './pages/CalorieCalculator';
 
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/ScrollToTop';
@@ -20,6 +21,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/calorie-calculator" element={<CalorieCalculator />} />
             <Route path="/programs" element={<Programs />} />
             <Route path="/course/:id" element={<CourseDetails />} />
             <Route path="/checkout/:id" element={<Checkout />} />
