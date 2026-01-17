@@ -86,6 +86,9 @@ const Footer = React.forwardRef((props, ref) => {
                                 FITWITH<span className="text-accent italic">PRAVINN</span>
                             </span>
                         </Link>
+                        <p className="mt-6 text-sm md:text-base text-text-secondary leading-relaxed max-w-sm mx-auto md:mx-0 font-medium">
+                            Level up your fitness game with professional training programs, expert diet plans, and premium resources tailored for your success.
+                        </p>
                     </div>
 
                     <div className="space-y-8">

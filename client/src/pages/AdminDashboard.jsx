@@ -286,7 +286,7 @@ const AdminDashboard = () => {
                                         </td>
                                         <td className="px-8 py-8">
                                             <span className="inline-flex items-center px-3 py-1 bg-accent/20 text-accent text-[10px] font-black rounded-lg border border-accent/20 uppercase tracking-[0.1em]">
-                                                {order.paymentStatus}
+                                                {order.orderStatus}
                                             </span>
                                         </td>
                                         <td className="px-8 py-8">

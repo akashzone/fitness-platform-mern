@@ -71,18 +71,23 @@ router.get('/analytics', auth, async (req, res) => {
             query.createdAt = { $gte: date };
         }
 
-        const orders = await Order.find(query);
+        // Only count PAID orders for revenue
+        const orders = await Order.find({ ...query, orderStatus: 'PAID' });
+        const allOrders = await Order.find(query); // For total orders count
 
-        let totalOrders = orders.length;
+        let totalOrders = allOrders.length;
         let totalRevenue = 0;
-
-
+        let courseRevenue = 0;
+        let ebookRevenue = 0;
 
         orders.forEach(order => {
             totalRevenue += order.totalAmount;
             order.products.forEach(product => {
-                // Assuming all products are courses now
-                courseRevenue += product.price;
+                if (product.type === 'COURSE') {
+                    courseRevenue += product.price;
+                } else if (product.type === 'EBOOK') {
+                    ebookRevenue += product.price;
+                }
             });
         });
 
@@ -92,11 +97,13 @@ router.get('/analytics', auth, async (req, res) => {
                 totalOrders,
                 totalRevenue,
                 courseRevenue,
+                ebookRevenue,
                 period: period || 'all'
             }
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error' });
+        console.error('Analytics error:', error);
+        res.status(500).json({ success: false, message: 'Server error: ' + error.message });
     }
 });
 
