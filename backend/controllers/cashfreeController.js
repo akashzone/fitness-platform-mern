@@ -37,9 +37,15 @@ exports.createCashfreeOrder = async (req, res) => {
                 productId: product.id,
                 title: product.title,
                 duration: durationMonths ? `${durationMonths} Months` : product.duration,
-                price: amount, // Use requested amount (final price)
-                type: product.type
-            }] : [],
+                price: amount,
+                type: product.type || 'COURSE' // Safe fallback
+            }] : [{
+                productId: productId,
+                title: "Custom Order",
+                duration: durationMonths ? `${durationMonths} Months` : "N/A",
+                price: amount,
+                type: 'COURSE'
+            }],
             totalAmount: amount,
             cfOrderId: orderId,
             orderStatus: 'PENDING',

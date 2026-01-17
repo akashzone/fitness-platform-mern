@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
     features: [{ type: String }],
     price: { type: Number, required: true },
     image: { type: String, required: true },
-    image: { type: String, required: true },
+    type: { type: String, default: 'COURSE' },
     isActive: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now }
 });
