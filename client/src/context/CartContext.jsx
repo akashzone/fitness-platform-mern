@@ -29,30 +29,36 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product) => {
         setCartItems(prevItems => {
-            // Business Rule: Courses should have duration info
+            // Business Rule: Use product specific plans if available, else fallback
             let finalProduct = { ...product };
-            const options = getDurationOptions();
+            const options = product.plans || getDurationOptions();
             const recommended = options.find(o => o.recommended) || options[0];
 
             // If duration info is missing (e.g. from CourseCard), set defaults
+            // We now store the available plans IN the product object in the cart
+            finalProduct.durations = options;
+
             if (!finalProduct.durationMonths) {
                 finalProduct.durationMonths = recommended.months;
                 finalProduct.basePrice = product.price; // Store original price
 
-                finalProduct.price = Math.round(product.price * recommended.priceMultiplier);
-                finalProduct.originalPrice = Math.round(product.price * recommended.originalPriceMultiplier);
+                finalProduct.price = Math.round(product.price * (recommended.priceMultiplier || 1));
+                finalProduct.originalPrice = Math.round(product.price * (recommended.originalPriceMultiplier || 1.2));
                 finalProduct.displayPrice = finalProduct.price;
             } else if (!finalProduct.basePrice) {
                 // It came from CourseDetails with a specific duration
                 const currentOpt = options.find(o => o.months === finalProduct.durationMonths);
-                finalProduct.basePrice = Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
-                finalProduct.originalPrice = Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
+                // If it's a fixed plan (no multiplier), basePrice is just the price
+                finalProduct.basePrice = currentOpt.price
+                    ? currentOpt.price
+                    : Math.round(finalProduct.price / (currentOpt?.priceMultiplier || 1));
+
+                finalProduct.originalPrice = currentOpt.originalPrice
+                    ? currentOpt.originalPrice
+                    : Math.round(finalProduct.basePrice * (currentOpt?.originalPriceMultiplier || 1.2));
             }
 
-            finalProduct.durations = options;
-
             // Business Rule: ONLY ONE COURSE ALLOWED IN CART
-            // (Ebooks removed, so cart effectively holds only one item now)
             return [finalProduct];
         });
         setIsCartOpen(true);
@@ -62,11 +68,16 @@ export const CartProvider = ({ children }) => {
         setCartItems(prevItems => prevItems.map(item => {
             const isMatch = item.id === productId || item._id === productId;
             if (isMatch) {
-                const options = getDurationOptions();
+                const options = item.durations || getDurationOptions();
                 const newOpt = options.find(o => o.months === newMonths);
                 if (newOpt) {
-                    const newPrice = Math.round(item.basePrice * newOpt.priceMultiplier);
-                    const newOriginalPrice = Math.round(item.basePrice * newOpt.originalPriceMultiplier);
+                    const newPrice = newOpt.price
+                        ? newOpt.price
+                        : Math.round(item.basePrice * newOpt.priceMultiplier);
+                    const newOriginalPrice = newOpt.originalPrice
+                        ? newOpt.originalPrice
+                        : Math.round(item.basePrice * newOpt.originalPriceMultiplier);
+
                     return {
                         ...item,
                         durationMonths: newMonths,

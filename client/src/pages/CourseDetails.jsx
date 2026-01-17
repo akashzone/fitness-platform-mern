@@ -279,7 +279,7 @@ const CourseDetails = () => {
 
                     <div className="flex justify-between items-center bg-white/5 p-4 md:p-6 rounded-2xl border border-white/5 gap-2">
                         <div className="flex flex-col min-w-0">
-                            {slotInfo && (
+                            {slotInfo && course.id !== 'foundation-plan' && (
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className={`text-[10px] font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
                                         {slotInfo.slotsLeft > 0 ? `${slotInfo.slotsLeft}/${slotInfo.maxSlots} Spots Available` : 'Sold Out'}
@@ -359,12 +359,12 @@ const CourseDetails = () => {
 
                     <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
                         <h3 className="text-xs font-black uppercase mb-4 tracking-widest text-text-secondary">Executive Summary</h3>
-                        <div className="text-sm opacity-80 leading-relaxed font-medium">
+                        <div className="text-base opacity-80 leading-relaxed font-medium">
                             {Array.isArray(course.fullDescription) ? (
                                 <ul className="space-y-3 list-none">
                                     {course.fullDescription.map((point, i) => (
                                         <li key={i} className="flex gap-3 items-start">
-                                            <span className="text-accent mt-1">•</span>
+                                            <span className="text-accent mt-1.5">•</span>
                                             <span>{point}</span>
                                         </li>
                                     ))}
@@ -479,7 +479,7 @@ const CourseDetails = () => {
                             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none group-hover/card:bg-accent/10 transition-all duration-1000" />
 
                             <div className="text-center mb-10 relative z-10">
-                                {slotInfo && (
+                                {slotInfo && course.id !== 'foundation-plan' && (
                                     <div className="flex items-center justify-center gap-2 mb-4">
                                         <span className={`text-xs font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
                                             {slotInfo.slotsLeft > 0 ? `Hurry! Only ${slotInfo.slotsLeft} Spots Available` : 'Sold Out'}
@@ -567,11 +567,11 @@ const CourseDetails = () => {
                                 </button>
                             </div>
 
-                            <div className="mt-10 pt-10 border-t border-white/5 space-y-4">
+                            <div className="mt-10 pt-10 border-t border-white/5 space-y-5">
                                 {course.features && course.features.slice(0, 3).map((f, i) => (
-                                    <div key={i} className="flex gap-4 items-center opacity-60 hover:opacity-100 transition-opacity">
-                                        <Zap size={14} className="text-accent flex-shrink-0" />
-                                        <span className="text-[11px] font-bold uppercase tracking-widest leading-tight">{f}</span>
+                                    <div key={i} className="flex gap-4 items-center opacity-70 hover:opacity-100 transition-opacity">
+                                        <Zap size={16} className="text-accent flex-shrink-0" />
+                                        <span className="text-sm font-black uppercase tracking-widest leading-tight">{f}</span>
                                     </div>
                                 ))}
                             </div>
