@@ -60,21 +60,27 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
                 <div className="mb-1 md:mb-6 opacity-60 md:opacity-100 scale-75 md:scale-100 origin-center">
                     <StarRating rating={course.rating || 4.9} />
                 </div>
-                <h3 className="text-[10px] md:text-xl lg:text-xl font-black mb-0 md:mb-4 text-text-primary group-hover:text-accent transition-colors leading-[1.2] tracking-tight uppercase break-words hyphens-auto w-full">
+                <h3 className="text-xs md:text-xl font-black mb-0 md:mb-4 text-text-primary group-hover:text-accent py-1 transition-colors leading-[1.2] tracking-tight uppercase break-words hyphens-auto w-full">
                     {course.title}
                 </h3>
-                <ul className="text-text-secondary text-xs md:text-sm mb-3 md:mb-8 text-left w-full space-y-1.5 pl-1 opacity-80 min-h-[80px]">
-                    {course.features?.slice(0, 3).map((feature, idx) => (
+                <ul className="text-text-secondary text-xs md:text-sm mb-3 md:mb-8 text-left w-full space-y-1.5 pl-1 opacity-80 min-h-[60px]">
+                    {course.features?.slice(0, 2).map((feature, idx) => (
                         <li key={idx} className="flex items-start leading-tight">
                             <span className="mr-2 text-accent">•</span>
                             <span>{feature}</span>
                         </li>
                     ))}
-                    {course.features?.length > 3 && (
+                    {course.features?.length > 2 && (
                         <li className="flex items-start leading-tight pt-1">
-                            <span className="text-accent group-hover:text-white transition-colors font-bold text-xs uppercase tracking-wider flex items-center gap-1">
+                            <span
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/course/${course.id || course._id}`);
+                                }}
+                                className="text-accent hover:text-white transition-colors font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                            >
                                 <span>View all benefits</span>
-                                <span className="text-lg leading-none">→</span>
+                                <span className="text-sm leading-none">→</span>
                             </span>
                         </li>
                     )}

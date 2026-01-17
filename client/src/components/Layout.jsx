@@ -76,13 +76,13 @@ const Footer = React.forwardRef((props, ref) => {
     };
 
     return (
-        <footer ref={ref} className="bg-surface border-t border-white/5 pt-12 pb-10 md:py-24 text-text-secondary">
+        <footer id="site-footer" ref={ref} className="bg-surface border-t border-white/5 pt-6 pb-10 md:py-24 text-text-secondary">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-20 items-start text-center md:text-left">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start text-center md:text-left">
                     <div>
                         <Link to="/" className="flex items-center gap-0 justify-center md:justify-start">
-                            <img src="/logo1.png" alt="Logo" className="ml-2 mt-2 w-16 h-16 object-contain" />
-                            <span className="text-2xl font-black tracking-tighter text-text-primary uppercase -ml-3">
+                            <img src="/logo1.png" alt="Logo" className="mt-2 w-16 h-16 object-contain" />
+                            <span className="text-2xl font-black tracking-tighter text-text-primary uppercase">
                                 FITWITH<span className="text-accent italic">PRAVINN</span>
                             </span>
                         </Link>
@@ -90,12 +90,34 @@ const Footer = React.forwardRef((props, ref) => {
 
                     <div className="space-y-8">
                         <h3 className="text-xs font-black text-text-primary uppercase tracking-[0.2em]">Contact Details</h3>
-                        <div className="flex items-start justify-center md:justify-start space-x-4 group">
-                            <Mail size={20} className="text-accent mt-1" />
-                            <div className="flex flex-col">
-                                <span className="text-text-primary font-bold text-[10px] md:text-sm uppercase tracking-widest mb-1 font-sans">Business Email</span>
-                                <span className="font-semibold text-sm md:text-base group-hover:text-text-primary transition-colors">fitwithpravinn.com</span>
-                            </div>
+
+                        {/* Social Icons Row including Email */}
+                        <div className="flex items-center justify-center md:justify-start space-x-6">
+                            <a
+                                href="mailto:fitwithpravinn@gmail.com"
+                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-accent hover:text-white border border-white/10 transition-all duration-300"
+                                aria-label="Email"
+                            >
+                                <Mail size={18} className="text-text-secondary group-hover:text-white transition-colors" />
+                            </a>
+                            <a
+                                href="https://instagram.com/fitwithpravinn"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-pink-600 hover:text-white border border-white/10 transition-all duration-300"
+                                aria-label="Instagram"
+                            >
+                                <Instagram size={18} className="text-text-secondary group-hover:text-white transition-colors" />
+                            </a>
+                            <a
+                                href="https://youtube.com/@fitwithpravinn"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-red-600 hover:text-white border border-white/10 transition-all duration-300"
+                                aria-label="YouTube"
+                            >
+                                <Youtube size={18} className="text-text-secondary group-hover:text-white transition-colors" />
+                            </a>
                         </div>
 
                         {/* Feedback Input Section */}
@@ -120,21 +142,9 @@ const Footer = React.forwardRef((props, ref) => {
                             </form>
                         </div>
                     </div>
-
-                    <div className="space-y-8">
-                        <h3 className="text-xs font-black text-text-primary uppercase tracking-[0.2em]">Social Platforms</h3>
-                        <div className="flex justify-center md:justify-start space-x-8">
-                            <a href="https://instagram.com/fitwithpravinn" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-all transform hover:scale-125 hover:text-glow">
-                                <Instagram size={32} />
-                            </a>
-                            <a href="https://youtube.com/@fitwithpravinn" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-all transform hover:scale-125 hover:text-glow">
-                                <Youtube size={35} />
-                            </a>
-                        </div>
-                    </div>
                 </div>
                 <div className="mt-12 md:mt-24 pt-8 md:pt-12 border-t border-white/5 text-center text-text-secondary text-sm font-bold opacity-60">
-                    &copy; {new Date().getFullYear()} FitWithPravinn. Build for Discipline.
+                    &copy; {new Date().getFullYear()} FitWithPravinn. <Link to="/terms-and-conditions" className="hover:text-accent transition-colors underline decoration-white/20 hover:decoration-accent underline-offset-4">Terms & Conditions</Link>
                 </div>
             </div>
         </footer>

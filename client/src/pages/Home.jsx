@@ -96,12 +96,12 @@ const Home = () => {
                             <div className="w-full flex justify-center pt-8">
                                 <div className="inline-flex items-center space-x-2 bg-accent/5 backdrop-blur-md px-8 py-3 rounded-full mb-8 border border-accent/30 shadow-[0_0_30px_rgba(34,197,94,0.1)] hover:border-accent hover:bg-accent/10 transition-all duration-500 cursor-default group">
                                     <Zap size={16} className="text-accent fill-accent animate-pulse" />
-                                    <span className="text-accent text-xs font-black uppercase tracking-[0.3em] font-sans">FitWithPravinn</span>
+                                    <span className="text-accent text-[10px] md:text-xs font-black uppercase tracking-[0.3em] font-sans">FitWithPravinn</span>
                                 </div>
                             </div>
                         </Reveal>
 
-                        <h1 className="text-2xl md:text-6xl font-black tracking-tighter text-text-primary mb-6 leading-[1.1] uppercase flex flex-col items-center gap-2">
+                        <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-text-primary mb-6 leading-[1.1] uppercase flex flex-col items-center gap-2">
                             <span>DISCIPLINE</span>
                             <span className="text-accent italic text-glow">OVER</span>
                             <span className="text-accent italic text-glow">MOTIVATION</span>

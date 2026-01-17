@@ -319,9 +319,20 @@ const CourseDetails = () => {
 
                     <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
                         <h3 className="text-xs font-black uppercase mb-4 tracking-widest text-text-secondary">Executive Summary</h3>
-                        <p className="text-sm opacity-80 leading-relaxed font-medium">
-                            {course.fullDescription}
-                        </p>
+                        <div className="text-sm opacity-80 leading-relaxed font-medium">
+                            {Array.isArray(course.fullDescription) ? (
+                                <ul className="space-y-3 list-none">
+                                    {course.fullDescription.map((point, i) => (
+                                        <li key={i} className="flex gap-3 items-start">
+                                            <span className="text-accent mt-1">•</span>
+                                            <span>{point}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>{course.fullDescription}</p>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -356,9 +367,20 @@ const CourseDetails = () => {
                                     <span className="h-px w-12 bg-accent" />
                                     Executive Summary
                                 </h3>
-                                <p className="text-2xl opacity-80 mt-8 leading-relaxed font-medium max-w-4xl">
-                                    {course.fullDescription}
-                                </p>
+                                <div className="text-2xl opacity-80 mt-8 leading-relaxed font-medium max-w-4xl">
+                                    {Array.isArray(course.fullDescription) ? (
+                                        <ul className="space-y-4 list-none">
+                                            {course.fullDescription.map((point, i) => (
+                                                <li key={i} className="flex gap-4 items-start">
+                                                    <span className="text-accent mt-1.5">•</span>
+                                                    <span>{point}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p>{course.fullDescription}</p>
+                                    )}
+                                </div>
                             </Reveal>
 
                             <Reveal delay={0.2}>

@@ -138,7 +138,7 @@ const CalorieCalculator = () => {
     );
 
     return (
-        <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative">
+        <div className="min-h-screen pt-0 pb-12 px-4 sm:px-6 lg:px-8 flex justify-center relative">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px]" />

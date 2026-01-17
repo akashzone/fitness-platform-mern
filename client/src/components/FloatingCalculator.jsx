@@ -7,10 +7,29 @@ import { useCart } from '../context/CartContext';
 const FloatingCalculator = () => {
     const { isCartOpen } = useCart();
     const location = useLocation();
+    const [isFooterVisible, setIsFooterVisible] = React.useState(false);
 
-    // Hide on the calculator page itself to avoid redundancy, or keep it? 
-    // Usually floating buttons stay, but if it links to the current page it's weird.
-    // Let's hide it on /calorie-calculator
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsFooterVisible(entry.isIntersecting);
+            },
+            { threshold: 0 }
+        );
+
+        const footer = document.getElementById('site-footer');
+        if (footer) {
+            observer.observe(footer);
+        }
+
+        return () => {
+            if (footer) {
+                observer.unobserve(footer);
+            }
+        };
+    }, [location.pathname]); // Re-run on route change to re-attach if needed
+
+    // Hide on the calculator page itself to avoid redundancy
     if (location.pathname === '/calorie-calculator') return null;
 
     return (
@@ -18,15 +37,21 @@ const FloatingCalculator = () => {
             {!isCartOpen && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    animate={{
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        bottom: isFooterVisible ? 96 : 24 // 96px (bottom-24) when footer visible, 24px (bottom-6) otherwise
+                    }}
                     exit={{ opacity: 0, scale: 0, y: 20 }}
                     transition={{
-                        duration: 0.5,
+                        duration: 0.3, // Smoother transition for position change
                         type: "spring",
                         stiffness: 260,
                         damping: 20
                     }}
-                    className="fixed bottom-6 right-6 z-[9999]"
+                    className="fixed right-6 z-[9999]"
+                    style={{ bottom: isFooterVisible ? '6rem' : '1.5rem' }} // Fallback/Initial
                 >
                     <div className="relative group">
                         {/* Tooltip */}

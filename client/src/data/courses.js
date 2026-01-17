@@ -13,7 +13,11 @@ export const courses = [
             "Customised Workout Plan",
             "One-time Consultation"
         ],
-        fullDescription: "A perfect starting point for your fitness journey. Get a fully customized diet and workout plan tailored to your specific goals and lifestyle. This is a one-time service designed to give you the blueprint you need to succeed.",
+        fullDescription: [
+            "A perfect starting point for your fitness journey to build a strong foundation.",
+            "Get a fully customized diet and workout plan tailored to your specific goals and lifestyle.",
+            "This is a one-time service designed to give you the blueprint you need to succeed without ongoing commitment."
+        ],
         plans: [
             { months: 1, label: "One-time", price: 2000, originalPrice: 2400, note: "Standard" }
         ]
@@ -34,7 +38,12 @@ export const courses = [
             "Personalised diet plan",
             "Personalised workout plan"
         ],
-        fullDescription: "Get structured guidance with our Guided Transformation plan. Includes weekly check-ins via Google Form to track your progress, a monthly strategy session to refine your plan, and 8 hours of text support for your queries. Perfect for those who need a balance of independence and guidance.",
+        fullDescription: [
+            "Get structured guidance with our Guided Transformation plan for consistent progress.",
+            "Includes weekly check-ins via Google Form to track your progress and keep you accountable.",
+            "A monthly strategy session to refine your plan and address challenges.",
+            "8 hours of text support for your queries. Perfect for a balance of independence and guidance."
+        ],
         plans: [
             { months: 1, label: "1 Month", price: 4000, originalPrice: 5000, note: "High entry" },
             { months: 2, label: "2 Months", price: 7500, originalPrice: 9000, note: "Minor relief" },
@@ -59,7 +68,12 @@ export const courses = [
             "Personalised workout plan",
             "1 session can be rescheduled if missed"
         ],
-        fullDescription: "Step up your game with Structured Coaching. This plan offers more frequent interaction with 2 online sessions per month and 12 hours of text support. Ideal for individuals who want closer monitoring and more dynamic adjustments to their training and nutrition.",
+        fullDescription: [
+            "Step up your game with Structured Coaching for serious results.",
+            "Offers more frequent interaction with 2 online sessions per month.",
+            "12 hours of text support for real-time guidance and adjustments.",
+            "Ideal for individuals who want closer monitoring and dynamic adjustments to their training."
+        ],
         plans: [
             { months: 1, label: "1 Month", price: 5500, originalPrice: 6500, note: "Premium entry" },
             { months: 2, label: "2 Months", price: 10500, originalPrice: 13000, note: "Small relief" },
@@ -84,7 +98,12 @@ export const courses = [
             "Personalised workout plan",
             "2 sessions can be rescheduled every month if missed"
         ],
-        fullDescription: "The ultimate coaching experience. Elite 1:1 Coaching provides maximum accountability with weekly sessions and round-the-clock text support. This is for those who demand the best and are ready to commit fully to their transformation with constant guidance at every step.",
+        fullDescription: [
+            "The ultimate coaching experience providing maximum accountability.",
+            "Elite 1:1 Coaching with weekly sessions for deep-dive strategy and mindset.",
+            "Round-the-clock (24hrs) text support for instant feedback and motivation.",
+            "For those who demand the best and are ready to commit fully with constant guidance."
+        ],
         plans: [
             { months: 1, label: "1 Month", price: 7000, originalPrice: 9000, note: "Premium" },
             { months: 2, label: "2 Months", price: 13500, originalPrice: 17000, note: "Minor save" },
