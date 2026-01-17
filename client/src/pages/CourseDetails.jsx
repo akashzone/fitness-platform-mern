@@ -281,7 +281,6 @@ const CourseDetails = () => {
                         <div className="flex flex-col min-w-0">
                             {slotInfo && (
                                 <div className="flex items-center gap-2 mb-1">
-                                    <div className={`w-1.5 h-1.5 rounded-full ${slotInfo.slotsLeft > 0 ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
                                     <span className={`text-[10px] font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
                                         {slotInfo.slotsLeft > 0 ? `${slotInfo.slotsLeft}/${slotInfo.maxSlots} Spots Available` : 'Sold Out'}
                                     </span>
@@ -482,7 +481,6 @@ const CourseDetails = () => {
                             <div className="text-center mb-10 relative z-10">
                                 {slotInfo && (
                                     <div className="flex items-center justify-center gap-2 mb-4">
-                                        <div className={`w-2 h-2 rounded-full ${slotInfo.slotsLeft > 0 ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
                                         <span className={`text-xs font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
                                             {slotInfo.slotsLeft > 0 ? `Hurry! Only ${slotInfo.slotsLeft} Spots Available` : 'Sold Out'}
                                         </span>
@@ -514,7 +512,6 @@ const CourseDetails = () => {
                                             className="relative w-full bg-white/5 border border-white/10 text-white rounded-2xl px-6 py-5 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-black text-sm tracking-widest uppercase hover:bg-white/10"
                                         >
                                             <span className="flex items-center gap-3">
-                                                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                                                 {selectedDuration?.label}
                                             </span>
                                             {selectedDuration?.recommended && (

@@ -98,28 +98,28 @@ const Footer = React.forwardRef((props, ref) => {
                         <div className="flex items-center justify-center md:justify-start space-x-6">
                             <a
                                 href="mailto:fitwithpravinn@gmail.com"
-                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-accent hover:text-white border border-white/10 transition-all duration-300"
+                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 md:bg-white/5 text-accent md:text-text-secondary border border-accent/20 md:border-white/10 shadow-[0_0_15px_rgba(34,197,94,0.3)] md:shadow-none md:hover:bg-accent md:hover:text-white transition-all duration-300"
                                 aria-label="Email"
                             >
-                                <Mail size={18} className="text-text-secondary group-hover:text-white transition-colors" />
+                                <Mail size={18} className="transition-colors" />
                             </a>
                             <a
                                 href="https://instagram.com/fitwithpravinn"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-pink-600 hover:text-white border border-white/10 transition-all duration-300"
+                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 md:bg-white/5 text-accent md:text-text-secondary border border-accent/20 md:border-white/10 shadow-[0_0_15px_rgba(34,197,94,0.3)] md:shadow-none md:hover:bg-pink-600 md:hover:text-white transition-all duration-300"
                                 aria-label="Instagram"
                             >
-                                <Instagram size={18} className="text-text-secondary group-hover:text-white transition-colors" />
+                                <Instagram size={18} className="transition-colors" />
                             </a>
                             <a
                                 href="https://youtube.com/@fitwithpravinn"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-red-600 hover:text-white border border-white/10 transition-all duration-300"
+                                className="group flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 md:bg-white/5 text-accent md:text-text-secondary border border-accent/20 md:border-white/10 shadow-[0_0_15px_rgba(34,197,94,0.3)] md:shadow-none md:hover:bg-red-600 md:hover:text-white transition-all duration-300"
                                 aria-label="YouTube"
                             >
-                                <Youtube size={18} className="text-text-secondary group-hover:text-white transition-colors" />
+                                <Youtube size={18} className="transition-colors" />
                             </a>
                         </div>
 
