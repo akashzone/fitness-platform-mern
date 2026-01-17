@@ -7,7 +7,13 @@ export const courses = [
         description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
         price: 2000,
         rating: 4.8,
-        image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000&auto=format&fit=crop",
+        image: "/images/foundation/1.png",
+        images: [
+            "/images/foundation/1.png",
+            "/images/foundation/2.png",
+            "/images/foundation/3.png"
+        ],
+        detailImage: "/assets/detail.png",
         features: [
             "Customised Diet Plan",
             "Customised Workout Plan",

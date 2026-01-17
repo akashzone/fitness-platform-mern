@@ -228,15 +228,20 @@ const Home = () => {
                                             Pravin's approach to science-based training completely changed how I look at fitness. It's not about working harder, it's about working smarter.
                                         </p>
                                     </div>
-                                    <div className="flex flex-wrap items-center gap-8 md:gap-16">
-                                        <div className="group">
-                                            <div className="text-3xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">10K+</div>
-                                            <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-2 tracking-[0.2em] opacity-60">Lives Impacted</div>
-                                        </div>
-                                        <div className="group">
-                                            <div className="text-3xl md:text-6xl font-black text-text-primary italic group-hover:text-accent transition-colors">4.9/5</div>
-                                            <div className="text-text-secondary text-[8px] md:text-xs font-black uppercase mt-2 tracking-[0.2em] opacity-60">Satisfaction</div>
-                                        </div>
+                                    <div className="flex gap-12 md:gap-24 text-center mt-12 md:mt-24 pb-8 md:pb-16 scale-90 md:scale-100">
+                                        <Reveal delay={0.9} width="100%">
+                                            <div className="flex flex-col items-center group cursor-default">
+                                                <span className="text-4xl md:text-6xl font-black text-white italic group-hover:text-accent transition-colors duration-500 mb-1 md:mb-2">100+</span>
+                                                <span className="text-[10px] md:text-sm font-bold text-text-secondary tracking-[0.2em] md:tracking-[0.3em] uppercase group-hover:text-white transition-colors duration-500">Lives Impacted</span>
+                                            </div>
+                                        </Reveal>
+                                        <div className="h-16 w-px bg-white/10 hidden md:block" />
+                                        <Reveal delay={1.0} width="100%">
+                                            <div className="flex flex-col items-center group cursor-default">
+                                                <span className="text-4xl md:text-6xl font-black text-white italic group-hover:text-accent transition-colors duration-500 mb-1 md:mb-2">4.5/5</span>
+                                                <span className="text-[10px] md:text-sm font-bold text-text-secondary tracking-[0.2em] md:tracking-[0.3em] uppercase group-hover:text-white transition-colors duration-500">Satisfaction</span>
+                                            </div>
+                                        </Reveal>
                                     </div>
                                 </div>
                             </Reveal>

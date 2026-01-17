@@ -74,64 +74,32 @@ export const courses = [
     }
 ];
 
-export const ebooks = [
-    {
-        id: "eb1",
-        title: "Science of Transformation",
-        description: "The complete guide to understanding hyper-trophy, calorie deficit, and metabolism.",
-        price: 1499,
-        rating: 4.8,
-        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
-        type: "ebook",
-        paymentLink: "https://cashfree.com",
-        features: [
-            "100+ Scientific References",
-            "Detailed Macronutrient Guide",
-            "Sample Meal Plans",
-            "Training Periodization Logic",
-            "Lifetime Access"
-        ],
-        fullDescription: "Unlock the secrets of true body transformation. 'Science of Transformation' isn't just a book; it's a comprehensive manual that breaks down the complex physiology of muscle growth and fat loss into simple, actionable steps. Whether you're a beginner confused by conflicting advice or an advanced athlete looking to break a plateau, this guide covers everything from metabolic adaptation to advanced hypertrophy training techniques. Stop guessing and start training with science."
-    },
-    {
-        id: "eb2",
-        title: "Discipline Blueprint",
-        description: "Master your mindset, habits, and daily routine to achieve your fitness goals and beyond.",
-        price: 999,
-        rating: 4.9,
-        image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop",
-        type: "ebook",
-        paymentLink: "https://cashfree.com",
-        features: [
-            "Daily Routine Checklists",
-            "Habit Formation Framework",
-            "Mindset Shift Exercises",
-            "Productivity Hacks",
-            "Printable Accountability Trackers"
-        ],
-        fullDescription: "Discipline is the bridge between goals and accomplishment. This blueprint provides a psychological framework to master your mind and build unbreakable habits. We dive deep into the neuroscience of habit formation, offering practical daily checklists and mental exercises to help you overcome procrastination, stay consistent, and achieve elite levels of productivity in fitness and life."
-    }
-];
+
 
 export const testimonials = [
     {
         id: 1,
-        name: "Alex Johnson",
-        feedback: "The Elite Strength program changed the way I train. I've hit PRs I never thought possible!"
+        name: "Arjun Kumar",
+        feedback: "The workout plan was super clear and easy to follow. I finally became consistent and started seeing real changes in my body."
     },
     {
         id: 2,
-        name: "Sarah Miller",
-        feedback: "The Yoga course has been a lifesaver for my back pain. I feel 10 years younger."
+        name: "Priya Shankar",
+        feedback: "I used to struggle with diet confusion, but this program made everything simple. Now I know what to eat and when to eat."
     },
     {
         id: 3,
-        name: "David Chen",
-        feedback: "High-Intensity Fat Burner is no joke. I lost 10lbs in just 4 weeks!"
+        name: "Karthik Rajan",
+        feedback: "The guidance and support were next level. I lost fat without starving and my strength improved every week."
     },
     {
         id: 4,
-        name: "Emma Wilson",
-        feedback: "The nutrition guide simplified everything. I finally stopped guessing and started seeing results."
+        name: "Meena Sundaram",
+        feedback: "I always started and stopped gym plans, but this one kept me on track. My energy levels are better and my body feels stronger."
+    },
+    {
+        id: 5,
+        name: "Sneha Iyer",
+        feedback: "The nutrition guide changed my mindset completely. I stopped guessing portions and started getting visible results."
     }
 ];

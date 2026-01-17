@@ -11,6 +11,7 @@ import {
     ShoppingBag,
     ChevronDown
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Reveal from '../components/motion/Reveal';
 import StarRating from '../components/StarRating';
 import { useCart } from '../context/CartContext';
@@ -29,6 +30,19 @@ const CourseDetails = () => {
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [slotInfo, setSlotInfo] = useState(null);
+
+    // Image Rotation Logic
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    useEffect(() => {
+        if (course?.images && course.images.length > 1) {
+            const interval = setInterval(() => {
+                setCurrentImageIndex((prev) => (prev + 1) % course.images.length);
+            }, 4500); // 4.5 seconds
+
+            return () => clearInterval(interval);
+        }
+    }, [course?.images]);
 
     useEffect(() => {
         const fetchSlots = async () => {
@@ -178,16 +192,43 @@ const CourseDetails = () => {
                         </div>
                     </Reveal>
 
-                    <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/5">
-                        <img
-                            src={course.image}
-                            alt={course.title}
-                            className="w-full h-full object-cover grayscale-[0.2]"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center">
-                            <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center animate-pulse">
-                                <Play size={20} fill="white" className="ml-1" />
+                    <div className="relative h-64 w-full rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+                        {course.detailImage ? (
+                            <img
+                                src={course.detailImage}
+                                alt={course.title}
+                                className="w-full h-full object-cover grayscale-[0.2]"
+                            />
+                        ) : (
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={currentImageIndex}
+                                    src={course.images && course.images.length > 0 ? course.images[currentImageIndex] : course.image}
+                                    initial={{ opacity: 0.8, scale: 1.1 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0.8 }}
+                                    transition={{ duration: 0.7 }}
+                                    alt={course.title}
+                                    className="w-full h-full object-cover grayscale-[0.2]"
+                                />
+                            </AnimatePresence>
+                        )}
+
+                        {/* Carousel Indicators */}
+                        {!course.detailImage && course.images && course.images.length > 1 && (
+                            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                                {course.images.map((_, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImageIndex ? 'bg-accent w-3' : 'bg-white/80'
+                                            }`}
+                                    />
+                                ))}
                             </div>
+                        )}
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center pointer-events-none">
+                            {/* Removed Play button as it might be confusing for an image carousel, keeping simple */}
                         </div>
                     </div>
 
@@ -352,13 +393,42 @@ const CourseDetails = () => {
                             </div>
                         </Reveal>
 
-                        <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/5 group">
-                            <img
-                                src={course.image}
-                                alt={course.title}
-                                className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-                            />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-700" />
+                        <div className="relative h-96 md:h-[30rem] rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/5 group">
+                            {course.detailImage ? (
+                                <img
+                                    src={course.detailImage}
+                                    alt={course.title}
+                                    className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000"
+                                />
+                            ) : (
+                                <AnimatePresence mode="wait">
+                                    <motion.img
+                                        key={currentImageIndex}
+                                        src={course.images && course.images.length > 0 ? course.images[currentImageIndex] : course.image}
+                                        initial={{ opacity: 0.8 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0.8 }}
+                                        transition={{ duration: 1 }}
+                                        alt={course.title}
+                                        className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000"
+                                    />
+                                </AnimatePresence>
+                            )}
+
+                            {/* Carousel Indicators for Desktop */}
+                            {!course.detailImage && course.images && course.images.length > 1 && (
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                                    {course.images.map((_, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={`w-2 h-2 rounded-full transition-all ${idx === currentImageIndex ? 'bg-accent w-6' : 'bg-white/50'
+                                                }`}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-700 pointer-events-none" />
                         </div>
 
                         <div className="space-y-12">

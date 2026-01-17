@@ -25,17 +25,32 @@ const TestimonialSlider = () => {
         };
     }, [currentIndex]);
 
+    const onDragEnd = (event, info) => {
+        const offset = info.offset.x;
+        const velocity = info.velocity.x;
+
+        if (offset < -50 || velocity < -500) {
+            setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+        } else if (offset > 50 || velocity > 500) {
+            setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+        }
+    };
+
     return (
         <div className="w-full max-w-5xl mx-auto relative py-10 px-4">
             <div className="relative min-h-[300px] md:min-h-[400px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentIndex}
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="w-full"
+                        initial={{ opacity: 0, scale: 0.9, x: 20 }}
+                        animate={{ opacity: 1, scale: 1, x: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={1}
+                        onDragEnd={onDragEnd}
+                        className="w-full touch-pan-y cursor-grab active:cursor-grabbing"
                     >
                         <div className="glass-card p-5 md:p-20 rounded-2xl md:rounded-[3rem] border-white/5 flex flex-col justify-center relative shadow-3xl overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />

@@ -104,21 +104,25 @@ const CartDrawer = () => {
                                             </div>
 
                                             <div className="mt-3 md:mt-4 space-y-2">
-                                                <p className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-text-secondary">Duration</p>
-                                                <div className="flex flex-wrap gap-1.5 md:gap-2">
-                                                    {item.durations?.map((opt) => (
-                                                        <button
-                                                            key={opt.months}
-                                                            onClick={() => updateCartItemDuration(item.id || item._id, opt.months)}
-                                                            className={`relative px-2 py-1 md:px-3 md:py-1.5 rounded-md md:rounded-lg text-[8px] md:text-[9px] font-black uppercase tracking-widest transition-all border ${item.durationMonths === opt.months
-                                                                ? 'bg-accent border-accent text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]'
-                                                                : 'bg-white/5 border-white/10 text-text-secondary hover:bg-white/10'
-                                                                }`}
-                                                        >
-                                                            {opt.months}M
-                                                        </button>
-                                                    ))}
-                                                </div>
+                                                {item.durations?.length > 1 && (
+                                                    <>
+                                                        <p className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-text-secondary">Duration</p>
+                                                        <div className="flex flex-wrap gap-1.5 md:gap-2">
+                                                            {item.durations?.map((opt) => (
+                                                                <button
+                                                                    key={opt.months}
+                                                                    onClick={() => updateCartItemDuration(item.id || item._id, opt.months)}
+                                                                    className={`relative px-2 py-1 md:px-3 md:py-1.5 rounded-md md:rounded-lg text-[8px] md:text-[9px] font-black uppercase tracking-widest transition-all border ${item.durationMonths === opt.months
+                                                                        ? 'bg-accent border-accent text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]'
+                                                                        : 'bg-white/5 border-white/10 text-text-secondary hover:bg-white/10'
+                                                                        }`}
+                                                                >
+                                                                    {opt.months}M
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

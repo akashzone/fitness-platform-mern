@@ -75,17 +75,14 @@ router.get('/analytics', auth, async (req, res) => {
 
         let totalOrders = orders.length;
         let totalRevenue = 0;
-        let courseRevenue = 0;
-        let ebookRevenue = 0;
+
+
 
         orders.forEach(order => {
             totalRevenue += order.totalAmount;
             order.products.forEach(product => {
-                if (product.type === 'course') {
-                    courseRevenue += product.price;
-                } else if (product.type === 'ebook') {
-                    ebookRevenue += product.price;
-                }
+                // Assuming all products are courses now
+                courseRevenue += product.price;
             });
         });
 
@@ -95,7 +92,6 @@ router.get('/analytics', auth, async (req, res) => {
                 totalOrders,
                 totalRevenue,
                 courseRevenue,
-                ebookRevenue,
                 period: period || 'all'
             }
         });

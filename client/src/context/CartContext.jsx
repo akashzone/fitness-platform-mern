@@ -22,15 +22,10 @@ const DURATION_CONFIG = {
 const getDurationOptions = () => DURATION_CONFIG.default;
 
 export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState(() => {
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
+    const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
 
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-    }, [cartItems]);
+    // Removed localStorage persistence as per user request to clear cart on reload
 
     const addToCart = (product) => {
         setCartItems(prevItems => {

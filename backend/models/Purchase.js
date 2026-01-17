@@ -21,11 +21,7 @@ const purchaseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    productType: {
-        type: String,
-        enum: ['course', 'ebook'],
-        required: true
-    },
+
     paymentStatus: {
         type: String,
         default: 'SUCCESS'

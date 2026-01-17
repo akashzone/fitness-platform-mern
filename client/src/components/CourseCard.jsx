@@ -1,32 +1,64 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import StarRating from './StarRating';
 
-const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
+const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false, className = '' }) => {
     const { addToCart } = useCart();
     const navigate = useNavigate();
     const showSoldOut = isSoldOut;
 
-    const handleCardClick = (e) => {
-        if (showSoldOut) return;
-        // Don't navigate if clicking the Add button
-        if (e.target.closest('button')) return;
-        navigate(`/course/${course.id || course._id}`);
-    };
+
+
+    const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+
+    React.useEffect(() => {
+        if (course.images && course.images.length > 1) {
+            const interval = setInterval(() => {
+                setCurrentImageIndex((prev) => (prev + 1) % course.images.length);
+            }, 4500); // 4.5 seconds
+
+            return () => clearInterval(interval);
+        }
+    }, [course.images]);
+
+    const activeImage = course.images && course.images.length > 0
+        ? course.images[currentImageIndex]
+        : course.image;
 
     return (
         <div
-            onClick={handleCardClick}
-            className={`glass-card rounded-2xl md:rounded-[2rem] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 group flex flex-col h-full border border-white/5 hover:border-accent/30 cursor-pointer ${showSoldOut ? 'opacity-70 grayscale pointer-events-none' : ''}`}
+            onClick={() => navigate(`/course/${course.id || course._id}`)}
+            className={`group relative flex flex-col h-full bg-surface border border-white/5 rounded-3xl overflow-hidden hover:border-accent/30 transition-all duration-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.1)] cursor-pointer ${className}`}
         >
-            <div className="relative aspect-[16/11] overflow-hidden">
-                <img
-                    src={course.image}
-                    alt={course.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[0.3] group-hover:grayscale-0"
-                />
+            <div className="relative h-48 sm:h-52 md:h-64 overflow-hidden"> {/* Changed aspect ratio div */}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10" />
+                <AnimatePresence mode="wait">
+                    <motion.img
+                        key={currentImageIndex}
+                        src={activeImage}
+                        initial={{ opacity: 0.8, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0.8 }}
+                        transition={{ duration: 0.7 }}
+                        alt={course.title}
+                        className="w-full h-full object-cover transform grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700"
+                    />
+                </AnimatePresence>
+
+                {/* Carousel Indicators */}
+                {course.images && course.images.length > 1 && (
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                        {course.images.map((_, idx) => (
+                            <div
+                                key={idx}
+                                className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImageIndex ? 'bg-accent w-3' : 'bg-white/50'
+                                    }`}
+                            />
+                        ))}
+                    </div>
+                )}
 
                 {/* Sold Out Badge */}
                 {showSoldOut && (
@@ -64,26 +96,35 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false }) => {
                     {course.title}
                 </h3>
                 <ul className="text-text-secondary text-xs md:text-sm mb-3 md:mb-8 text-left w-full space-y-1.5 pl-1 opacity-80 min-h-[60px]">
-                    {course.features?.slice(0, 2).map((feature, idx) => (
-                        <li key={idx} className="flex items-start leading-tight">
-                            <span className="mr-2 text-accent">•</span>
-                            <span>{feature}</span>
-                        </li>
-                    ))}
-                    {course.features?.length > 2 && (
-                        <li className="flex items-start leading-tight pt-1">
-                            <span
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate(`/course/${course.id || course._id}`);
-                                }}
-                                className="text-accent hover:text-white transition-colors font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1 cursor-pointer"
-                            >
-                                <span>View all benefits</span>
-                                <span className="text-sm leading-none">→</span>
-                            </span>
-                        </li>
-                    )}
+                    {(() => {
+                        const isFoundation = course.id === 'foundation-plan' || course._id === 'foundation-plan';
+                        const visibleFeatures = isFoundation ? course.features : course.features?.slice(0, 2);
+
+                        return (
+                            <>
+                                {visibleFeatures?.map((feature, idx) => (
+                                    <li key={idx} className="flex items-start leading-tight">
+                                        <span className="mr-2 text-accent">•</span>
+                                        <span>{feature}</span>
+                                    </li>
+                                ))}
+                                {!isFoundation && course.features?.length > 2 && (
+                                    <li className="flex items-start leading-tight pt-1">
+                                        <span
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate(`/course/${course.id || course._id}`);
+                                            }}
+                                            className="text-accent hover:text-white transition-colors font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <span>View all benefits</span>
+                                            <span className="text-sm leading-none">→</span>
+                                        </span>
+                                    </li>
+                                )}
+                            </>
+                        );
+                    })()}
                 </ul>
 
                 <div className="mt-auto w-full grid grid-cols-2 gap-2 md:gap-4 relative z-20">
