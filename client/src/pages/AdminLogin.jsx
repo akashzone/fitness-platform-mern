@@ -43,6 +43,7 @@ const AdminLogin = () => {
                             type="text"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            placeholder="username"
                             className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 transition-all font-medium"
                             required
                         />
@@ -52,6 +53,7 @@ const AdminLogin = () => {
                         <input
                             type="password"
                             value={password}
+                            placeholder="password"
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 transition-all font-medium"
                             required
