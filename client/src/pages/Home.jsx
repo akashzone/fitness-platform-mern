@@ -58,7 +58,7 @@ const Home = () => {
     return (
         <div className="bg-bg-page selection:bg-accent/40 selection:text-white">
             {/* Hero Section */}
-            <section ref={heroRef} className="relative h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-bg-page">
+            <section ref={heroRef} className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-bg-page">
                 <motion.div style={{ y, opacity }} className="absolute inset-0 z-0 h-full w-full">
                     {/* Desktop Video */}
                     <video
@@ -93,7 +93,7 @@ const Home = () => {
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
                     <div className="max-w-4xl">
                         <Reveal delay={0.1} width="100%">
-                            <div className="w-full flex justify-center pt-8">
+                            <div className="w-full flex justify-center pt-2 md:pt-8">
                                 <div className="inline-flex items-center space-x-2 bg-accent/5 backdrop-blur-md px-8 py-3 rounded-full mb-8 border border-accent/30 shadow-[0_0_30px_rgba(34,197,94,0.1)] hover:border-accent hover:bg-accent/10 transition-all duration-500 cursor-default group">
                                     <Zap size={16} className="text-accent fill-accent animate-pulse" />
                                     <span className="text-accent text-[10px] md:text-xs font-black uppercase tracking-[0.3em] font-sans">FitWithPravinn</span>

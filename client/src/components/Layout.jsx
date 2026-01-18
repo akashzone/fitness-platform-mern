@@ -168,7 +168,7 @@ const Layout = ({ children }) => {
             <Header />
             {!isAdmin && <CartDrawer />}
 
-            <main className="flex-grow pt-20">
+            <main className="flex-grow pt-16 md:pt-20">
                 {children}
             </main>
             {!isAdmin && <Footer ref={footerRef} />}
