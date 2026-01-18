@@ -58,7 +58,7 @@ const Home = () => {
     return (
         <div className="bg-bg-page selection:bg-accent/40 selection:text-white">
             {/* Hero Section */}
-            <section ref={heroRef} className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-bg-page">
+            <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden bg-bg-page">
                 <motion.div style={{ y, opacity }} className="absolute inset-0 z-0 h-full w-full">
                     {/* Desktop Video */}
                     <video

@@ -157,6 +157,7 @@ const Footer = React.forwardRef((props, ref) => {
 
 const Layout = ({ children }) => {
     const location = useLocation();
+    const isHome = location.pathname === '/';
     const isAdmin = location.pathname.startsWith('/admin');
     const footerRef = React.useRef(null);
 
@@ -168,7 +169,7 @@ const Layout = ({ children }) => {
             <Header />
             {!isAdmin && <CartDrawer />}
 
-            <main className="flex-grow pt-16 md:pt-20">
+            <main className={`flex-grow ${isHome ? '' : 'pt-16 md:pt-20'}`}>
                 {children}
             </main>
             {!isAdmin && <Footer ref={footerRef} />}
