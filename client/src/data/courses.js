@@ -1,3 +1,8 @@
+import foundationImg from '../assets/courses/foundation.png';
+import guidedImg from '../assets/courses/guided.jpg';
+import structuredImg from '../assets/courses/structured.jpg';
+import eliteImg from '../assets/courses/elite.jpg';
+
 export const courses = [
     {
         id: "foundation-plan",
@@ -7,12 +12,7 @@ export const courses = [
         description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
         price: 2000,
         rating: 4.8,
-        image: "/images/foundation/1.png",
-        images: [
-            "/images/foundation/1.png",
-            "/images/foundation/2.png",
-            "/images/foundation/3.png"
-        ],
+        image: foundationImg,
         detailImage: "/assets/detail.png",
         features: [
             "Customised Diet Plan",
@@ -36,7 +36,7 @@ export const courses = [
         description: "• Weekly Check-ins\n• Monthly Sessions for Consistent Progress",
         price: 4000,
         rating: 4.9,
-        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
+        image: guidedImg,
         features: [
             "Weekly check-in via google form",
             "Monthly 1 session (3+1 sessions for 3 months plan)",
@@ -65,7 +65,7 @@ export const courses = [
         description: "• Monthly 2 Online Sessions\n• 12 hrs Text Support for Serious Results",
         price: 5500,
         rating: 4.9,
-        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop",
+        image: structuredImg,
         features: [
             "Weekly check-in via google form",
             "Monthly 2 online sessions (6+2 sessions for 3 months plan)",
@@ -95,7 +95,7 @@ export const courses = [
         description: "• Weekly Sessions\n• 24hrs Text Support for Ultimate Transformation",
         price: 7000,
         rating: 5.0,
-        image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1000&auto=format&fit=crop",
+        image: eliteImg,
         features: [
             "Weekly check-in via google form",
             "Weekly sessions (12+1 sessions for 3 months plan)",
@@ -118,3 +118,4 @@ export const courses = [
         ]
     }
 ];
+

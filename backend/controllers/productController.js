@@ -14,7 +14,7 @@ exports.getProducts = async (req, res) => {
             slotInfo = await MonthlySlot.create({ month: currentMonth });
         }
 
-        const products = await Product.find({ isActive: true });
+        const products = await Product.find({ isActive: true }).select('-image');
 
         res.json({
             slotInfo: {
