@@ -210,7 +210,7 @@ const CourseDetails = () => {
                                     exit={{ opacity: 0.8 }}
                                     transition={{ duration: 0.7 }}
                                     alt={course.title}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain bg-black/40"
                                 />
                             </AnimatePresence>
                         )}
@@ -394,7 +394,7 @@ const CourseDetails = () => {
                                 <img
                                     src={course.detailImage}
                                     alt={course.title}
-                                    className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000"
+                                    className="w-full h-full object-cover transition-all duration-1000"
                                 />
                             ) : (
                                 <AnimatePresence mode="wait">
@@ -406,7 +406,7 @@ const CourseDetails = () => {
                                         exit={{ opacity: 0.8 }}
                                         transition={{ duration: 1 }}
                                         alt={course.title}
-                                        className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000"
+                                        className="w-full h-full object-cover transition-all duration-1000"
                                     />
                                 </AnimatePresence>
                             )}

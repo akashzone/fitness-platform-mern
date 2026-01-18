@@ -43,7 +43,7 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false, className = 
                         exit={{ opacity: 0.8 }}
                         transition={{ duration: 0.7 }}
                         alt={course.title}
-                        className="w-full h-full object-cover transform grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700"
+                        className={`w-full h-full object-cover transform grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 ${(course.id === 'foundation-plan' || course._id === 'foundation-plan') ? 'scale-110' : ''}`}
                     />
                 </AnimatePresence>
 

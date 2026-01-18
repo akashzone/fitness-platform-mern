@@ -1,4 +1,4 @@
-import foundationImg from '../assets/courses/foundation.png';
+import foundationImg from '../assets/courses/foundation.jpg';
 import guidedImg from '../assets/courses/guided.jpg';
 import structuredImg from '../assets/courses/structured.jpg';
 import eliteImg from '../assets/courses/elite.jpg';
@@ -13,7 +13,7 @@ export const courses = [
         price: 2000,
         rating: 4.8,
         image: foundationImg,
-        detailImage: "/assets/detail.png",
+        detailImage: foundationImg,
         executiveSummary: [
             "Designed for individuals who want a clear, science-backed starting point",
             "Focuses on building a strong basic foundation in nutrition and training",
@@ -38,6 +38,7 @@ export const courses = [
         price: 4000,
         rating: 4.9,
         image: guidedImg,
+        detailImage: guidedImg,
         executiveSummary: [
             "Designed for individuals who want structured, result-driven coaching",
             "Focuses on accountability, consistency, and long-term progress",
@@ -68,6 +69,7 @@ export const courses = [
         price: 5500,
         rating: 4.9,
         image: structuredImg,
+        detailImage: structuredImg,
         executiveSummary: [
             "Designed for serious individuals seeking higher professional oversight",
             "Focuses on rapid transformation through close monitoring and technical refinement",
@@ -99,6 +101,7 @@ export const courses = [
         price: 7000,
         rating: 5.0,
         image: eliteImg,
+        detailImage: eliteImg,
         executiveSummary: [
             "The ultimate solution for total bodily and lifestyle transformation",
             "Focuses on maximum accountability, mindset mastery, and elite performance",
