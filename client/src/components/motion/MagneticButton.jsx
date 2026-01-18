@@ -6,6 +6,7 @@ const MagneticButton = ({ children, className = "", distance = 0.4 }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
     const handleMouseMove = (e) => {
+        if (window.innerWidth < 768) return; // Disable magnetic effect on mobile
         const { clientX, clientY } = e;
         const { left, top, width, height } = ref.current.getBoundingClientRect();
 
