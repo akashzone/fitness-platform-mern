@@ -33,7 +33,7 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false, className = 
             className={`group relative flex flex-col h-full bg-surface border border-white/5 rounded-3xl overflow-hidden hover:border-accent/30 transition-all duration-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.1)] cursor-pointer ${className}`}
         >
             <div className="relative h-48 sm:h-52 md:h-64 overflow-hidden"> {/* Changed aspect ratio div */}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10 hidden md:block" />
                 <AnimatePresence mode="wait">
                     <motion.img
                         key={currentImageIndex}
@@ -43,7 +43,7 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false, className = 
                         exit={{ opacity: 0.8 }}
                         transition={{ duration: 0.7 }}
                         alt={course.title}
-                        className={`w-full h-full object-cover transform grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 ${(course.id === 'foundation-plan' || course._id === 'foundation-plan') ? 'scale-110' : ''}`}
+                        className="w-full h-full object-cover transform grayscale-0 md:grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700"
                     />
                 </AnimatePresence>
 

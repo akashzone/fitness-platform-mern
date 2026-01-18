@@ -1,4 +1,5 @@
 import foundationImg from '../assets/courses/foundation.jpg';
+import foundationCardImg from '../assets/courses/foundation_card.jpg';
 import guidedImg from '../assets/courses/guided.jpg';
 import structuredImg from '../assets/courses/structured.jpg';
 import eliteImg from '../assets/courses/elite.jpg';
@@ -12,7 +13,7 @@ export const courses = [
         description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
         price: 2000,
         rating: 4.8,
-        image: foundationImg,
+        image: foundationCardImg,
         detailImage: foundationImg,
         executiveSummary: [
             "Designed for individuals who want a clear, science-backed starting point",
