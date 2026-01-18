@@ -195,7 +195,7 @@ const Home = () => {
                 </section>
 
                 {/* Courses Section */}
-                <section id="courses" className="py-20 md:py-40 bg-bg-page relative overflow-hidden">
+                <section id="courses" className="pt-20 pb-10 md:py-40 bg-bg-page relative overflow-hidden">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <Reveal className="text-center mb-16 md:mb-32 max-w-4xl mx-auto">
                             <span className="text-accent font-black uppercase tracking-[0.4em] text-sm md:text-base">Elite Programs</span>
@@ -215,10 +215,10 @@ const Home = () => {
                 </section>
 
                 {/* Testimonials Section */}
-                <section id="testimonials" className="pt-20 pb-10 md:py-40 bg-surface border-y border-white/5 relative overflow-hidden">
+                <section id="testimonials" className="pt-10 pb-10 md:py-40 bg-surface border-y border-white/5 relative overflow-hidden">
                     <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/5 blur-[150px] rounded-full pointer-events-none" />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-center">
                             <Reveal x={-30}>
                                 <div className="space-y-12">
                                     <div>
@@ -228,7 +228,7 @@ const Home = () => {
                                             Pravin's approach to science-based training completely changed how I look at fitness. It's not about working harder, it's about working smarter.
                                         </p>
                                     </div>
-                                    <div className="flex gap-12 md:gap-24 text-center mt-12 md:mt-24 pb-8 md:pb-16 scale-90 md:scale-100">
+                                    <div className="flex gap-12 md:gap-24 text-center mt-8 md:mt-24 pb-0 md:pb-16 scale-90 md:scale-100">
                                         <Reveal delay={0.9} width="100%">
                                             <div className="flex flex-col items-center group cursor-default">
                                                 <span className="text-4xl md:text-6xl font-black text-white italic group-hover:text-accent transition-colors duration-500 mb-1 md:mb-2">100+</span>

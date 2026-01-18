@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const TermsAndConditions = () => {
     return (
-        <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 bg-bg-page relative overflow-hidden">
+        <div className="min-h-screen pt-8 md:pt-12 pb-12 px-4 sm:px-6 lg:px-8 bg-bg-page relative overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px]" />
