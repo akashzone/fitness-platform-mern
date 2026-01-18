@@ -9,6 +9,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitWithPravinn | Get Fit. Get Strong. Stay Consistent</title>
   <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+  <!-- Google Analytics GA4 -->
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZVQDEVK1Y0';
+      document.head.appendChild(script);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-ZVQDEVK1Y0', {
+        send_page_view: false // We'll handle this manually in React
+      });
+    }
+  </script>
 </head>
 
 <body>

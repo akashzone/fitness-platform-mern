@@ -13,12 +13,14 @@ import TermsAndConditions from './pages/TermsAndConditions';
 
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/ScrollToTop';
+import AnalyticsLoader from './components/AnalyticsLoader';
 
 function App() {
   return (
     <CartProvider>
       <Router>
         <ScrollToTop />
+        <AnalyticsLoader />
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
