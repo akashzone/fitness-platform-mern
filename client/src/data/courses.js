@@ -14,15 +14,16 @@ export const courses = [
         rating: 4.8,
         image: foundationImg,
         detailImage: "/assets/detail.png",
+        executiveSummary: [
+            "Designed for individuals who want a clear, science-backed starting point",
+            "Focuses on building a strong basic foundation in nutrition and training",
+            "Ideal for those who are confident in executing a plan independently"
+        ],
+        whoThisPlanIsFor: "Beginners or individuals restarting their fitness journey who need a professional blueprint without ongoing coaching or accountability.",
         features: [
             "Customised Diet Plan",
             "Customised Workout Plan",
             "One-time Consultation"
-        ],
-        fullDescription: [
-            "A perfect starting point for your fitness journey to build a strong foundation.",
-            "Get a fully customized diet and workout plan tailored to your specific goals and lifestyle.",
-            "This is a one-time service designed to give you the blueprint you need to succeed without ongoing commitment."
         ],
         plans: [
             { months: 1, label: "One-time", price: 2000, originalPrice: 2400, note: "Standard" }
@@ -37,18 +38,19 @@ export const courses = [
         price: 4000,
         rating: 4.9,
         image: guidedImg,
+        executiveSummary: [
+            "Designed for individuals who want structured, result-driven coaching",
+            "Focuses on accountability, consistency, and long-term progress",
+            "Ideal for those who need periodic monitoring and guided adjustments"
+        ],
+        whoThisPlanIsFor: "Individuals who want hands-on coaching, accountability, and structured guidance to stay consistent and progress faster.",
         features: [
             "Weekly check-in via google form",
-            "Monthly 1 session (3+1 sessions for 3 months plan)",
+            "Monthly 1 online session",
             "8 hrs text support",
             "Personalised diet plan",
-            "Personalised workout plan"
-        ],
-        fullDescription: [
-            "Get structured guidance with our Guided Transformation plan for consistent progress.",
-            "Includes weekly check-ins via Google Form to track your progress and keep you accountable.",
-            "A monthly strategy session to refine your plan and address challenges.",
-            "8 hours of text support for your queries. Perfect for a balance of independence and guidance."
+            "Personalised workout plan",
+            "Total 4 sessions for 3 months plan"
         ],
         plans: [
             { months: 1, label: "1 Month", price: 4000, originalPrice: 5000, note: "High entry" },
@@ -66,19 +68,20 @@ export const courses = [
         price: 5500,
         rating: 4.9,
         image: structuredImg,
+        executiveSummary: [
+            "Designed for serious individuals seeking higher professional oversight",
+            "Focuses on rapid transformation through close monitoring and technical refinement",
+            "Ideal for those requiring deeper strategy and frequent adjustments"
+        ],
+        whoThisPlanIsFor: "Dedicated individuals who value frequent expert feedback, technical monitoring, and a highly structured approach to bypass plateaus.",
         features: [
             "Weekly check-in via google form",
-            "Monthly 2 online sessions (6+2 sessions for 3 months plan)",
+            "Monthly 2 online sessions",
             "12 hrs text support",
             "Personalised diet plan",
             "Personalised workout plan",
-            "1 session can be rescheduled if missed"
-        ],
-        fullDescription: [
-            "Step up your game with Structured Coaching for serious results.",
-            "Offers more frequent interaction with 2 online sessions per month.",
-            "12 hours of text support for real-time guidance and adjustments.",
-            "Ideal for individuals who want closer monitoring and dynamic adjustments to their training."
+            "1 session can be rescheduled if missed",
+            "Total 8 sessions for 3 months plan"
         ],
         plans: [
             { months: 1, label: "1 Month", price: 5500, originalPrice: 6500, note: "Premium entry" },
@@ -96,19 +99,20 @@ export const courses = [
         price: 7000,
         rating: 5.0,
         image: eliteImg,
+        executiveSummary: [
+            "The ultimate solution for total bodily and lifestyle transformation",
+            "Focuses on maximum accountability, mindset mastery, and elite performance",
+            "Designed for individuals who demand constant interaction and maximum support"
+        ],
+        whoThisPlanIsFor: "High-performers and dedicated athletes who demand the highest level of personal involvement, extreme accountability, and peak physical results.",
         features: [
             "Weekly check-in via google form",
-            "Weekly sessions (12+1 sessions for 3 months plan)",
+            "Weekly online sessions",
             "24hrs text support",
             "Personalised diet plan",
             "Personalised workout plan",
-            "2 sessions can be rescheduled every month if missed"
-        ],
-        fullDescription: [
-            "The ultimate coaching experience providing maximum accountability.",
-            "Elite 1:1 Coaching with weekly sessions for deep-dive strategy and mindset.",
-            "Round-the-clock (24hrs) text support for instant feedback and motivation.",
-            "For those who demand the best and are ready to commit fully with constant guidance."
+            "2 sessions can be rescheduled every month",
+            "Total 13 sessions for 3 months plan"
         ],
         plans: [
             { months: 1, label: "1 Month", price: 7000, originalPrice: 9000, note: "Premium" },

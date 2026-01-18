@@ -149,7 +149,7 @@ const Home = () => {
                                         <div className="absolute inset-0 bg-gradient-to-t from-bg-page/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                                     </div>
                                     <div className="absolute -bottom-6 -right-6 glass p-8 rounded-[2rem] shadow-2xl border-white/10 hidden md:block z-20">
-                                        <div className="text-5xl font-black text-accent text-glow">1.5+</div>
+                                        <div className="text-5xl font-black text-accent text-glow">2.5+</div>
                                         <div className="text-text-secondary font-bold uppercase tracking-widest text-xs mt-3">Years Experience</div>
                                     </div>
                                 </div>

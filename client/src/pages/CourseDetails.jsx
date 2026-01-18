@@ -192,67 +192,60 @@ const CourseDetails = () => {
                         </div>
                     </Reveal>
 
-                    <div className="relative h-64 w-full rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+                    {/* 1. Image Card */}
+                    <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
                         {course.detailImage ? (
                             <img
                                 src={course.detailImage}
                                 alt={course.title}
-                                className="w-full h-full object-cover grayscale-[0.2]"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                         ) : (
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={currentImageIndex}
                                     src={course.images && course.images.length > 0 ? course.images[currentImageIndex] : course.image}
-                                    initial={{ opacity: 0.8, scale: 1.1 }}
-                                    animate={{ opacity: 1, scale: 1 }}
+                                    initial={{ opacity: 0.8 }}
+                                    animate={{ opacity: 1 }}
                                     exit={{ opacity: 0.8 }}
                                     transition={{ duration: 0.7 }}
                                     alt={course.title}
-                                    className="w-full h-full object-cover grayscale-[0.2]"
+                                    className="w-full h-full object-cover"
                                 />
                             </AnimatePresence>
                         )}
 
-                        {/* Carousel Indicators */}
                         {!course.detailImage && course.images && course.images.length > 1 && (
-                            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
                                 {course.images.map((_, idx) => (
                                     <div
                                         key={idx}
-                                        className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImageIndex ? 'bg-accent w-3' : 'bg-white/80'
-                                            }`}
+                                        className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImageIndex ? 'bg-accent w-4' : 'bg-white/50'}`}
                                     />
                                 ))}
                             </div>
                         )}
-
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center pointer-events-none">
-                            {/* Removed Play button as it might be confusing for an image carousel, keeping simple */}
-                        </div>
                     </div>
 
-                    {/* Mobile Custom Duration Selection */}
-                    {/* Mobile Custom Duration Selection - Only show if more than 1 option */}
+                    {/* Duration Selection (if multiple) - Moved Above CTA */}
                     {durationOptions.length > 1 && (
                         <div className="space-y-4">
-                            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-text-secondary">Select Program Duration</h3>
+                            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-secondary">Change Plan Duration</h3>
                             <div className="relative">
                                 <button
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                    className="relative w-full bg-white/5 border border-white/10 text-white rounded-xl px-4 py-4 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-bold text-sm tracking-widest uppercase"
+                                    className="relative w-full bg-white/5 border border-white/10 text-white rounded-2xl px-5 py-5 flex items-center justify-between focus:outline-none focus:border-accent transition-all font-bold text-sm tracking-widest uppercase overflow-hidden"
                                 >
                                     <span className="flex items-center gap-2">
                                         {selectedDuration?.label}
                                     </span>
                                     {selectedDuration?.recommended && (
-                                        <span className="absolute top-0 right-0 bg-accent text-white text-[7px] px-3 py-1 rounded-tr-xl rounded-bl-xl font-black uppercase shadow-xl z-10 animate-pulse italic">Recommended</span>
+                                        <span className="absolute top-0 right-0 bg-accent text-white text-[8px] px-3 py-1 rounded-bl-xl font-black uppercase shadow-2xl z-10 italic">Most Recommended</span>
                                     )}
                                     <ChevronDown size={18} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-accent' : ''}`} />
                                 </button>
-
                                 {isDropdownOpen && (
-                                    <div className="relative mt-2 bg-white/5 border border-white/10 rounded-xl overflow-hidden z-20 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 mb-4">
+                                    <div className="mt-3 bg-[#0B0F14] border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
                                         {durationOptions.map((opt) => (
                                             <button
                                                 key={opt.months}
@@ -260,15 +253,12 @@ const CourseDetails = () => {
                                                     setSelectedDuration(opt);
                                                     setIsDropdownOpen(false);
                                                 }}
-                                                className={`w-full px-4 py-4 text-left font-bold text-xs uppercase tracking-widest border-b border-white/5 last:border-0 transition-colors ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-white/5'
-                                                    }`}
+                                                className={`w-full px-5 py-5 text-left font-bold text-xs uppercase tracking-widest border-b border-white/5 last:border-0 transition-colors flex justify-between items-center ${selectedDuration?.months === opt.months ? 'bg-accent text-white' : 'text-text-secondary hover:bg-white/5'}`}
                                             >
-                                                <div className="flex items-center justify-between">
-                                                    <span>{opt.label}</span>
-                                                    {opt.recommended && (
-                                                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent'}`}>MOST RECOMMENDED</span>
-                                                    )}
-                                                </div>
+                                                <span>{opt.label}</span>
+                                                {opt.recommended && (
+                                                    <span className={`text-[8px] px-2 py-0.5 rounded-full font-black ${selectedDuration?.months === opt.months ? 'bg-white text-accent' : 'bg-accent/20 text-accent'}`}>RECOMMENDED</span>
+                                                )}
                                             </button>
                                         ))}
                                     </div>
@@ -277,62 +267,85 @@ const CourseDetails = () => {
                         </div>
                     )}
 
-                    <div className="flex justify-between items-center bg-white/5 p-4 md:p-6 rounded-2xl border border-white/5 gap-2">
+                    {/* 2. CTA Card (Price + Join Now) */}
+                    <div className="flex justify-between items-center bg-[#0B0F14] p-5 rounded-3xl border border-white/10 shadow-2xl gap-4">
                         <div className="flex flex-col min-w-0">
                             {slotInfo && course.id !== 'foundation-plan' && (
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className={`text-[10px] font-black uppercase tracking-widest ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
-                                        {slotInfo.slotsLeft > 0 ? `${slotInfo.slotsLeft}/${slotInfo.maxSlots} Spots Available` : 'Sold Out'}
-                                    </span>
-                                </div>
+                                <span className={`text-[10px] font-black uppercase tracking-widest mb-1 ${slotInfo.slotsLeft > 0 ? 'text-accent' : 'text-red-500'}`}>
+                                    {slotInfo.slotsLeft > 0 ? `${slotInfo.slotsLeft} Spots Left` : 'Sold Out'}
+                                </span>
                             )}
-                            <span className="text-[9px] font-black text-text-secondary uppercase tracking-widest opacity-60">
-                                Investment
-                            </span>
-                            <div className="flex items-center gap-2">
-                                <div className="text-xl md:text-2xl font-black italic text-glow whitespace-nowrap">
-                                    ₹{getCurrentPrice().price.toLocaleString('en-IN')}
-                                </div>
-                                <div className="price-original text-[13px] md:text-lg whitespace-nowrap ml-2">
-                                    <span className="text-[9px] md:text-xs opacity-50 font-black mr-1 uppercase">Was</span>
-                                    ₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}
-                                </div>
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-2xl font-black italic text-glow text-white">₹{getCurrentPrice().price.toLocaleString('en-IN')}</span>
+                                <span className="text-xs opacity-40 line-through text-white font-medium">₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}</span>
                             </div>
-                            <div className="text-accent text-[10px] md:text-[11px] font-black uppercase tracking-widest mt-1 whitespace-nowrap">
-                                Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')}
-                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-accent mt-0.5">Secure Your Spot</span>
                         </div>
                         <button
                             disabled={course.slotInfo?.isSoldOut}
                             onClick={handleCheckout}
-                            className={`px-4 py-2.5 md:px-8 md:py-4 rounded-xl font-black text-[10px] md:text-xs uppercase tracking-widest transition-all flex-shrink-0 ${course.slotInfo?.isSoldOut
+                            className={`flex-1 max-w-[160px] py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 ${course.slotInfo?.isSoldOut
                                 ? 'bg-white/10 text-white/40'
-                                : 'bg-accent text-white shadow-[0_0_30px_rgba(34,197,94,0.3)]'
-                                }`}
+                                : 'bg-accent text-white shadow-[0_10px_30px_rgba(34,197,94,0.3)]'}`}
                         >
-                            {course.slotInfo?.isSoldOut
-                                ? 'Sold Out'
-                                : 'Secure Spot'}
+                            {course.slotInfo?.isSoldOut ? 'Sold Out' : 'Join Now'}
                         </button>
                     </div>
 
-                    {/* Cross Sell */}
+                    {/* 2. Executive Summary (WHY) */}
+                    <div className="space-y-4">
+                        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-accent">Why this plan?</h3>
+                        <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+                            <ul className="space-y-4 list-none">
+                                {course.executiveSummary?.map((point, i) => (
+                                    <li key={i} className="flex gap-4 items-start">
+                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                                        <span className="text-sm font-bold opacity-90 leading-relaxed">{point}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* 3. What's Included (WHAT) */}
+                    <div className="space-y-4">
+                        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-accent">What you get</h3>
+                        <div className="bg-white/5 p-6 rounded-3xl border border-white/5 grid grid-cols-1 gap-5">
+                            {course.features && course.features.map((item, idx) => (
+                                <div key={idx} className="flex items-start gap-4 group">
+                                    <div className="mt-0.5 w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center border border-accent/20">
+                                        <CheckCircle size={12} className="text-accent" />
+                                    </div>
+                                    <span className="text-sm font-black opacity-80 uppercase tracking-tight">{item}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* 4. Who This Plan Is For (WHO) */}
+                    <div className="space-y-4">
+                        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-accent">Ideal For</h3>
+                        <div className="bg-accent/5 p-6 rounded-3xl border border-accent/20">
+                            <p className="text-sm font-bold text-text-primary leading-relaxed italic">
+                                "{course.whoThisPlanIsFor}"
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* 5. Cross Sell (Ultimate Add-on) */}
                     {recommendedProduct && (
-                        <div className="mt-6">
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-text-secondary px-2">
+                        <div className="pt-4">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-text-secondary px-2 flex items-center gap-2">
+                                <Zap size={12} className="text-accent" />
                                 Ultimate Add-on
                             </h3>
                             <div
-                                onClick={() =>
-                                    navigate(
-                                        `/course/${recommendedProduct._id}`
-                                    )
-                                }
-                                className="glass-card p-4 rounded-2xl cursor-pointer border border-white/5 hover:border-accent/30 transition-all flex gap-4"
+                                onClick={() => navigate(`/course/${recommendedProduct._id}`)}
+                                className="glass-card p-4 rounded-3xl cursor-pointer border border-white/10 hover:border-accent/30 transition-all flex gap-4 bg-white/[0.02]"
                             >
                                 <img
                                     src={recommendedProduct.image}
-                                    className="w-20 h-24 object-cover rounded-xl grayscale-[0.3]"
+                                    className="w-20 h-24 object-cover rounded-2xl grayscale-[0.3]"
                                     alt=""
                                 />
                                 <div className="flex-1 flex flex-col justify-between py-1">
@@ -341,14 +354,14 @@ const CourseDetails = () => {
                                             {recommendedProduct.title}
                                         </h4>
                                         <p className="text-[10px] text-text-secondary font-medium line-clamp-2 leading-tight">
-                                            {recommendedProduct.description || 'Enhance your results.'}
+                                            Perfect companion for your transformation.
                                         </p>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span className="font-black text-accent text-sm italic">
                                             ₹{recommendedProduct.price}
                                         </span>
-                                        <div className="bg-white/10 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-white/5">
+                                        <div className="bg-white/10 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-white/10">
                                             View
                                         </div>
                                     </div>
@@ -357,23 +370,7 @@ const CourseDetails = () => {
                         </div>
                     )}
 
-                    <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
-                        <h3 className="text-xs font-black uppercase mb-4 tracking-widest text-text-secondary">Executive Summary</h3>
-                        <div className="text-base opacity-80 leading-relaxed font-medium">
-                            {Array.isArray(course.fullDescription) ? (
-                                <ul className="space-y-3 list-none">
-                                    {course.fullDescription.map((point, i) => (
-                                        <li key={i} className="flex gap-3 items-start">
-                                            <span className="text-accent mt-1.5">•</span>
-                                            <span>{point}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>{course.fullDescription}</p>
-                            )}
-                        </div>
-                    </div>
+
                 </div>
 
                 {/* ================= DESKTOP ================= */}
@@ -437,18 +434,14 @@ const CourseDetails = () => {
                                     Executive Summary
                                 </h3>
                                 <div className="text-2xl opacity-80 mt-8 leading-relaxed font-medium max-w-4xl">
-                                    {Array.isArray(course.fullDescription) ? (
-                                        <ul className="space-y-4 list-none">
-                                            {course.fullDescription.map((point, i) => (
-                                                <li key={i} className="flex gap-4 items-start">
-                                                    <span className="text-accent mt-1.5">•</span>
-                                                    <span>{point}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p>{course.fullDescription}</p>
-                                    )}
+                                    <ul className="space-y-4 list-none">
+                                        {course.executiveSummary?.map((point, i) => (
+                                            <li key={i} className="flex gap-4 items-start">
+                                                <span className="text-accent mt-1.5">•</span>
+                                                <span>{point}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </Reveal>
 
@@ -567,13 +560,11 @@ const CourseDetails = () => {
                                 </button>
                             </div>
 
-                            <div className="mt-10 pt-10 border-t border-white/5 space-y-5">
-                                {course.features && course.features.slice(0, 3).map((f, i) => (
-                                    <div key={i} className="flex gap-4 items-center opacity-70 hover:opacity-100 transition-opacity">
-                                        <Zap size={16} className="text-accent flex-shrink-0" />
-                                        <span className="text-sm font-black uppercase tracking-widest leading-tight">{f}</span>
-                                    </div>
-                                ))}
+                            <div className="mt-10 pt-10 border-t border-white/5 space-y-6 relative z-10">
+                                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-secondary">Who This Plan Is For</h3>
+                                <p className="text-sm font-bold opacity-70 leading-relaxed italic">
+                                    {course.whoThisPlanIsFor}
+                                </p>
                             </div>
                         </div>
 

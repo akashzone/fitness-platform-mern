@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext';
 
 const BackToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const [isFooterVisible, setIsFooterVisible] = useState(false);
     const { isCartOpen } = useCart();
 
     useEffect(() => {
@@ -18,7 +19,21 @@ const BackToTop = () => {
         };
 
         window.addEventListener('scroll', toggleVisibility);
-        return () => window.removeEventListener('scroll', toggleVisibility);
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsFooterVisible(entry.isIntersecting);
+            },
+            { threshold: 0 }
+        );
+
+        const footer = document.getElementById('site-footer');
+        if (footer) observer.observe(footer);
+
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+            if (footer) observer.unobserve(footer);
+        };
     }, []);
 
     const scrollToTop = () => {
@@ -33,9 +48,20 @@ const BackToTop = () => {
             {isVisible && !isCartOpen && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.5, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    animate={{
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        bottom: isFooterVisible ? 160 : 96 // Shift higher when footer visible to stay above calculator
+                    }}
                     exit={{ opacity: 0, scale: 0.5, y: 20 }}
-                    className="fixed bottom-24 right-6 z-[9998]"
+                    transition={{
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 20
+                    }}
+                    className="fixed right-6 z-[9998]"
+                    style={{ bottom: isFooterVisible ? '10rem' : '6rem' }}
                 >
                     <button
                         onClick={scrollToTop}
