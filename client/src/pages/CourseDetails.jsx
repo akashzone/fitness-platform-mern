@@ -30,6 +30,13 @@ const CourseDetails = () => {
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [slotInfo, setSlotInfo] = useState(null);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Image Rotation Logic
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -194,9 +201,9 @@ const CourseDetails = () => {
 
                     {/* 1. Image Card */}
                     <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
-                        {course.detailImage ? (
+                        {course.detailImage || course.mobileDetailImage ? (
                             <img
-                                src={course.detailImage}
+                                src={windowWidth < 1024 && course.mobileDetailImage ? course.mobileDetailImage : course.detailImage}
                                 alt={course.title}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
@@ -390,9 +397,9 @@ const CourseDetails = () => {
                         </Reveal>
 
                         <div className="relative h-96 md:h-[30rem] rounded-[3rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] border border-white/5 group">
-                            {course.detailImage ? (
+                            {course.detailImage || course.mobileDetailImage ? (
                                 <img
-                                    src={course.detailImage}
+                                    src={windowWidth < 1024 && course.mobileDetailImage ? course.mobileDetailImage : course.detailImage}
                                     alt={course.title}
                                     className="w-full h-full object-cover transition-all duration-1000"
                                 />

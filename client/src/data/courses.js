@@ -13,8 +13,9 @@ export const courses = [
         description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
         price: 2000,
         rating: 4.8,
-        image: foundationCardImg,
-        detailImage: foundationImg,
+        image: "/images/coaching/card001.jpeg",
+        detailImage: "/images/foundation/food011.jpeg",
+        mobileDetailImage: "/images/foundation/food011.jpeg",
         executiveSummary: [
             "Designed for individuals who want a clear, science-backed starting point",
             "Focuses on building a strong basic foundation in nutrition and training",
