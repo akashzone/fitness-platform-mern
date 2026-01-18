@@ -52,7 +52,7 @@ const BackToTop = () => {
                         opacity: 1,
                         scale: 1,
                         y: 0,
-                        bottom: isFooterVisible ? 160 : 96 // Shift higher when footer visible to stay above calculator
+                        bottom: isFooterVisible ? 184 : 112 // Added more space (32px gap) between buttons
                     }}
                     exit={{ opacity: 0, scale: 0.5, y: 20 }}
                     transition={{
@@ -61,7 +61,7 @@ const BackToTop = () => {
                         damping: 20
                     }}
                     className="fixed right-6 z-[9998]"
-                    style={{ bottom: isFooterVisible ? '10rem' : '6rem' }}
+                    style={{ bottom: isFooterVisible ? '11.5rem' : '7rem' }}
                 >
                     <button
                         onClick={scrollToTop}
