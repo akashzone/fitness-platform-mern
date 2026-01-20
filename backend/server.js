@@ -66,7 +66,7 @@ app.get('/api/fix-prices-now', async (req, res) => {
         { id: "20-weeks-elite-lifestyle", price: 7000 },
 
         // Handle potential ID variations (legacy vs new) if needed, based on seed-products.js
-        { id: "foundation-plan", price: 2000 },
+        { id: "foundation-plan", price: 999 },
         { id: "guided-transformation", price: 4000 },
         { id: "structured-coaching", price: 5500 },
         { id: "elite-1-1-coaching", price: 7000 }

@@ -335,7 +335,12 @@ const Checkout = () => {
                                                 </div>
                                                 <div className="flex-grow min-w-0">
                                                     <h3 className="font-black text-text-primary text-sm leading-tight mb-1 truncate uppercase">{item.title}</h3>
-                                                    <p className="text-accent text-[10px] font-black uppercase tracking-widest italic">₹{item.price.toLocaleString('en-IN')}</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="text-accent text-[10px] font-black uppercase tracking-widest italic">₹{item.price.toLocaleString('en-IN')}</p>
+                                                        {(item.id === 'foundation-plan' || item._id === 'foundation-plan') && (
+                                                            <p className="text-[8px] opacity-40 line-through text-white font-medium">₹2,000</p>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}
@@ -346,13 +351,19 @@ const Checkout = () => {
                                             <span>Subtotal</span>
                                             <span className="text-text-primary">₹{total.toLocaleString('en-IN')}</span>
                                         </div>
+                                        {checkoutItems.some(item => item.id === 'foundation-plan' || item._id === 'foundation-plan') && (
+                                            <div className="flex justify-between text-accent font-black uppercase tracking-widest text-[10px] md:text-xs animate-pulse">
+                                                <span>Launch Savings</span>
+                                                <span>- ₹1,001</span>
+                                            </div>
+                                        )}
                                         <div className="flex justify-between text-text-secondary font-bold uppercase tracking-widest text-[10px] md:text-xs">
                                             <span>Service Fee</span>
                                             <span className="text-accent">FREE</span>
                                         </div>
                                         <div className="flex justify-between text-text-primary text-xl md:text-3xl font-black pt-6 md:pt-8 border-t border-white/5 tracking-tighter italic items-center">
                                             <div className="flex flex-col text-left">
-                                                <span>Total</span>
+                                                <span>{checkoutItems.some(item => item.id === 'foundation-plan' || item._id === 'foundation-plan') ? 'You Pay' : 'Total'}</span>
                                             </div>
                                             <span className="text-glow">₹{total.toLocaleString('en-IN')}</span>
                                         </div>

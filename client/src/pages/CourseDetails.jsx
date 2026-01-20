@@ -284,9 +284,11 @@ const CourseDetails = () => {
                             )}
                             <div className="flex items-baseline gap-2">
                                 <span className="text-2xl font-black italic text-glow text-white">₹{getCurrentPrice().price.toLocaleString('en-IN')}</span>
-                                <span className="text-xs opacity-40 line-through text-white font-medium">₹{getCurrentPrice().originalPrice.toLocaleString('en-IN')}</span>
+                                <span className="text-xs opacity-40 line-through text-white font-medium">₹{(selectedDuration?.originalPrice || getCurrentPrice().originalPrice).toLocaleString('en-IN')}</span>
                             </div>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-accent mt-0.5">Secure Your Spot</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-accent mt-0.5">
+                                {course.id === 'foundation-plan' ? 'Launch Offer' : 'Secure Your Spot'}
+                            </span>
                         </div>
                         <button
                             disabled={course.slotInfo?.isSoldOut}
@@ -298,6 +300,23 @@ const CourseDetails = () => {
                             {course.slotInfo?.isSoldOut ? 'Sold Out' : 'Join Now'}
                         </button>
                     </div>
+
+                    {/* Foundation Plan Trust Bullets (Mobile) */}
+                    {course.id === 'foundation-plan' && (
+                        <div className="grid grid-cols-2 gap-3 pb-2">
+                            {[
+                                'One-time payment',
+                                'No hidden charges',
+                                'Same price for everyone',
+                                'Lifetime access'
+                            ].map((bullet, idx) => (
+                                <div key={idx} className="flex items-center gap-2 bg-white/5 p-3 rounded-xl border border-white/5">
+                                    <CheckCircle size={10} className="text-accent flex-shrink-0" />
+                                    <span className="text-[10px] font-bold opacity-80 uppercase leading-tight">{bullet}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     {/* 2. Executive Summary (WHY) */}
                     <div className="space-y-4">
@@ -496,7 +515,7 @@ const CourseDetails = () => {
                                         ₹{getCurrentPrice().price.toLocaleString('en-IN')}
                                     </div>
                                     <div className="bg-accent/10 text-accent text-[10px] px-4 py-1 rounded-full font-black uppercase tracking-widest mt-4 border border-accent/20 animate-bounce">
-                                        Save ₹{(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')}
+                                        {course.id === 'foundation-plan' ? 'LIMITIED TIME LAUNCH OFFER' : `Save ₹${(getCurrentPrice().originalPrice - getCurrentPrice().price).toLocaleString('en-IN')}`}
                                     </div>
                                 </div>
                             </div>
@@ -566,6 +585,25 @@ const CourseDetails = () => {
                                     Add to Cart
                                 </button>
                             </div>
+
+                            {/* Foundation Plan Trust Bullets (Desktop) */}
+                            {course.id === 'foundation-plan' && (
+                                <div className="mt-8 grid grid-cols-1 gap-4 relative z-10">
+                                    {[
+                                        'One-time payment',
+                                        'No hidden charges',
+                                        'Same price for everyone',
+                                        'Lifetime access to this plan'
+                                    ].map((bullet, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 group/trust">
+                                            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center border border-accent/20 group-hover/trust:bg-accent transition-all">
+                                                <CheckCircle size={14} className="text-accent group-hover/trust:text-white" />
+                                            </div>
+                                            <span className="text-sm font-black opacity-70 group-hover/trust:opacity-100 transition-opacity uppercase tracking-wider">{bullet}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
                             <div className="mt-10 pt-10 border-t border-white/5 space-y-6 relative z-10">
                                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-text-secondary">Who This Plan Is For</h3>

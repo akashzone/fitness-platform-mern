@@ -11,7 +11,7 @@ export const courses = [
         title: "FOUNDATION PLAN",
         duration: "One-time",
         description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
-        price: 2000,
+        price: 999,
         rating: 4.8,
         image: "/images/coaching/card001.jpeg",
         detailImage: "/images/foundation/food011.jpeg",
@@ -28,7 +28,7 @@ export const courses = [
             "One-time Consultation"
         ],
         plans: [
-            { months: 1, label: "One-time", price: 2000, originalPrice: 2400, note: "Standard" }
+            { months: 1, label: "One-time", price: 999, originalPrice: 2000, note: "Standard" }
         ]
     },
     {
