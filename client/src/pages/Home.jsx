@@ -207,7 +207,7 @@ const Home = () => {
                         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
                             {products.map((course, index) => (
                                 <Reveal key={course._id} delay={index * 0.1} scale={0.9} y={40} width="100%">
-                                    <CourseCard course={course} isSoldOut={isSoldOut} hideOriginalPrice={true} />
+                                    <CourseCard course={course} isSoldOut={isSoldOut} hideOriginalPrice={false} />
                                 </Reveal>
                             ))}
                         </div>

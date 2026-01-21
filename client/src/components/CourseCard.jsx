@@ -69,32 +69,25 @@ const CourseCard = ({ course, isSoldOut, hideOriginalPrice = false, className = 
                     </div>
                 )}
 
-                <div className={`absolute left-1 md:left-6 bg-black/40 md:glass px-2 py-1 md:px-8 md:py-4 rounded-xl md:rounded-3xl flex flex-col items-center shadow-2xl border border-white/10 group-hover:border-accent/30 transition-all duration-500 backdrop-blur-md md:backdrop-blur-xl ${course.id === 'foundation-plan' ? 'top-4 md:top-10' : 'top-1 md:top-6'}`}>
-                    <span className="pricing-badge-label text-[9px] md:text-[12px] opacity-80 mb-0.5 md:mb-1">
-                        {course.id === 'foundation-plan' ? 'Launch Offer' : 'Starting From'}
-                    </span>
-                    <div className="flex flex-col items-center leading-none">
-                        {!hideOriginalPrice && (
-                            <span className="price-original mb-1 md:mb-2 text-[10px] md:text-base">
-                                <span className="text-[7px] md:text-[10px] opacity-60 mr-1 uppercase">Was</span>
-                                ₹{(course.originalPrice || (course.plans && course.plans[0]?.originalPrice) || Math.round((course.displayPrice || course.price) * 1.2)).toLocaleString('en-IN')}
-                            </span>
-                        )}
-                        <span className="price-final text-glow text-xs md:text-2xl">
+                <div className={`absolute left-2 md:left-6 top-1 md:top-6 bg-black/70 md:glass px-3.5 py-2 md:px-5 md:py-3.5 rounded-3xl flex items-center gap-3 md:gap-5 shadow-2xl border border-white/10 group-hover:border-accent/30 transition-all duration-500 backdrop-blur-md md:backdrop-blur-xl`}>
+                    <div className="flex flex-col items-start justify-center leading-none">
+                        <span className="text-[7px] md:text-[10px] opacity-60 uppercase font-bold tracking-[0.15em] mb-1 md:mb-1.5">
+                            {course.id === 'foundation-plan' ? 'Launch Offer' : 'Starting From'}
+                        </span>
+                        <span className="text-[12px] md:text-[18px] font-black text-white">
                             ₹{(course.displayPrice || course.price).toLocaleString('en-IN')}
                         </span>
                     </div>
+
+                    {!hideOriginalPrice && (
+                        <div className="flex items-center border-l border-white/10 pl-3 md:pl-5 self-stretch">
+                            <span className="text-[16px] md:text-[24px] text-white/30 line-through decoration-white/30 font-black italic">
+                                ₹{(course.originalPrice || (course.plans && course.plans[0]?.originalPrice) || Math.round((course.displayPrice || course.price) * 1.2)).toLocaleString('en-IN')}
+                            </span>
+                        </div>
+                    )}
                 </div>
 
-                {/* Intro Price Badge */}
-                {course.id === 'foundation-plan' && (
-                    <div className="absolute top-0 right-0 z-30">
-                        <div className="bg-accent text-white py-1.5 px-3 md:py-2 md:px-5 rounded-bl-2xl text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl border-l border-b border-white/10 flex items-center gap-1.5 group-hover:scale-110 transition-transform origin-top-right">
-                            <div className="w-1 h-1 bg-white rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
-                            INTRO PRICE
-                        </div>
-                    </div>
-                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-page/80 to-transparent opacity-60" />
             </div>
 
