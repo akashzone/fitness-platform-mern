@@ -11,7 +11,8 @@ export const courses = [
         title: "FOUNDATION PLAN",
         duration: "One-time",
         description: "• Customised Diet Plan\n• Customised Workout Plan (One-time)",
-        price: 999,
+        price: 990,
+        originalPrice: 2000,
         rating: 4.8,
         image: "/images/coaching/card001.jpeg",
         detailImage: "/images/foundation/food011.jpeg",
@@ -29,7 +30,7 @@ export const courses = [
             "One-time Consultation"
         ],
         plans: [
-            { months: 1, label: "One-time", price: 999, originalPrice: 2000, note: "Standard" }
+            { months: 1, label: "One-time", price: 990, originalPrice: 2000, note: "Standard" }
         ]
     },
     {
@@ -38,7 +39,8 @@ export const courses = [
         title: "GUIDED TRANSFORMATION",
         duration: "Flexible",
         description: "• Weekly Check-ins\n• Monthly Sessions for Consistent Progress",
-        price: 4000,
+        price: 3990,
+        originalPrice: 5000,
         rating: 4.9,
         image: guidedImg,
         detailImage: guidedImg,
@@ -58,10 +60,10 @@ export const courses = [
             "Total 4 sessions for 3 months plan"
         ],
         plans: [
-            { months: 1, label: "1 Month", price: 4000, originalPrice: 5000, note: "High entry" },
-            { months: 2, label: "2 Months", price: 7500, originalPrice: 9000, note: "Minor relief" },
-            { months: 3, label: "3 Months", price: 11000, originalPrice: 14000, note: "Best value", recommended: true },
-            { months: 6, label: "6 Months", price: 20000, originalPrice: 25000, note: "Commitment bonus" }
+            { months: 1, label: "1 Month", price: 3990, originalPrice: 5000, note: "High entry" },
+            { months: 2, label: "2 Months", price: 7490, originalPrice: 9000, note: "Minor relief" },
+            { months: 3, label: "3 Months", price: 11990, originalPrice: 14000, note: "Best value", recommended: true },
+            { months: 6, label: "6 Months", price: 19990, originalPrice: 25000, note: "Commitment bonus" }
         ]
     },
     {
@@ -70,7 +72,8 @@ export const courses = [
         title: "STRUCTURED COACHING",
         duration: "Flexible",
         description: "• Monthly 2 Online Sessions\n• 12 hrs Text Support for Serious Results",
-        price: 5500,
+        price: 5490,
+        originalPrice: 6500,
         rating: 4.9,
         image: structuredImg,
         detailImage: structuredImg,
@@ -91,10 +94,10 @@ export const courses = [
             "Total 8 sessions for 3 months plan"
         ],
         plans: [
-            { months: 1, label: "1 Month", price: 5500, originalPrice: 6500, note: "Premium entry" },
-            { months: 2, label: "2 Months", price: 10500, originalPrice: 13000, note: "Small relief" },
-            { months: 3, label: "3 Months", price: 14000, originalPrice: 17500, note: "Best value", recommended: true },
-            { months: 6, label: "6 Months", price: 26000, originalPrice: 33000, note: "Serious clients" }
+            { months: 1, label: "1 Month", price: 5490, originalPrice: 6500, note: "Premium entry" },
+            { months: 2, label: "2 Months", price: 10490, originalPrice: 13000, note: "Small relief" },
+            { months: 3, label: "3 Months", price: 14990, originalPrice: 17500, note: "Best value", recommended: true },
+            { months: 6, label: "6 Months", price: 25990, originalPrice: 33000, note: "Serious clients" }
         ]
     },
     {
@@ -103,7 +106,8 @@ export const courses = [
         title: "ELITE 1:1 COACHING",
         duration: "Flexible",
         description: "• Weekly Sessions\n• 24hrs Text Support for Ultimate Transformation",
-        price: 7000,
+        price: 6990,
+        originalPrice: 9000,
         rating: 5.0,
         image: eliteImg,
         detailImage: eliteImg,
@@ -124,10 +128,10 @@ export const courses = [
             "Total 13 sessions for 3 months plan"
         ],
         plans: [
-            { months: 1, label: "1 Month", price: 7000, originalPrice: 9000, note: "Premium" },
-            { months: 2, label: "2 Months", price: 13500, originalPrice: 17000, note: "Minor save" },
-            { months: 3, label: "3 Months", price: 18000, originalPrice: 23000, note: "Best value", recommended: true },
-            { months: 6, label: "6 Months", price: 34000, originalPrice: 42000, note: "Long-term elite" }
+            { months: 1, label: "1 Month", price: 6990, originalPrice: 9000, note: "Premium" },
+            { months: 2, label: "2 Months", price: 13490, originalPrice: 17000, note: "Minor save" },
+            { months: 3, label: "3 Months", price: 17990, originalPrice: 23000, note: "Best value", recommended: true },
+            { months: 6, label: "6 Months", price: 33990, originalPrice: 42000, note: "Long-term elite" }
         ]
     }
 ];

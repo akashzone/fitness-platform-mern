@@ -82,17 +82,17 @@ const CourseCard = ({ course, isSoldOut, slotsLeft, hideOriginalPrice = false, c
                     {course.description || "Premium program designed for maximum results and sustainable health."}
                 </p>
 
-                <div className="flex items-end gap-1 md:gap-5 mt-auto relative z-10 transition-all">
+                <div className="flex items-end gap-1.5 md:gap-5 mt-auto relative z-10 transition-all">
                     {!hideOriginalPrice && (
                         <div className="flex flex-col items-start translate-y-0.5 md:translate-y-0">
-                            <span className="text-[8px] md:text-[9px] font-black text-accent uppercase tracking-[0.2em] mb-0 md:mb-1 leading-none">Launch Price</span>
+                            <span className="text-[8px] md:text-[9px] font-black text-accent uppercase tracking-[0.2em] mb-1.5 md:mb-2 leading-none">Launch Price</span>
                             <span className="text-sm md:text-2xl text-white/50 line-through font-black italic tracking-tighter leading-none">
                                 ₹{(course.originalPrice || Math.round((course.displayPrice || course.price) * 1.2)).toLocaleString('en-IN')}
                             </span>
                         </div>
                     )}
                     <div className="flex flex-col">
-                        <span className="text-base md:text-3xl font-black text-white italic tracking-tighter text-glow leading-none">
+                        <span className="text-sm md:text-2xl font-black text-white italic tracking-tighter text-glow leading-none">
                             ₹{(course.displayPrice || course.price).toLocaleString('en-IN')}
                         </span>
                     </div>
