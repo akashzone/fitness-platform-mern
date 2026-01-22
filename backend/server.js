@@ -59,13 +59,14 @@ app.get('/api/test-email', async (req, res) => {
 // EMERGENCY FIX: Route to RESET prices to correct values
 app.get('/api/fix-prices-now', async (req, res) => {
     const Product = require('./models/Product');
+    const MonthlySlot = require('./models/MonthlySlot');
+    const getCurrentMonth = require('./utils/getCurrentMonth');
+
     const correctProducts = [
         { id: "4-weeks-transformation", price: 2000 },
         { id: "8-weeks-momentum", price: 4000 },
         { id: "12-weeks-peak-performance", price: 5500 },
         { id: "20-weeks-elite-lifestyle", price: 7000 },
-
-        // Handle potential ID variations (legacy vs new) if needed, based on seed-products.js
         { id: "foundation-plan", price: 999 },
         { id: "guided-transformation", price: 4000 },
         { id: "structured-coaching", price: 5500 },
@@ -75,8 +76,6 @@ app.get('/api/fix-prices-now', async (req, res) => {
     try {
         let updates = [];
         for (const p of correctProducts) {
-            // Find by custom 'id' field (defined as String in schema)
-            // We do NOT query _id to prevent CastError if _id is ObjectId
             const update = await Product.updateMany(
                 { id: p.id },
                 { $set: { price: p.price, displayPrice: p.price } }
@@ -84,8 +83,21 @@ app.get('/api/fix-prices-now', async (req, res) => {
             updates.push({ id: p.id, result: update });
         }
 
-        console.log('✅ [Manual-Fix] Prices reset to correct values.');
-        res.status(200).json({ success: true, message: 'Prices reset successfully', details: updates });
+        // FIX SLOTS AS WELL (18/20 available)
+        const currentMonth = getCurrentMonth();
+        const slotUpdate = await MonthlySlot.findOneAndUpdate(
+            { month: currentMonth },
+            { $set: { maxSlots: 20, usedSlots: 2 } },
+            { upsert: true, new: true }
+        );
+
+        console.log('✅ [Manual-Fix] Prices & Slots (18) reset to correct values.');
+        res.status(200).json({
+            success: true,
+            message: 'Prices and Slots reset successfully',
+            details: updates,
+            slotInfo: slotUpdate
+        });
     } catch (err) {
         console.error('❌ [Manual-Fix] Failed:', err);
         res.status(500).json({ success: false, error: err.message });

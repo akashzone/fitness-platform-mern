@@ -80,26 +80,31 @@ export const testimonials = [
     {
         id: 1,
         name: "Arjun Kumar",
+        resultTag: "Became consistent",
         feedback: "The workout plan was super clear and easy to follow. I finally became consistent and started seeing real changes in my body."
     },
     {
         id: 2,
         name: "Priya Shankar",
+        resultTag: "Lost 6kg in 8 weeks",
         feedback: "I used to struggle with diet confusion, but this program made everything simple. Now I know what to eat and when to eat."
     },
     {
         id: 3,
         name: "Karthik Rajan",
+        resultTag: "Gained strength",
         feedback: "The guidance and support were next level. I lost fat without starving and my strength improved every week."
     },
     {
         id: 4,
         name: "Meena Sundaram",
+        resultTag: "Stronger body",
         feedback: "I always started and stopped gym plans, but this one kept me on track. My energy levels are better and my body feels stronger."
     },
     {
         id: 5,
         name: "Sneha Iyer",
+        resultTag: "Visible results",
         feedback: "The nutrition guide changed my mindset completely. I stopped guessing portions and started getting visible results."
     }
 ];

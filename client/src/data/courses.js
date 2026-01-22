@@ -22,6 +22,7 @@ export const courses = [
             "Ideal for those who are confident in executing a plan independently"
         ],
         whoThisPlanIsFor: "Beginners or individuals restarting their fitness journey who need a professional blueprint without ongoing coaching or accountability.",
+        outcome: "Best for starting strong with a clean plan.",
         features: [
             "Customised Diet Plan",
             "Customised Workout Plan",
@@ -47,6 +48,7 @@ export const courses = [
             "Ideal for those who need periodic monitoring and guided adjustments"
         ],
         whoThisPlanIsFor: "Individuals who want hands-on coaching, accountability, and structured guidance to stay consistent and progress faster.",
+        outcome: "Weekly accountability for consistent results.",
         features: [
             "Weekly check-in via google form",
             "Monthly 1 online session",
@@ -78,6 +80,7 @@ export const courses = [
             "Ideal for those requiring deeper strategy and frequent adjustments"
         ],
         whoThisPlanIsFor: "Dedicated individuals who value frequent expert feedback, technical monitoring, and a highly structured approach to bypass plateaus.",
+        outcome: "Long-term coaching for serious progress.",
         features: [
             "Weekly check-in via google form",
             "Monthly 2 online sessions",
@@ -110,6 +113,7 @@ export const courses = [
             "Designed for individuals who demand constant interaction and maximum support"
         ],
         whoThisPlanIsFor: "High-performers and dedicated athletes who demand the highest level of personal involvement, extreme accountability, and peak physical results.",
+        outcome: "Maximum attention for fastest transformation.",
         features: [
             "Weekly check-in via google form",
             "Weekly online sessions",

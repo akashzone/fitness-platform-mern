@@ -61,6 +61,12 @@ const TestimonialSlider = () => {
                                 ))}
                             </div>
 
+                            {testimonials[currentIndex].resultTag && (
+                                <div className="inline-flex self-start px-4 py-1.5 md:px-6 md:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 md:mb-10 backdrop-blur-sm">
+                                    <span className="text-accent text-[8px] md:text-xs font-black uppercase tracking-widest italic">{testimonials[currentIndex].resultTag}</span>
+                                </div>
+                            )}
+
                             <p className="text-base md:text-4xl text-text-primary mb-8 md:mb-16 font-medium leading-[1.4] italic tracking-tight opacity-90 relative z-10">
                                 "{testimonials[currentIndex].feedback}"
                             </p>
