@@ -112,6 +112,7 @@ const CalorieCalculator = () => {
             const tdee = Math.round(bmr * multiplier);
 
             setResult(tdee);
+            localStorage.setItem('maintenanceCalories', tdee.toString());
             setShowResults(true);
             setLoading(false);
         }, 800);
@@ -348,11 +349,25 @@ const CalorieCalculator = () => {
                                         color="text-yellow-500"
                                     />
                                     <ResultCard
-                                        title="Extreme Weight Loss"
-                                        weightChange="-1 kg/week"
-                                        calories={Math.max(0, result - 1000)}
-                                        percent="61%"
-                                        color="text-red-500"
+                                        title="Mild Weight Gain"
+                                        weightChange="+0.25 kg/week"
+                                        calories={Math.round(result + 250)}
+                                        percent="110%"
+                                        color="text-accent"
+                                    />
+                                    <ResultCard
+                                        title="Weight Gain"
+                                        weightChange="+0.5 kg/week"
+                                        calories={Math.round(result + 500)}
+                                        percent="120%"
+                                        color="text-accent"
+                                    />
+                                    <ResultCard
+                                        title="Fast Weight Gain"
+                                        weightChange="+1 kg/week"
+                                        calories={Math.round(result + 1000)}
+                                        percent="139%"
+                                        color="text-accent"
                                     />
                                 </div>
 

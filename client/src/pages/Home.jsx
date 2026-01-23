@@ -11,6 +11,7 @@ import MagneticButton from '../components/motion/MagneticButton';
 import ProgramsSection from '../components/ProgramsSection';
 import HowItWorks from '../components/HowItWorks';
 import FAQ from '../components/FAQ';
+import GoalCalculator from '../components/GoalCalculator';
 
 
 const Home = () => {
@@ -208,6 +209,9 @@ const Home = () => {
                     </div>
                 </section>
 
+                {/* Goal Calculator Section */}
+                <GoalCalculator />
+
                 {/* Programs Section */}
                 <ProgramsSection products={products} isSoldOut={isSoldOut} slotsLeft={slotInfo?.slotsLeft} />
 
@@ -276,7 +280,7 @@ const Home = () => {
                 </div>
 
                 {/* Static Dots */}
-                {[0, 1, 2].map((i) => (
+                {[0, 1, 2, 3].map((i) => (
                     <div
                         key={i}
                         className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-surface border-2 border-white/20 relative z-10"
