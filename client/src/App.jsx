@@ -10,6 +10,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import PaymentStatus from './pages/PaymentStatus';
 import CalorieCalculator from './pages/CalorieCalculator';
 import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/ScrollToTop';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/calorie-calculator" element={<CalorieCalculator />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/programs" element={<Programs />} />
             <Route path="/course/:id" element={<CourseDetails />} />
             <Route path="/checkout/:id" element={<Checkout />} />

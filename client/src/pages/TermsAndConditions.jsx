@@ -83,6 +83,12 @@ const TermsAndConditions = () => {
                         </p>
                     </Section>
 
+                    <Section title="7. Developer Credits">
+                        <p>
+                            This platform was developed by <strong>Akash Nadar</strong>. For any further questions or technical enquiries regarding the platform, please contact: <a href="mailto:akashnadar.dev@gmail.com" className="text-accent hover:underline">akashnadar.dev@gmail.com</a>
+                        </p>
+                    </Section>
+
                     <div className="pt-8 border-t border-white/5 text-center text-text-secondary text-sm">
                         Last updated: {new Date().getFullYear()}
                     </div>

@@ -147,7 +147,7 @@ const Footer = React.forwardRef((props, ref) => {
                     </div>
                 </div>
                 <div className="mt-12 md:mt-24 pt-8 md:pt-12 border-t border-white/5 text-center text-text-secondary text-sm font-bold opacity-60">
-                    &copy; {new Date().getFullYear()} FitWithPravinn. <Link to="/terms-and-conditions" className="hover:text-accent transition-colors underline decoration-white/20 hover:decoration-accent underline-offset-4">Terms & Conditions</Link>
+                    &copy; {new Date().getFullYear()} FitWithPravinn. <Link to="/terms-and-conditions" className="hover:text-accent transition-colors underline decoration-white/20 hover:decoration-accent underline-offset-4">Terms & Conditions</Link> • <Link to="/privacy-policy" className="hover:text-accent transition-colors underline decoration-white/20 hover:decoration-accent underline-offset-4">Privacy Policy</Link>
                 </div>
             </div>
         </footer>
